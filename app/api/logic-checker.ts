@@ -87,20 +87,37 @@ const skip_logic=(name:string,value:any, logic_option:string):any=>{
         var sl_logic_array = skip_logic_array[name];
         //var first_key = sl_logic_array[logic_option];
         var found_key = logic_option;
+
         if(found_key == "is"){
-            var is = sl_logic_array[found_key];     
-            var found = is.find((search:string)=>{
-                return search == value? search:null;
+            var is = sl_logic_array[found_key]['value'];     
+            var found = is.find((search:string)=>{                
+                return search == value;
             });
-            //redirect_element["redirect"] = sl_logic_array["route"];       
-            //redirect_element["focusElement"] = sl_logic_array["node"]
-            //console.log(found)
-            if(found){                
-                return {"redirect":sl_logic_array["route"],"focusElement":sl_logic_array["node"]}
-                //return redirect_element
+            if(typeof found !='undefined'){                
+                return {"redirect":sl_logic_array[found_key]["route"],"focusElement":sl_logic_array[found_key]["node"]}                
+            }else if(is[0] < 0){                
+                return {"redirect":sl_logic_array[found_key]["route"],"focusElement":sl_logic_array[found_key]["node"]}
+            }            
+        }
+
+        if(found_key == "lt"){
+            
+            var lt = sl_logic_array[found_key]['values'];
+            if(value < lt){
+                //alert(sl_logic_array[found_key]["route"])
+
+                return {"redirect":sl_logic_array[found_key]["route"],"focusElement":sl_logic_array[found_key]["node"]}
             }
             
+        }
 
+        if(found_key == "gt"){
+            
+            var gt = sl_logic_array[found_key]['values'];
+            if(value > gt){
+                return {"redirect":sl_logic_array[found_key]["route"],"focusElement":sl_logic_array[found_key]["node"]}
+            }
+            
         }
 
         //console.log(sl_logic_array)

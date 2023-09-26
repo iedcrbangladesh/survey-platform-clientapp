@@ -1,2 +1,9 @@
-{"introduction_permission.interviewer_permission":{"is":[1,2],"route":"2eligibility_timeselection","node":"eligibility_timeselection.city_or_village"} 
+{"introduction_permission.interviewer_permission":
+{"is":{"value":[1,2],"route":"2eligibility_timeselection","node":"eligibility_timeselection.gender"}},
+"introduction_permission.denied_reason":
+{"is":{"value":[-1],"route":null,"node":"submit"}},
+"eligibility_timeselection.age":
+{"lt":{"values":18,"route":"9finish","node":"submit"},"gt":{"values":150,"route":"9finish","node":"submit"}},
+"food_habits.fruits_consumption":
+{"is":{"value":[0],"route":null,"node":"food_habits.vegatables_consumption"}} 
 }

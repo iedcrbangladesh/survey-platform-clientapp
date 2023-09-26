@@ -13,12 +13,12 @@ interface SelectProps{
     isClearable?:boolean,
     isSearchable?:boolean,
     options:Array<Object>,
-    //onChange:(value:any)=>void,
+    onParentChange:(value:any,name:any)=>void,
     onBlur?:(e:any)=>void
   }
 
 const containerStyle = "flex flex-col gap-4 w-full bg-white dark:bg-form-input";
-const controlStyles="z-20 w-full appearance-none rounded border border-stroke bg-transparent py-2 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input";
+const controlStyles="z-25 w-full appearance-none rounded border border-stroke bg-transparent py-2 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input";
 const valueContainerStyle="text-black dark:text-white";
 const placeholderStyle="text-center text-black dark:text-white";
 const singleValueStyle="text-black dark:text-white";
@@ -67,8 +67,10 @@ const SelectNonCreatableComponent = (props:SelectProps) => {
         
         onChange={(value, action) => {
           //alert(action.action)
+          props.onParentChange(value,action.name)
           setTouched(true)
           if(action.action == 'clear'){
+            //alert(props.defaultValueArray.value)
             setValue(props.defaultValueArray)
           }else{
             setValue(value)

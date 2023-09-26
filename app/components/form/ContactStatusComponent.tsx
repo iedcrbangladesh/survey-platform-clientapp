@@ -93,7 +93,10 @@ const ContactStatusComponent = ()=>{
                                  placeholder="Select Call status"
                                  isSearchable
                                  isClearable                                 
-                                  name="dispose_status" options={contact_status.call_status} 
+                                  name="dispose_status" options={contact_status.call_status}
+                                  onParentChange={(value:any,name:any)=>{
+
+                                  }}
                                   
                       />
 

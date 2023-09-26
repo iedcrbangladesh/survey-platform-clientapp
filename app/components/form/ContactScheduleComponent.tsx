@@ -98,7 +98,9 @@ const ContactScheduleComponent = ()=>{
                                  isSearchable
                                  isClearable                                 
                                   name="dispose_status" options={contact_status.schedule_status} 
-                                  
+                           onParentChange={(value:any,name:any)=>{
+
+                           }}       
                       />
 
 {

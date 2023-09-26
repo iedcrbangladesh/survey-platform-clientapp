@@ -1,5 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-/app/dashboard/catincd
+#/app/dashboard/catincd
+#/app/json/catincd_data.json
+#/app/data.json
+#/app/disablelogic.json
+#/app/skiplogic.json
+#/app/utils/*
+#/app/utils/.gitkeep 
+
 # dependencies
 /node_modules
 /.pnp
