@@ -1,6 +1,8 @@
 "use client";
 import React , {useCallback, useEffect, useState, createContext } from "react";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
+import { deleteCookie, hasCookie } from 'cookies-next';
+
 
 interface AuthContextType{
     token:string |undefined|null,
@@ -183,6 +185,10 @@ export const AuthContextProvider = (props:any)=>{
             setContactID(null);
             setRedirect(null);
             setFocusElement(null);
+
+            if(hasCookie('AUTH_DATA')){
+                deleteCookie('AUTH_DATA')
+            }
             
             removeAllFromStorage();
             //if(logoutTimer){

@@ -2,7 +2,7 @@
 import FullPageLayout from "@/app/layout/FullPageLayout"
 //import Chat from "./components/Chat";
 import { useState,useEffect } from "react";
-import Link from "next/link";
+//import Link from "next/link";
 import Image from 'next/image';
 import Logo from '@/app/images/logo/logo.svg';
 import {Formik, Form, Field, yupToFormErrors, validateYupSchema} from 'formik';
@@ -10,8 +10,9 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import loginSchema from "@/app/login/loginSchema";
 //import AuthContext from "@/app/context/auth-context";
-import { Metadata, ResolvingMetadata } from 'next';
+//import { Metadata, ResolvingMetadata } from 'next';
 import useAuth from "@/app/hooks/useAuth";
+import { setCookie } from 'cookies-next';
 
 /*
 export const metadata = {
@@ -46,7 +47,7 @@ const Login=()=> {
   
   const handleFormSubmit = async(values:any)=>{
 
-  console.log(url);
+  //console.log(url);
 
     await axios.post(`${url}login-user`, 
     values.user, {
@@ -78,7 +79,7 @@ const Login=()=> {
       response.data.localId
     );
 
-    
+    setCookie('AUTH_DATA', {'token':response.data.idToken,'role':response.data.role});
     
     if(response.data.role == 2){
       router.push('/dashboard');
