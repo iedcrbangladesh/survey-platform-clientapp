@@ -1,9 +1,118 @@
-{"introduction_permission.interviewer_permission":
-{"is":{"value":[1,2],"route":"2eligibility_timeselection","node":"eligibility_timeselection.gender"}},
-"introduction_permission.denied_reason":
-{"is":{"value":[-1],"route":null,"node":"submit"}},
-"eligibility_timeselection.age":
-{"lt":{"values":18,"route":"9finish","node":"submit"},"gt":{"values":150,"route":"9finish","node":"submit"}},
-"food_habits.fruits_consumption":
-{"is":{"value":[0],"route":null,"node":"food_habits.vegatables_consumption"}} 
+{
+    "introduction_permission.interviewer_permission": {
+        "radio": [
+            {
+                "condition": "is",
+                "value": [
+                    1,
+                    2
+                ],
+                "route": "2eligibility_timeselection",
+                "node": "eligiility_timeselection.gender"
+            },
+            {
+                "condition": "is",
+                "value": [
+                    3
+                ],
+                "route": null,
+                "node": "terminate"
+            }
+        ]
+    },
+    "introduction_permission.denied_reason": {
+        "multiselect": [
+            {
+                "condition": "multi_is",
+                "value": [
+                    -1
+                ],
+                "route": null,
+                "node": "terminate"
+            }
+        ]
+    },
+    "eligibility_timeselection.age": {
+        "age_dropdown": [
+            {
+                "condition": "lt",
+                "value": 18,
+                "route": null,
+                "node": "terminate"
+            },
+            {
+                "condition": "is",
+                "value": [
+                    201,
+                    202
+                ],
+                "route": null,
+                "node": "terminate"
+            }
+        ]
+    },
+    "eligibility_timeselection.city_or_village": {
+        "radio": [
+            {
+                "condition": "is",
+                "value": [
+                    88,
+                    99
+                ],
+                "route": null,
+                "node": "terminate"
+            }
+        ]
+    },
+    "food_habits.fruits_consumption": {
+        "age_dropdown": [
+            {
+                "condition": "is",
+                "value": [
+                    0
+                ],
+                "route": null,
+                "node": "food_habits.vegatables_consumption"
+            }
+        ]
+    },
+    "smoking_related.smoking_habit": {
+        "radio": [
+            {
+                "condition": "is",
+                "value": [
+                    2,
+                    99
+                ],
+                "route": null,
+                "node": "smoking_related.smoking_habit_previous"
+            }
+        ]
+    },
+    "smoking_related.smoking_habit_previous": {
+        "radio": [
+            {
+                "condition": "is",
+                "value": [
+                    2,
+                    99
+                ],
+                "route": null,
+                "node": "smoking_related.non_smoking_habit"
+            }
+        ]
+    },
+    "drinking_related.alchohol_usage": {
+        "radio": [
+            {
+                "condition": "is",
+                "value": [
+                    2,
+                    99
+                ],
+                "route": null,
+                "node": "terminate"
+            }
+        ]
+    }
 }

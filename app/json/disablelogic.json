@@ -1,2 +1,151 @@
-{"introduction_permission.interviewer_permission":[{"not":[1,2],"fields":{"introduction_permission.denied_reason":{"value":"","label":""}}}] 
+{
+    "introduction_permission.interviewer_permission": [
+        {
+            "is": [
+                1,
+                2
+            ],
+            "fields": {
+                "introduction_permission.denied_reason": []
+            }
+        },
+        {
+            "is": [
+                3
+            ],
+            "fields": {
+                "eligibility_timeselection.gender": {
+                    "value": "",
+                    "label": ""
+                },
+                "eligibility_timeselection.age": {
+                    "value": "",
+                    "label": ""
+                },
+                "eligibility_timeselection.city_or_village": {
+                    "value": "",
+                    "label": ""
+                },
+                "eligibility_timeselection.district": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.city_corporation": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.municipal": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.upazilla": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.education": {
+                    "value": "",
+                    "label": ""
+                },
+                "eligibility_timeselection.name_of_person": {
+                    "text": "",
+                    "reason": {
+                        "value": "",
+                        "label": ""
+                    }
+                }
+            }
+        }
+    ],
+    "eligibility_timeselection.age": [
+        {
+            "range": [
+                18,
+                150
+            ],
+            "fields": {
+                "eligibility_timeselection.city_or_village": {
+                    "value": "",
+                    "label": ""
+                },
+                "eligibility_timeselection.district": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.city_corporation": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.municipal": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.upazilla": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.education": {
+                    "value": "",
+                    "label": ""
+                },
+                "eligibility_timeselection.name_of_person": {
+                    "text": "",
+                    "reason": {
+                        "value": "",
+                        "label": ""
+                    }
+                }
+            }
+        },
+        {
+            "is": [
+                201,
+                202
+            ],
+            "fields": {
+                "eligibility_timeselection.city_or_village": {
+                    "value": "",
+                    "label": ""
+                },
+                "eligibility_timeselection.district": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.city_corporation": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.municipal": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.upazilla": {
+                    "value": "",
+                    "label": "",
+                    "parent": ""
+                },
+                "eligibility_timeselection.education": {
+                    "value": "",
+                    "label": ""
+                },
+                "eligibility_timeselection.name_of_person": {
+                    "text": "",
+                    "reason": {
+                        "value": "",
+                        "label": ""
+                    }
+                }
+            }
+        }
+    ]
 }

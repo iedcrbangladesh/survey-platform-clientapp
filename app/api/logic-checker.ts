@@ -18,15 +18,18 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
                 var found_key = logic_option.find((search:string)=>{
                     return search == first_key;
                 });
-                //console.log(found_key)
+                
 
-                if(found_key == "not"){
-                    var not = element[found_key];     
+                if(found_key == "is"){
+                    var not = element[found_key];
+                         
                     var fields = element["fields"];       
                     var found = not.find((search:string)=>{
                         return search == value? search:null;
                     });
+                    //console.log(found)
                     //console.log(found); 
+                    if(typeof found =='undefined') continue;
                     found_disabled(found,fields,setFieldValue);
                     break;
                 }
@@ -34,30 +37,33 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
                 if(found_key == "range"){
                     var gt_lt = element[found_key];
                     var fields = element["fields"];       
-                    //console.log(gt_lt[0],gt_lt[1]);
-                    if(value >= gt_lt[0] && value <=gt_lt[1]){
-                        found_disabled(undefined, fields,setFieldValue);
+                    var found:any = value >= gt_lt[0] && value <=gt_lt[1] ? undefined:true; 
+                    //if(){
+                        //console.log(fields);
+                    found_disabled(found, fields,setFieldValue);
                         //console.log(value,gt_lt);
-                        break;
-                    }                    
+                    break;
+                    //}                    
                                         
                 }
 
                 if(found_key == "lt"){
                     var lt = element[found_key];
                     var fields = element["fields"];
-                    if(value < lt){
-                        found_disabled(undefined, fields,setFieldValue);
-                    }
+                    var found:any = value < lt?undefined:true;
+                    //if(){
+                    found_disabled(undefined, fields,setFieldValue);
+                    //}
                     break;
                 }
 
                 if(found_key == "gt"){
                     var gt = element[found_key];
                     var fields = element["fields"];
-                    if(value > gt){
-                        found_disabled(undefined, fields,setFieldValue);
-                    }
+                    var found:any = value > gt ? undefined:true;
+                    //if(value > gt){
+                    found_disabled(found, fields,setFieldValue);
+                    //}
                     break;
                 }
 
@@ -79,57 +85,97 @@ function found_disabled(found:any, fields:any, setFieldValue:any){
     }
 }
 
-const skip_logic=(name:string,value:any, logic_option:string):any=>{
-    const skip_logic_array:any = SKIP_LOGIC
-    let redirect_element = {"redirect":"","focusElement":""}
-    if(skip_logic_array.hasOwnProperty(name)){
-        //console.log(name)
-        var sl_logic_array = skip_logic_array[name];
-        //var first_key = sl_logic_array[logic_option];
-        var found_key = logic_option;
-
-        if(found_key == "is"){
-            var is = sl_logic_array[found_key]['value'];     
-            var found = is.find((search:string)=>{                
+function is_logic_template(condition_object:any, value:any){
+    var is = condition_object.value;
+    
+    if(is[0] < 0){                
+        return {"redirect":condition_object.route,"focusElement":condition_object.node}
+    }
+    var found = is.find((search:string)=>{                
                 return search == value;
-            });
-            if(typeof found !='undefined'){                
-                return {"redirect":sl_logic_array[found_key]["route"],"focusElement":sl_logic_array[found_key]["node"]}                
-            }else if(is[0] < 0){                
-                return {"redirect":sl_logic_array[found_key]["route"],"focusElement":sl_logic_array[found_key]["node"]}
-            }            
-        }
+    });
+    if(typeof found !='undefined'){                
+        return {"redirect":condition_object.route,"focusElement":condition_object.node}                
+    }
 
-        if(found_key == "lt"){
-            
-            var lt = sl_logic_array[found_key]['values'];
-            if(value < lt){
-                //alert(sl_logic_array[found_key]["route"])
+    return false;
+  
+}
 
-                return {"redirect":sl_logic_array[found_key]["route"],"focusElement":sl_logic_array[found_key]["node"]}
-            }
-            
-        }
+function multi_is_logic_template(condition_object:any, value:any){
+    var multi_is = condition_object.value;
 
-        if(found_key == "gt"){
-            
-            var gt = sl_logic_array[found_key]['values'];
-            if(value > gt){
-                return {"redirect":sl_logic_array[found_key]["route"],"focusElement":sl_logic_array[found_key]["node"]}
-            }
-            
-        }
+    //alert(typeof value)
+    //if(value.length < 1){
+    //    return false
+    //}
+    
+    if(multi_is[0] < 0){                
+        return {"redirect":condition_object.route,"focusElement":condition_object.node}
+    }
+    
+    const fields = ['value']
+    const format_values =  value.map((i:any)=>(<any>Object).fromEntries(fields.map(f=>[f, i[f]])))    
+    const values = format_values.map((a:any) => a.value);
+
+    
+    let isFound = multi_is.some( (ai:any) => values.includes(ai) );
+    //console.log(isFound)
+    if(isFound){
+      return {"redirect":condition_object.route,"focusElement":condition_object.node}
+    }
+
+    return false;
+  
+}
+
+function lt_logic_template(condition_object:any, value:any){
+    var lt = condition_object.value;
+    //console.log(lt)
+    if(value < lt){
+      //console.log(value)
+        return {"redirect":condition_object.route,"focusElement":condition_object.node}                
+    }
+
+    return false;
+  
+}
+
+const skip_logic=(name:string,value:any, type:any):any=>{
+    const skip_logic_array:any = SKIP_LOGIC
+    let redirect_element:any = {"redirect":"","focusElement":""}
+    if(skip_logic_array.hasOwnProperty(name)){
 
         //console.log(sl_logic_array)
-        
+        const sl_logic_array = skip_logic_array[name][type];
+        for (let i = 0; i < sl_logic_array.length; i++) {          
+          
+          if(sl_logic_array[i].condition == 'is'){
+            const found = is_logic_template(sl_logic_array[i],value)
+            //console.log(found)
+            if(found){ redirect_element = found }            
+          }
+          
+          if(sl_logic_array[i].condition == 'multi_is'){
+            const found =  multi_is_logic_template(sl_logic_array[i],value)
+            if(found){ redirect_element = found }
+          }
+          
+          if(sl_logic_array[i].condition == 'lt'){            
+            const found = lt_logic_template(sl_logic_array[i],value)
+            if(found){ redirect_element = found }
+          }
+          
+        }
 
-        return redirect_element;
 
     }
 
-    return redirect_element
-
+    //console.log(redirect_element)
+    
+    return redirect_element;
 }
+
 
 
 export {

@@ -1,0 +1,11 @@
+[
+{"label":"সেকশন ১: সূচনা এবং সম্মতি","href":"introduction_permission"},
+{"label":"সেকশন ২  : যোগ্যতা এবং সময় নির্ধারণ","href":"eligibility_timeselection"},
+{"label":"সেকশন ৩ : ডেমোগ্রাফিক অন্যান্য তথ্যসমূহ :","href":"demographic_information"},
+{"label":"সেকশন ৪: খাদ্যাভ্যাস:","href":"food_habits"},
+{"label":"সেকশন ৫: অবসর বা বিশ্রাম সম্পর্কিত তথ্য:","href":"relax_information"},
+{"label":"সেকশন ৬ঃ শারিরীক অবস্থা (উচ্চ রক্তচাপ, ডায়াবেটিস) ও এর চিকিৎসা:","href":"physical_status"},
+{"label":"সেকশন ৭ ঃ তামাক এবং সংশ্লিষ্ট দ্রব্যের ব্যবহার ঃ","href":"smoking_related"},
+{"label":"সেকশন ৮ঃ মদপান বিষয়ক প্রশ্নঃ","href":"drinking_related"},
+{"label":"সমাপনী","href":"finish"} 
+]

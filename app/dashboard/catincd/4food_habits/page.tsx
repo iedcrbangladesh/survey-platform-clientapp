@@ -9,11 +9,13 @@ import useAuth from '@/app/hooks/useAuth';
 import { useRouter } from "next/navigation";
 
 
+
 import {Field, FieldArray ,useFormikContext} from 'formik';
-import {useEffect} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 
 //Data
 import option_data from "@/app/json/catincd_data.json";
+
 
 //Logical On Off
 import { disable_logic, skip_logic } from "@/app/api/logic-checker";
@@ -25,44 +27,86 @@ const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
 
-useEffect(()=>{
+const [nextState, setNextState] = useState(false);
+
+const redirect_logic = useCallback(()=>{
+  
   if(redirect!=null && redirect!=""){
     router.push(redirect)    
     authCtx.redirect = null;
     authCtx.setRedirect(null);
-  }    
-},[redirect,router,authCtx])
+  }
 
-useEffect(()=>{
+},[authCtx,redirect,router])
 
-    if(focus_element!=null && focus_element!="" && typeof window!='undefined'){
+const focus_element_logic = useCallback(()=>{
+  
+  if(focus_element!=null && focus_element!="" && focus_element!="terminate" && typeof window!='undefined'){
       const fel = '#'+focus_element.replace('.','_');
       const scrollElement:any = document.querySelector(fel);
-      console.log(scrollElement)
+      //console.log(scrollElement)
       if(scrollElement!=null){
-        scrollElement.scrollIntoView({ behavior: "smooth" })
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+        
         authCtx.focusElement = null;
         authCtx.setFocusElement(null);
       }
       
     }
 
-},[focus_element, authCtx])
+    if(focus_element!=null && focus_element!="" && focus_element =="terminate" && typeof window!='undefined'){
+      setNextState(true)
+      const fel = '#'+focus_element;
+      const scrollElement:any = document.querySelector(fel);
+      //console.log(scrollElement)
+      if(scrollElement!=null){
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+                
+        authCtx.focusElement = null;
+        authCtx.setFocusElement(null);
+      }
+    }
 
-const redirect_or_focus_location = (v:any, name:any, rule:any)=>{
+},[authCtx,focus_element])
+
+useEffect(()=>{
+  
+  redirect_logic()
+
+},[redirect,router,authCtx,redirect_logic])
+
+useEffect(()=>{
+
+  focus_element_logic()  
+
+},[focus_element, authCtx,focus_element_logic])
+
+const redirect_or_focus_location = (v:any, name:any, type:any)=>{
   if(v!=null){
-    const redirect_element = skip_logic(name,v.value,rule);
+
+    const pass_value = typeof v.value != 'undefined'?v.value:v;
+    const redirect_element = skip_logic(name,pass_value,type);
+
     if(redirect_element.redirect!=null){
       authCtx.setRedirect(redirect_element.redirect)   
     }    
     if(redirect_element.focusElement!=null){
+      setNextState(false)
       authCtx.setFocusElement(redirect_element.focusElement)
     }
   }
 }
-  
+
+const next_url = "5relax_information";
 
 
+      const GoNext =()=>{
+        if(focus_element !== 'terminate'){
+          router.push(next_url)
+        }
+        redirect_logic()
+        focus_element_logic()
+      }
 
 const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
     return(
@@ -70,13 +114,36 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
         <div className='grid grid-cols-1 gap-9 sm:grid-cols-1'>
           
           <div className='flex flex-col gap-9'>        
-          
+          <div className="my-1 grid grid-cols-1 gap-4">
+  <div className="flex flex-col">
+
+    <table className='table-auto border-collapse border border-slate-400'>
+      <tr className='bg-gray-2 text-left dark:bg-meta-4'>        
+        <td className="border border-slate-300 w-2/4 p-1">পরবর্তী প্রশ্নগুলোতে, আপনি যেসব ফল, শাক-সবজি খান এবং আপনার লবণ (বা নুন) খাওয়ার অভ্যাস সম্পর্কে প্রশ্ন করবো। উত্তর দেয়ার সময় যে কোন একটি সাধারণ সপ্তাহের কথা চিন্তা করবেন (সাধারণ সপ্তাহ বলতে ধর্মীয় বা অন্য কোন বিশেষ উপলক্ষ ব্যতীত একটি স্বাভাবিক সপ্তাহ বুঝায়)। কোনো প্রশ্ন বুঝতে বা আবার শুনতে চাইলে জিজ্ঞেস করবেন।</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div className="my-1 grid grid-cols-1 gap-4">
+  <div className="flex flex-col">
+
+    <table className='table-auto border-collapse border border-slate-400'>
+      <tr className='bg-gray-2 text-left dark:bg-meta-4'>
+        <td className="border border-slate-300 w-2/4 p-1">৪.১ ফল, শাক—সবজিঃ</td>
+        <td className="border border-slate-300 w-2/4 p-1"></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
 <div>
 <span id="food_habits_fruits_consumption"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১১ প্রয়োজন হলে উদাহরণ দিন। যেমন - সাধারণ এক সপ্তাহে আপনি যদি চার দিন ফল খেয়ে থাকেন তাহলে, ৪ বলুন।<br/>যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ  ০ দিন হয়, তাহলে প্রশ্ন ৪.১৩ এ যান।
+      ৪. ১.১ সপ্তাহের কত দিন আপনি ফল (যেমন, কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, কুল—বড়ই বা লিচু, অথবা এক কাপ কাটা ফল) খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -91,7 +158,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 
                 
                 
- redirect_or_focus_location(v,name,"is"); 
+ redirect_or_focus_location(v,name,"age_dropdown"); 
                 
                 
                 
@@ -116,7 +183,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      প্রয়োজন হলে উদাহরণ দিন। যেমন - সাধারণ এক সপ্তাহে আপনি যদি চার দিন ফল খেয়ে থাকেন তাহলে, ৪ বলুন।<br/>যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ  ০ দিন হয়, তাহলে প্রশ্ন ৪.১৩ এ যান।
+      প্রয়োজন হলে উদাহরণ দিন। যেমন - সাধারণ এক সপ্তাহে আপনি যদি চার দিন ফল খেয়ে থাকেন তাহলে, ৪ বলুন।<br/>যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ  ০ দিন হয়, তাহলে প্রশ্ন ৪.১.৩ এ যান।
     </div>
 </div>
 </div>
@@ -128,7 +195,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১২ আপনি কি পরিমান ফল খান এখন আমি সে সম্পর্কে কিছু প্রশ্ন করবো। <br/>মনে করুন, এক পরিবেশন ফল মানে হল, একটি কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, কুল-বড়ই বা লিচু, অথবা এক কাপ কাটা ফল।<br/>আপনি যে দিনগুলোতে ফল খান, এমন একটি দিনে এধরনের কত পরিবেশন ফল খান?<br/>অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
+      ৪. ১.২ আপনি কি পরিমান ফল খান এখন আমি সে সম্পর্কে কিছু প্রশ্ন করবো। <br/>মনে করুন, এক পরিবেশন ফল মানে হল, একটি কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, কুল-বড়ই বা লিচু, অথবা এক কাপ কাটা ফল।<br/>আপনি যে দিনগুলোতে ফল খান, এমন একটি দিনে এধরনের কত পরিবেশন ফল খান?<br/>অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -178,7 +245,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১৩ একটি সাধারণ সপ্তাহে আপনি কত দিন শাক-সব্জি খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
+      ৪. ১.৩ একটি সাধারণ সপ্তাহে আপনি কত দিন শাক-সব্জি খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -216,7 +283,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ ০ দিন হয়, <br/>তাহলে প্রশ্ন ৪.২১ - এ যান।
+      যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ ০ দিন হয়, <br/>তাহলে প্রশ্ন ৪.২.১ - এ যান।
     </div>
 </div>
 </div>
@@ -228,7 +295,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১৪ শাক-সব্জির এক পরিবেশন মানে হল প্রায় এক কাপ সবুজ শাক-সব্জি , সালাদ অথবা আধা কাপ রান্না করা শাক-সব্জি ।<br/>আপনি যে দিনগুলোতে শাক-সব্জি খান, এমন একদিনে এধরনের কত পরিবেশন শাক-সব্জি খান? অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
+      ৪. ১.৪ শাক-সব্জির এক পরিবেশন মানে হল প্রায় এক কাপ সবুজ শাক-সব্জি , সালাদ অথবা আধা কাপ রান্না করা শাক-সব্জি ।<br/>আপনি যে দিনগুলোতে শাক-সব্জি খান, এমন একদিনে এধরনের কত পরিবেশন শাক-সব্জি খান? অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -272,14 +339,26 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 
-{(  parseInt(values.food_habits.vegatables_consumption.value) == 0   || values.food_habits.vegatables_consumption_amount.value > 0 ) && (
+<div className="my-1 grid grid-cols-1 gap-4">
+  <div className="flex flex-col">
+
+    <table className='table-auto border-collapse border border-slate-400'>
+      <tr className='bg-gray-2 text-left dark:bg-meta-4'>
+        <td className="border border-slate-300 w-2/4 p-1">৪.২ খাদ্যে লবণঃ</td>
+        <td className="border border-slate-300 w-2/4 p-1">পরবর্তী প্রশ্নগুলোর মাধ্যমে আমরা আপনার খাদ্যে লবণের ব্যবহার সম্পর্কে জানব। খাদ্য লবণ হচ্ছেঃ সাধারণ লবণ, সামুদ্রিক লবণ, আয়োডিন যুক্ত লবণ, বিট লবণ, টেস্টিং সল্ট, লবণযুক্ত খাবার, যেমনঃ সস (সয়া সস, ফিস সস, টমাটো সস), চিপস, সল্টেড বিস্কিট ইত্যাদি। উত্তর দেয়ার সময় এধরনের সকল লবনের উৎস বা লবণযুক্ত খাবার সম্পর্কে চিন্তা করুন।</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
 <div>
 
 <span id="food_habits_salt_consumption"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৪. ২১ আপনার ঘরে রান্না করার সময় কতবার এধরনের লবণ, সস, আঁচার, বা চাটনি ব্যবহার করা হয়?
+   ৪. ২.১ আপনার ঘরে রান্না করার সময় কতবার এধরনের লবণ, সস, আঁচার, বা চাটনি ব্যবহার করা হয়?
   </label>
   
 { option_data.food_habits.salt_consumption && option_data.food_habits.salt_consumption.map((v,i)=>(
@@ -290,6 +369,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             component={RadioComponent}
             name="food_habits.salt_consumption"
             checked={values.food_habits.salt_consumption.value === v.value}
+            onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
                 
@@ -337,7 +417,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 </div>
-)}
+
 
 <div>
 
@@ -345,7 +425,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৪. ২২ আপনি কি খাবার খাওয়ার সময় পাতে বাড়তি (আলগা বা কাঁচা) লবন খান?
+   ৪. ২.২ আপনি কি খাবার খাওয়ার সময় পাতে বাড়তি (আলগা বা কাঁচা) লবন খান?
   </label>
   
 { option_data.food_habits.salt_consumption_extra && option_data.food_habits.salt_consumption_extra.map((v,i)=>(
@@ -356,6 +436,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             component={RadioComponent}
             name="food_habits.salt_consumption_extra"
             checked={values.food_habits.salt_consumption_extra.value === v.value}
+            onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
                 
@@ -411,7 +492,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৪. ২৩ আপনি কি খাবার খাওয়ার সময় লবন যুক্ত সস, আঁচার, চাটনি ইত্যাদি খান?
+   ৪. ২.৩ আপনি কি খাবার খাওয়ার সময় লবন যুক্ত সস, আঁচার, চাটনি ইত্যাদি খান?
   </label>
   
 { option_data.food_habits.salt_consumption_mixed && option_data.food_habits.salt_consumption_mixed.map((v,i)=>(
@@ -422,6 +503,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             component={RadioComponent}
             name="food_habits.salt_consumption_mixed"
             checked={values.food_habits.salt_consumption_mixed.value === v.value}
+            onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
                 
@@ -477,7 +559,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৪. ২৪ আপনি সাধারনত, কত ঘনঘন প্যাকেটের লবণযুক্ত খাবার যেমন, পনির, বিস্কুট, চিপ্স, অথবা প্রক্রিয়াজাত মাছ/মাংস খান?
+   ৪. ২.৪ আপনি সাধারনত, কত ঘনঘন প্যাকেটের লবণযুক্ত খাবার যেমন, পনির, বিস্কুট, চিপ্স, অথবা প্রক্রিয়াজাত মাছ/মাংস খান?
   </label>
   
 { option_data.food_habits.salt_consumption_frequency && option_data.food_habits.salt_consumption_frequency.map((v,i)=>(
@@ -488,6 +570,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             component={RadioComponent}
             name="food_habits.salt_consumption_frequency"
             checked={values.food_habits.salt_consumption_frequency.value === v.value}
+            onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
                 
@@ -538,6 +621,28 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 
 
           </div>
+
+          
+
+      <div className="my-1 grid grid-cols-2 gap-4">
+            <div className="flex flex-col">                
+              {
+              nextState && 
+              
+              <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
+              Submit
+              </button>
+
+              }
+            </div>
+            <div className="flex flex-col">
+              <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
+              Next
+              </button>
+            </div>
+        </div>
+
+                
           
         </div>        
         </>

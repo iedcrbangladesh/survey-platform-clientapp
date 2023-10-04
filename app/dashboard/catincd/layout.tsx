@@ -9,9 +9,11 @@ import Sidebar from '@/app/components/Sidebar';
 import useAuth from '@/app/hooks/useAuth';
 import SectionLink from '@/app/components/SectionLink';
 
+
 const url = process.env.api_url;
 
 import CatincdSchema from '@/app/utils/CatincdSchema';
+import sectionLink from "@/app/json/sectionlink.json";
 
 
 interface CatincdLayoutProps {
@@ -43,7 +45,7 @@ const CatincdLayout = ({ children }: CatincdLayoutProps) => {
   let Catincd ={
     introduction_permission:{
 interviewer_permission:{value:'',label:''},
-denied_reason:{value:'',label:''},
+denied_reason:[],
 },
 eligibility_timeselection:{
 gender:{value:'',label:''},
@@ -62,7 +64,18 @@ marital_status:{value:'',label:''},
 occupation:{value:'',label:''},
 current_location:{value:'',label:''},
 man_women_count:{man:'',women:''},
-family_type:{value:'',label:''},
+have_electricity:{value:'',label:''},
+have_flash_toilet:{value:'',label:''},
+have_landline_phone:{value:'',label:''},
+have_mobile_phone:{value:'',label:''},
+have_television:{value:'',label:''},
+have_refrigerator:{value:'',label:''},
+have_washing_machine:{value:'',label:''},
+have_computer_or_laptop:{value:'',label:''},
+have_bycycle:{value:'',label:''},
+have_rickshaw:{value:'',label:''},
+have_private_car:{value:'',label:''},
+have_moped_scooter_bike_autorickhshaw:{value:'',label:''},
 },
 food_habits:{
 fruits_consumption:{value:'',label:''},
@@ -81,6 +94,9 @@ physical_status:{
 blood_pressure_measured:{value:'',label:''},
 blood_pressure_notify:{value:'',label:''},
 blood_pressure_medicare:[],
+blood_sugar_diabetics_measured:{value:'',label:''},
+blood_sugar_diabetics_notify:{value:'',label:''},
+diabetic_medicine_taken:[],
 },
 smoking_related:{
 smoking_habit:{value:'',label:''},
@@ -89,29 +105,18 @@ smoking_habit_previous:{value:'',label:''},
 non_smoking_habit:{value:'',label:''},
 non_smoking_habit_reguler:{value:'',label:''},
 non_smoking_habit_previous:{value:'',label:''},
-about_e_cigarate:{value:'',label:''},
-usage_e_cigarate:{value:'',label:''},
 },
 drinking_related:{
 alchohol_usage:{value:'',label:''},
 alchohol_usage_frequency:{value:'',label:''},
 thirty_days_alchohol_usage:{value:'',label:''},
 },
+finish:{
+},
 
   };
 
-  const sectionLink:any = [
-{"label":"সেকশন ১: সূচনা এবং সম্মতি","href":"introduction_permission"},
-{"label":"সেকশন ২  : যোগ্যতা এবং সময় নির্ধারণ","href":"eligibility_timeselection"},
-{"label":"সেকশন ৩ : ডেমোগ্রাফিক অন্যান্য তথ্যসমূহ :","href":"demographic_information"},
-{"label":"সেকশন ৪: খাদ্যাভ্যাস:","href":"food_habits"},
-{"label":"সেকশন ৫: অবসর বা বিশ্রাম সম্পর্কিত তথ্য:","href":"relax_information"},
-{"label":"সেকশন ৬ঃ শারিরীক অবস্থা (উচ্চ রক্তচাপ, ডায়াবেটিস) ও এর চিকিৎসা:","href":"physical_status"},
-{"label":"সেকশন ৭ ঃ তামাক এবং সংশ্লিষ্ট দ্রব্যের ব্যবহার ঃ","href":"smoking_related"},
-{"label":"সেকশন ৮ঃ মদপান বিষয়ক প্রশ্নঃ","href":"drinking_related"},
-{"label":"সমাপনী","href":"finish"},
-];
-
+  
   const fetchCatincdData = useCallback(async()=>{
     const response = await axios.get(`${url}get-question/${contactId}`);
     if(typeof window !== 'undefined' && response.data.data!=null){
@@ -192,8 +197,16 @@ thirty_days_alchohol_usage:{value:'',label:''},
             <div className="mx-auto max-w-screen-2xl p-1 md:p-2 2xl:p-10">
               <SectionLink linkdata={sectionLink}/>
               <Formik 
-              initialValues={Catincd}
-              validationSchema={CatincdSchema} 
+              initialValues={Catincd}              
+              validate={async (value) => {
+                try {
+                  await validateYupSchema(value, CatincdSchema, false, {'interviewer_permission':value.introduction_permission.interviewer_permission});
+                } catch (err) {
+                  return yupToFormErrors(err); //for rendering validation errors
+                }
+              
+                return {};
+              }} 
               onSubmit={handleFormSubmit}>              
                 <Form className='mt-2 rounded-md border border-stroke p-2 py-1 dark:border-strokedark sm:py-2.5 sm:px-2 xl:px-2.5'>
                     <FormObserver />

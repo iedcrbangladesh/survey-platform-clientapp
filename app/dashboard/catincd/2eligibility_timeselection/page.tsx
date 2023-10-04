@@ -9,11 +9,13 @@ import useAuth from '@/app/hooks/useAuth';
 import { useRouter } from "next/navigation";
 
 
+
 import {Field, FieldArray ,useFormikContext} from 'formik';
-import {useEffect} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 
 //Data
 import option_data from "@/app/json/catincd_data.json";
+
 import district_data from "@/app/json/district.json";
 import citycorporation_data from "@/app/json/citycorporation.json";
 import municipality_data from "@/app/json/municipality.json";
@@ -29,44 +31,86 @@ const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
 
-useEffect(()=>{
+const [nextState, setNextState] = useState(false);
+
+const redirect_logic = useCallback(()=>{
+  
   if(redirect!=null && redirect!=""){
     router.push(redirect)    
     authCtx.redirect = null;
     authCtx.setRedirect(null);
-  }    
-},[redirect,router,authCtx])
+  }
 
-useEffect(()=>{
+},[authCtx,redirect,router])
 
-    if(focus_element!=null && focus_element!="" && typeof window!='undefined'){
+const focus_element_logic = useCallback(()=>{
+  
+  if(focus_element!=null && focus_element!="" && focus_element!="terminate" && typeof window!='undefined'){
       const fel = '#'+focus_element.replace('.','_');
       const scrollElement:any = document.querySelector(fel);
-      console.log(scrollElement)
+      //console.log(scrollElement)
       if(scrollElement!=null){
-        scrollElement.scrollIntoView({ behavior: "smooth" })
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+        
         authCtx.focusElement = null;
         authCtx.setFocusElement(null);
       }
       
     }
 
-},[focus_element, authCtx])
+    if(focus_element!=null && focus_element!="" && focus_element =="terminate" && typeof window!='undefined'){
+      setNextState(true)
+      const fel = '#'+focus_element;
+      const scrollElement:any = document.querySelector(fel);
+      //console.log(scrollElement)
+      if(scrollElement!=null){
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+                
+        authCtx.focusElement = null;
+        authCtx.setFocusElement(null);
+      }
+    }
 
-const redirect_or_focus_location = (v:any, name:any, rule:any)=>{
+},[authCtx,focus_element])
+
+useEffect(()=>{
+  
+  redirect_logic()
+
+},[redirect,router,authCtx,redirect_logic])
+
+useEffect(()=>{
+
+  focus_element_logic()  
+
+},[focus_element, authCtx,focus_element_logic])
+
+const redirect_or_focus_location = (v:any, name:any, type:any)=>{
   if(v!=null){
-    const redirect_element = skip_logic(name,v.value,rule);
+
+    const pass_value = typeof v.value != 'undefined'?v.value:v;
+    const redirect_element = skip_logic(name,pass_value,type);
+
     if(redirect_element.redirect!=null){
       authCtx.setRedirect(redirect_element.redirect)   
     }    
     if(redirect_element.focusElement!=null){
+      setNextState(false)
       authCtx.setFocusElement(redirect_element.focusElement)
     }
   }
 }
-  
+
+const next_url = "3demographic_information";
 
 
+      const GoNext =()=>{
+        if(focus_element !== 'terminate'){
+          router.push(next_url)
+        }
+        redirect_logic()
+        focus_element_logic()
+      }
 
 const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
     return(
@@ -74,7 +118,18 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
         <div className='grid grid-cols-1 gap-9 sm:grid-cols-1'>
           
           <div className='flex flex-col gap-9'>        
-          
+          <div className="my-1 grid grid-cols-1 gap-4">
+  <div className="flex flex-col">
+
+    <table className='table-auto border-collapse border border-slate-400'>
+      <tr className='bg-gray-2 text-left dark:bg-meta-4'>        
+        <td className="border border-slate-300 w-2/4 p-1">উত্তরদাতা জরিপে অংশগ্রহণে এখনই সম্মত হলে, অথবা অন্যসময়ে সম্মত হলে, যোগ্য কিনা জানতে যোগ্যতা যাঁচাইমূলক পরবর্তী প্রশ্নগুলো করুনঃ<br/>আপনি এই জরিপটিতে অংশগ্রহণ করতে পারবেন কিনা তা জানার জন্য এখন আমি কিছু প্রশ্ন করব।</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
 <div>
 
 <span id="eligibility_timeselection_gender"></span>
@@ -92,6 +147,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             component={RadioComponent}
             name="eligibility_timeselection.gender"
             checked={values.eligibility_timeselection.gender.value === v.value}
+            onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
                 
@@ -140,7 +196,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 
 </div>
 
-
+{values.eligibility_timeselection.gender.value > 0 && (
 <div>
 <span id="eligibility_timeselection_age"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
@@ -159,11 +215,9 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
                 
                 //alert(name);
 
+                disable_logic(name,v.value, setFieldValue,["range","is" ]);
                 
-                
- redirect_or_focus_location(v,name,"lt"); 
-
- redirect_or_focus_location(v,name,"gt"); 
+ redirect_or_focus_location(v,name,"age_dropdown"); 
                 
                 
                 
@@ -193,8 +247,8 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 </div>
-
-
+)}
+{( values.eligibility_timeselection.age.value >=18  && values.eligibility_timeselection.age.value <= 150 ) && (
 <div>
 
 <span id="eligibility_timeselection_city_or_village"></span>
@@ -212,10 +266,13 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             component={RadioComponent}
             name="eligibility_timeselection.city_or_village"
             checked={values.eligibility_timeselection.city_or_village.value === v.value}
+            onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
                 
-                                
+                
+ redirect_or_focus_location(v,name,"radio"); 
+                
                 if (checked) {
                   setFieldTouched(name,true);
 
@@ -259,8 +316,10 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 </div>
-
-
+)}
+{(  ( values.eligibility_timeselection.age.value >=18  &&  values.eligibility_timeselection.age.value<=150  )  && 
+(  values.eligibility_timeselection.city_or_village  &&  values.eligibility_timeselection.city_or_village.value < 88) 
+) && (
 <div>
 <span id="eligibility_timeselection_district"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
@@ -309,8 +368,9 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 </div>
-
-{(values.eligibility_timeselection.city_or_village && parseInt(values.eligibility_timeselection.city_or_village.value) < 2)  && (
+)}
+{(values.eligibility_timeselection.city_or_village && parseInt(values.eligibility_timeselection.city_or_village.value) < 2)  && (values.eligibility_timeselection.district && 
+parseInt(values.eligibility_timeselection.district.value) > 0)  && (
 <div>
 <span id="eligibility_timeselection_city_corporation"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
@@ -323,7 +383,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
                                  placeholder="Select City Corporation"
                                  isSearchable
                                  isClearable                                 
-                                  name="eligibility_timeselection.city_corporation" options={citycorporation_data}
+                                  name="eligibility_timeselection.city_corporation" options={citycorporation_data.filter(a=>a.parent == values.eligibility_timeselection.district.value)}
 
                                   onParentChange={(v:any, name:any) => {
                 
@@ -360,7 +420,8 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 )}
-{(values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 2)  && (
+{(values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 2)  && (values.eligibility_timeselection.district && 
+parseInt(values.eligibility_timeselection.district.value) > 0) &&  (
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
@@ -371,7 +432,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
                                  placeholder="Select Municipal"
                                  isSearchable
                                  isClearable                                 
-                                  name="eligibility_timeselection.municipal" options={municipality_data}
+                                  name="eligibility_timeselection.municipal" options={municipality_data.filter(a=>a.parent == values.eligibility_timeselection.district.value)}
                                   onParentChange={(v:any, name:any) => {
                 
                 //alert(name);
@@ -406,7 +467,8 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 )}
-{(values.eligibility_timeselection.city_or_village && (values.eligibility_timeselection.city_or_village.value > 1 && values.eligibility_timeselection.city_or_village.value < 88 )) && (
+{(values.eligibility_timeselection.city_or_village && (values.eligibility_timeselection.city_or_village.value > 1 && values.eligibility_timeselection.city_or_village.value < 88 )) && (values.eligibility_timeselection.district && 
+parseInt(values.eligibility_timeselection.district.value) > 0) && (
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
@@ -417,7 +479,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
                                  placeholder="Select Upazilla"
                                  isSearchable
                                  isClearable                                 
-                                  name="eligibility_timeselection.upazilla" options={upazilla_data}
+                                  name="eligibility_timeselection.upazilla" options={upazilla_data.filter(a=>a.parent == values.eligibility_timeselection.district.value)}
                                   onParentChange={(v:any, name:any) => {
                 
                 //alert(name);
@@ -452,7 +514,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 )}
-
+{( ( values.eligibility_timeselection.age.value >=18 && values.eligibility_timeselection.age.value<=150  ) && (values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 88) ) && (
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
@@ -497,8 +559,8 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
     </div>
 </div>
 </div>
-
-
+)}
+{(values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 88)  && (
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
@@ -532,6 +594,7 @@ name="eligibility_timeselection.name_of_person.text" placeholder="Name " type="[
             component={RadioComponent}
             name="eligibility_timeselection.name_of_person.reason"
             checked={values.eligibility_timeselection.name_of_person.reason.value === v.value}
+            onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
                 
@@ -581,9 +644,31 @@ touched.eligibility_timeselection.name_of_person && (
   </div>
 </div>
 </div>
-
+)}
 
           </div>
+
+          
+
+      <div className="my-1 grid grid-cols-2 gap-4">
+            <div className="flex flex-col">                
+              {
+              nextState && 
+              
+              <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
+              Submit
+              </button>
+
+              }
+            </div>
+            <div className="flex flex-col">
+              <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
+              Next
+              </button>
+            </div>
+        </div>
+
+                
           
         </div>        
         </>

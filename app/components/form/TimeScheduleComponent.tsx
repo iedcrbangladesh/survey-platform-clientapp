@@ -118,9 +118,9 @@ const TimeScheduleComponent = ()=>{
                 //timeFormat="HH:mm"
                 //timeIntervals={15}
                 //timeCaption="Time"
-                locale="en_GB"
-                showTimeSelect
-                timeFormat="HH:mm"
+                //locale="en_GB"
+                //showTimeSelect
+                //timeFormat="HH:mm"
                 
                 showTimeInput
                 timeInputLabel="Time:"
@@ -166,7 +166,7 @@ disabled={!isValid || isSubmitting} type="submit"
 </button>
                     </div>
 
-                    <pre>Option Values: {JSON.stringify(values, null, 2)}</pre>
+                    {/*<pre>Option Values: {JSON.stringify(values, null, 2)}</pre>*/}
 
 
                 </Form>
