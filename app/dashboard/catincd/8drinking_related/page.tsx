@@ -132,7 +132,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৮ . ১ আপনি কি গত ১২ মাসে কোন ধরণের মদ পান করেছেন কি?
+   ৮ . ১ আপনি কি গত ১২ মাসে কোন ধরণের মদ পান করেছেন?
   </label>
   
 { option_data.drinking_related.alchohol_usage && option_data.drinking_related.alchohol_usage.map((v,i)=>(

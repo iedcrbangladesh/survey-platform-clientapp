@@ -211,7 +211,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৬  . ১.২  আপনাকে কখনো কোন ডাক্তার বা স্বাস্থ্যকর্মী কি জানিয়েছেন যে, আপনার উচ্চ রক্তচাপ বা হাই ব্লাড প্রেশার আছে?
+   ৬  . ১.২  আপনাকে কখনো কি কোন ডাক্তার বা স্বাস্থ্যকর্মী জানিয়েছেন যে, আপনার উচ্চ রক্তচাপ বা হাই ব্লাড প্রেশার আছে?
   </label>
   
 { option_data.physical_status.blood_pressure_notify && option_data.physical_status.blood_pressure_notify.map((v,i)=>(

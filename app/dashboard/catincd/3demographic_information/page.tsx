@@ -166,7 +166,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      উত্তরদাতা যে র্ধমরে অনুসারী তা নির্বাচন করুন।
+      উত্তরদাতা যে ধর্মের অনুসারী তা নির্বাচন করুন।
     </div>
 </div>
 </div>
@@ -221,7 +221,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৩ . ৩  গত ১২ মাসে আপনার প্রধান পেশা কি ছলি (আপনি কি কাজ করেছেন)?
+      ৩ . ৩  গত ১২ মাসে আপনার প্রধান পেশা কি ছিল (আপনি কি কাজ করেছেন)?
     </label>
     <span id="demographic_information_occupation"></span>
     <SelectComponent defaultValueArray={{"label":"","value":""}}
@@ -258,7 +258,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      যদি তথ্য প্রদাণকারী গত ১২ মাসে একাধকি পেশায় নিযুক্ত থাকেন তা হলে তিনি যে পেশাটিতে বেশি সময় ব্যায় করছেনে এবং প্রধাণ হিসেবে বিবেচনা করেন তা লিপিবদ্ধ করুন।<br/>সঠিক উত্তরটি নির্বাচন করুন।<br/>এই প্রশ্নরে মূল উদ্দশ্যে হচ্ছে তথ্য প্রদাণকারীর পেশা ও অন্য প্রশ্নের উত্তরের সাথে সম্পর্ক দেখা। যেমনঃ তার  পশোর সাথে অসংক্রামক রোগরে ঝুঁকরি সম্পৃক্ততা।
+      যদি তথ্য প্রদাণকারী গত ১২ মাসে একাধকি পেশায় নিযুক্ত থাকেন তা হলে তিনি যে পেশাটিতে বেশি সময় ব্যায় করেছেন এবং প্রধান হিসেবে বিবেচনা করেন তা লিপিবদ্ধ করুন।<br/>সঠিক উত্তরটি নির্বাচন করুন।<br/>এই প্রশ্নরে মূল উদ্দশ্যে হচ্ছে তথ্য প্রদাণকারীর পেশার ও অন্য প্রশ্নের উত্তরের সাথে সম্পর্ক দেখা। যেমনঃ তার  পেশার সাথে অসংক্রামক রোগের ঝুঁকির সম্পৃক্ততা।
     </div>
 </div>
 </div>

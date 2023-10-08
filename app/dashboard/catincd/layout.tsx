@@ -111,8 +111,6 @@ alchohol_usage:{value:'',label:''},
 alchohol_usage_frequency:{value:'',label:''},
 thirty_days_alchohol_usage:{value:'',label:''},
 },
-finish:{
-},
 
   };
 

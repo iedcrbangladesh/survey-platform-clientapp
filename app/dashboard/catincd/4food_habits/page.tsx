@@ -559,7 +559,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৪. ২.৪ আপনি সাধারনত, কত ঘনঘন প্যাকেটের লবণযুক্ত খাবার যেমন, পনির, বিস্কুট, চিপ্স, অথবা প্রক্রিয়াজাত মাছ/মাংস খান?
+   ৪. ২.৪ আপনি সাধারনত, কত ঘন ঘন প্যাকেটের লবণযুক্ত খাবার যেমন, পনির, বিস্কুট, চিপস, অথবা প্রক্রিয়াজাত মাছ/মাংস খান?
   </label>
   
 { option_data.food_habits.salt_consumption_frequency && option_data.food_habits.salt_consumption_frequency.map((v,i)=>(

@@ -242,7 +242,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      - বয়স ১৮ বছরের নিচে হলে, বলুন য়ে আমরা এই জরিপে ১৮ বছরের উপরের মানুষের সাথে কথা বলতে চাচ্ছি; তাই ধন্যবাদ জানিয়ে শেষ করুন।<br/>- জানি না বা অস্বীকৃিতর ক্ষেত্রেও ধন্যবাদ জানিয়ে শেষ করুন।<br/>- যদি বয়স ১৮ বছরের কম বলে তাহলে প্রশ্নটি আবার করে উত্তর যাঁচাই করুন।<br/>- বয়স পূর্ণ বছরে লিখতে হবে, যেমন বয়স যদি ২৫ বছর ১১ মাস হয় তবে ২৫ বছর ধরতে হবে।<br/>- প্রয়োজনে প্রাসঙ্গিক প্রশ্ন করতে হলে করুন।
+      - বয়স ১৮ বছরের নিচে হলে, বলুন যে আমরা এই জরিপে ১৮ বছরের উপরের মানুষের সাথে কথা বলতে চাচ্ছি; তাই ধন্যবাদ জানিয়ে শেষ করুন।<br/>- জানি না বা অস্বীকৃিতর ক্ষেত্রেও ধন্যবাদ জানিয়ে শেষ করুন।<br/>- যদি বয়স ১৮ বছরের কম বলে তাহলে প্রশ্নটি আবার করে উত্তর যাঁচাই করুন।<br/>- বয়স পূর্ণ বছরে লিখতে হবে, যেমন বয়স যদি ২৫ বছর ১১ মাস হয় তবে ২৫ বছর ধরতে হবে।<br/>- প্রয়োজনে প্রাসঙ্গিক প্রশ্ন করতে হলে করুন।
     </div>
 </div>
 </div>
@@ -560,7 +560,7 @@ parseInt(values.eligibility_timeselection.district.value) > 0) && (
 </div>
 </div>
 )}
-{(values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 88)  && (
+{( ( values.eligibility_timeselection.age.value >=18 && values.eligibility_timeselection.age.value<=150  ) && (values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 88) ) && (
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
@@ -640,7 +640,7 @@ touched.eligibility_timeselection.name_of_person && (
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  (লাইনটি কেটে গেলে, বা পরে আবার আপনার সাথেই ফোনে কথা বলতে হলে আপনার নামটি জানা প্রয়োজন।)<br/>কয়েকবার চেষ্টার পরও অস্বীকৃিত জানালে, পরবর্তী প্রশ্নে যান।
+  (লাইনটি কেটে গেলে, বা পরে আবার আপনার সাথেই ফোনে কথা বলতে হলে আপনার নামটি জানা প্রয়োজন।)<br/>কয়েকবার চেষ্টার পরও অস্বীকৃতি জানালে, পরবর্তী প্রশ্নে যান।
   </div>
 </div>
 </div>

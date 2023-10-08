@@ -199,7 +199,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  উত্তর না হলে বা অস্বীকৃিত জানালে প্রশ্ন ৭.১.৩-এ যান।
+  উত্তর না হলে বা অস্বীকৃতি জানালে প্রশ্ন ৭.১.৩-এ যান।
   </div>
 </div>
 </div>
@@ -335,7 +335,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  উত্তর না হলে বা অস্বীকৃিত জানালে প্রশ্ন ৭.২.১ - এ যান।
+  উত্তর না হলে বা অস্বীকৃতি জানালে প্রশ্ন ৭.২.১ - এ যান।
   </div>
 </div>
 </div>
