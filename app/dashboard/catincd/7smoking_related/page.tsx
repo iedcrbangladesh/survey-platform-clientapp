@@ -27,14 +27,21 @@ const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
 
-const [nextState, setNextState] = useState(false);
 
 const redirect_logic = useCallback(()=>{
+  
+  const last_section = typeof window !== 'undefined'?localStorage.getItem('last_section'):null;
   
   if(redirect!=null && redirect!=""){
     router.push(redirect)    
     authCtx.redirect = null;
     authCtx.setRedirect(null);
+  }
+
+  if(last_section!=null && last_section!="" && typeof window !== 'undefined'){
+    localStorage.removeItem('last_section')
+    router.push(last_section);
+    
   }
 
 },[authCtx,redirect,router])
@@ -46,7 +53,7 @@ const focus_element_logic = useCallback(()=>{
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
-        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'center'})
         
         authCtx.focusElement = null;
         authCtx.setFocusElement(null);
@@ -55,15 +62,15 @@ const focus_element_logic = useCallback(()=>{
     }
 
     if(focus_element!=null && focus_element!="" && focus_element =="terminate" && typeof window!='undefined'){
-      setNextState(true)
+      
       const fel = '#'+focus_element;
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
         scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
                 
-        authCtx.focusElement = null;
-        authCtx.setFocusElement(null);
+        //authCtx.focusElement = null;
+        //authCtx.setFocusElement(null);
       }
     }
 
@@ -91,7 +98,7 @@ const redirect_or_focus_location = (v:any, name:any, type:any)=>{
       authCtx.setRedirect(redirect_element.redirect)   
     }    
     if(redirect_element.focusElement!=null){
-      setNextState(false)
+      
       authCtx.setFocusElement(redirect_element.focusElement)
     }
   }
@@ -119,7 +126,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 
     <table className='table-auto border-collapse border border-slate-400'>
       <tr className='bg-gray-2 text-left dark:bg-meta-4'>        
-        <td className="border border-slate-300 w-2/4 p-1">পরবর্তী প্রশ্নগুলো ধূমপান(সিগারেট, বিড়ি, হুক্কা), ধোয়াবিহীন তামাক (জর্দা, গুল, সাদা পাতা, খৈনি, নস্যি ইত্যাদি), অথবা ই-সিগারেট (ভেপ, ভেপ-পেন, ই-শিশা, ই-পাইপ ইত্যাদি) ব্যবহার সম্পর্কে। <br/>কোন প্রশ্ন আবার শুনতে চাইলে পূনরায় জানতে চাইতে পারেন এবং কোন প্রশ্নের উত্তর দিতে না চাইলে জানাতে পারেন।</td>
+        <td className="border border-slate-300 w-2/4 p-1">পরবর্তী প্রশ্নগুলো ধূমপান (সিগারেট, বিড়ি, হুক্কা), ধোয়াবিহীন তামাক (জর্দা, গুল, সাদা পাতা, খৈনি, নস্যি ইত্যাদি) ব্যবহার সম্পর্কে। <br/>কোন প্রশ্ন আবার শুনতে চাইলে পূনরায় জানতে চাইতে পারেন এবং কোন প্রশ্নের উত্তর দিতে না চাইলে জানাতে পারেন।</td>
       </tr>
     </table>
   </div>
@@ -563,7 +570,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              nextState && 
+              authCtx.focusElement =="terminate" && 
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -572,9 +579,12 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
               }
             </div>
             <div className="flex flex-col">
+            {
+              authCtx.focusElement !="terminate" &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>
+            }
             </div>
         </div>
 

@@ -12,6 +12,7 @@ import 'moment/locale/en-gb'
 import 'react-datepicker/dist/react-datepicker.css';
 import './time-schedule-style.css'
 const url = process.env.api_url;
+const max_schedule_count:any = process.env.max_schedule_count;
 
 
 
@@ -23,7 +24,7 @@ const TimeScheduleComponent = ()=>{
     const mobile_no = authCtx.activeMobileNumber;
 
     
-    
+    const [scheduleCount, setScheduleCount] = useState(0)
 
     const ContactStatus = {
         schedule_time:''       
@@ -32,12 +33,25 @@ const TimeScheduleComponent = ()=>{
         schedule_time:string().required('You must pick a time'),
     });
 
+    useEffect(()=>{
+      if(typeof window!='undefined'){
+        const sc_count = localStorage.getItem("schedule_count")
+        if(sc_count!=null){
+          setScheduleCount(parseInt(sc_count));
+        }
+      }
+    },[])
+
     const handleFormSubmit =async(values:any)=>{
         //console.log(values);
+        const last_section = pathname.substring(pathname.lastIndexOf('/') + 1)
+        console.log(last_section)
 
+        
         const schedule_time = moment(values.schedule_time).format('YYYY-MM-DD HH:mm');
 
         //alert(schedule_time)
+        
 
         let data = typeof window !='undefined'? localStorage.getItem('data'):null;
         if(data !=null){
@@ -50,7 +64,8 @@ const TimeScheduleComponent = ()=>{
         schedule_time:schedule_time,
         mobile_no:mobile_no,
         questionid:authCtx.activeContactId,
-        data:data
+        data:data,
+        last_section:last_section
         }, 
         {    
           headers: {
@@ -81,17 +96,20 @@ const TimeScheduleComponent = ()=>{
             authCtx.setFocusElement(null);
             localStorage.removeItem("redirect")
             localStorage.removeItem('focusElement');
+            localStorage.removeItem('last_section');
+            localStorage.removeItem('schedule_count');
 
-            
+            router.push('/dashboard/callinterface')  
           }
-          router.push('/dashboard/callinterface')
+          
     
         })
         
     }
 
     return(
-        <Formik 
+      scheduleCount < parseInt(max_schedule_count) ?
+      <Formik 
               initialValues={ContactStatus}
               validationSchema={ContactStatusSchema} 
               onSubmit={handleFormSubmit}
@@ -171,7 +189,10 @@ disabled={!isValid || isSubmitting} type="submit"
 
                 </Form>
         )}
-        />
+        />:
+        <div className='flex justify-center'>
+          <p className='text-[#B45454] bg-white p-1'>Max appointment limit: ({scheduleCount}), reached.</p>
+        </div>
     )
 
 

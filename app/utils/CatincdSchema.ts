@@ -94,12 +94,97 @@ education:object().shape({
 
         }),
         food_habits:object().shape({
+fruits_consumption:object().shape({
+  value: string(),
+  label: string()
+}).when(['$interviewer_permission','$age'],{
+  is: (i_p:any,age:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101));
+        return check
+},  then: (schema:any) =>{
+           return schema.shape({
+            value: string().required('Fruit Consumption is required!'),
+            label: string().required('Fruit Consumption is required!')
+      });            
+  }
+  
+}),
+fruits_consumption_quantity:object().shape({
+  value: string(),
+  label: string()
+}).when('fruits_consumption',{
+  is: (val:any)=>val && (parseInt(val.value) > 0 ),
+  then: (schema:any) =>{
+           return schema.shape({
+            value: string().required('Fruit Consumption Quantity is required!'),
+            label: string().required('Fruit Consumption Quantity is required!')
+      });            
+  }
+  
+}),
 
         }),
         relax_information:object().shape({
+relax:object().shape({
+  hour: number(),
+  minute: number()
+}).when(['$interviewer_permission','$age'],{
+  is: (i_p:any,age:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101));
+        return check
+},
+  then: (schema:any) =>{
+           return schema.shape({
+            hour: number().min(1,'Hour value be must greater then 0').required('Hour is required!'),
+            minute: number().min(1,'Minute value be must be greater then 0').required('Minute is required!')
+      });            
+  }
+  
+}),
 
         }),
         physical_status:object().shape({
+blood_pressure_measured:object().shape({
+  value: string(),
+  label: string()
+}).when(['$interviewer_permission','$age'],{
+  is: (i_p:any,age:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101));
+        return check
+},  then: (schema:any) =>{
+           return schema.shape({
+            value: string().required('Blood Pressure Measured is required!'),
+            label: string().required('Blood Pressure Measured is required!')
+      });            
+  }
+  
+}),
+blood_pressure_notify:object().shape({
+  value: string(),
+  label: string()
+}).when('blood_pressure_measured',{
+  is: (val:any)=>val && (parseInt(val.value) < 2 ),
+  then: (schema:any) =>{
+           return schema.shape({
+            value: string().required('Blood Pressure Notify is required!'),
+            label: string().required('Blood Pressure Notify is required!')
+      });            
+  }
+  
+}),
+blood_sugar_diabetics_notify:object().shape({
+  value: string(),
+  label: string()
+}).when('blood_sugar_diabetics_measured',{
+  is: (val:any)=>val && (parseInt(val.value) < 2 ),
+  then: (schema:any) =>{
+           return schema.shape({
+            value: string().required('Blood Sugar Or Diabetics Notify is required!'),
+            label: string().required('Blood Sugar Or Diabetics Notify is required!')
+      });            
+  }
+  
+}),
 
         }),
         smoking_related:object().shape({

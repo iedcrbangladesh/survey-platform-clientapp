@@ -6,7 +6,9 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 import SelectComponent from '@/app/components/SelectComponent';
 import contact_status from '@/app/json/contactstatus.json';
+
 const url = process.env.api_url;
+const max_schedule_count:any = process.env.max_schedule_count;
 
 const ContactScheduleComponent = ()=>{
     const router = useRouter();
@@ -14,6 +16,17 @@ const ContactScheduleComponent = ()=>{
     const authCtx = useAuth();
     const userid = authCtx.userId;
     const mobile_no = authCtx.activeMobileNumber;
+
+    const [scheduleCount, setScheduleCount] = useState(0)
+
+    useEffect(()=>{
+      if(typeof window!='undefined'){
+        const sc_count = localStorage.getItem("schedule_count")
+        if(sc_count!=null){
+          setScheduleCount(parseInt(sc_count));
+        }
+      }
+    },[])
 
     const ContactStatus = {
         dispose_status:{value:'',label:''}        
@@ -73,6 +86,8 @@ const ContactScheduleComponent = ()=>{
 
             localStorage.removeItem("redirect")
             localStorage.removeItem('focusElement');
+            localStorage.removeItem('last_section');
+            localStorage.removeItem('schedule_count');
             
           }
           router.push('/dashboard/callinterface')
@@ -97,7 +112,7 @@ const ContactScheduleComponent = ()=>{
                                  placeholder="Select Call status"
                                  isSearchable
                                  isClearable                                 
-                                  name="dispose_status" options={contact_status.schedule_status} 
+                                  name="dispose_status" options={ scheduleCount < parseInt(max_schedule_count) ? contact_status.schedule_status:contact_status.forece_status} 
                            onParentChange={(value:any,name:any)=>{
 
                            }}       

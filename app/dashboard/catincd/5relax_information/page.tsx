@@ -27,14 +27,21 @@ const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
 
-const [nextState, setNextState] = useState(false);
 
 const redirect_logic = useCallback(()=>{
+  
+  const last_section = typeof window !== 'undefined'?localStorage.getItem('last_section'):null;
   
   if(redirect!=null && redirect!=""){
     router.push(redirect)    
     authCtx.redirect = null;
     authCtx.setRedirect(null);
+  }
+
+  if(last_section!=null && last_section!="" && typeof window !== 'undefined'){
+    localStorage.removeItem('last_section')
+    router.push(last_section);
+    
   }
 
 },[authCtx,redirect,router])
@@ -46,7 +53,7 @@ const focus_element_logic = useCallback(()=>{
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
-        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'center'})
         
         authCtx.focusElement = null;
         authCtx.setFocusElement(null);
@@ -55,15 +62,15 @@ const focus_element_logic = useCallback(()=>{
     }
 
     if(focus_element!=null && focus_element!="" && focus_element =="terminate" && typeof window!='undefined'){
-      setNextState(true)
+      
       const fel = '#'+focus_element;
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
         scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
                 
-        authCtx.focusElement = null;
-        authCtx.setFocusElement(null);
+        //authCtx.focusElement = null;
+        //authCtx.setFocusElement(null);
       }
     }
 
@@ -91,7 +98,7 @@ const redirect_or_focus_location = (v:any, name:any, type:any)=>{
       authCtx.setRedirect(redirect_element.redirect)   
     }    
     if(redirect_element.focusElement!=null){
-      setNextState(false)
+      
       authCtx.setFocusElement(redirect_element.focusElement)
     }
   }
@@ -143,6 +150,19 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
 name="relax_information.relax.hour" placeholder="Hour" type="number" min={0} max={24} />
 
+{
+    errors.relax_information
+    &&
+    errors.relax_information.relax
+    &&
+    touched.relax_information
+    &&
+    touched.relax_information.relax && ( 
+        <span className="mb-3 font-semibold text-[#B45454]">
+            {errors.relax_information.relax.hour}
+        </span>   
+    )}
+
 </div>
 
 <div className="flex flex-col justify-center">  
@@ -157,8 +177,26 @@ name="relax_information.relax.hour" placeholder="Hour" type="number" min={0} max
     className="ml-0 w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
 name="relax_information.relax.minute" placeholder="Minute" type="number" min={0} max={60} />
 
+{
+    errors.relax_information
+    &&
+    errors.relax_information.relax
+    &&
+    touched.relax_information
+    &&
+    touched.relax_information.relax && ( 
+        <span className="mb-3 font-semibold text-[#B45454]">
+            {errors.relax_information.relax.minute}
+        </span>   
+    )}
+
 </div>
 </div>
+
+
+
+
+
 
 </div>
 
@@ -179,7 +217,7 @@ name="relax_information.relax.minute" placeholder="Minute" type="number" min={0}
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              nextState && 
+              authCtx.focusElement =="terminate" && 
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -188,9 +226,12 @@ name="relax_information.relax.minute" placeholder="Minute" type="number" min={0}
               }
             </div>
             <div className="flex flex-col">
+            {
+              authCtx.focusElement !="terminate" &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>
+            }
             </div>
         </div>
 

@@ -69,13 +69,16 @@ const SelectComponent = (props:SelectProps) => {
         
         onChange={(value, action) => {
           //alert(action.action)
-          props.onParentChange(value,action.name)
+          
           setTouched(true)
           if(action.action == 'clear'){
             setValue(props.defaultValueArray)
+            props.onParentChange(props.defaultValueArray,action.name)
           }else{
             setValue(value)
+            props.onParentChange(value,action.name)
           }
+          
         }}
         options={props.options}
         onBlur={() =>{} }

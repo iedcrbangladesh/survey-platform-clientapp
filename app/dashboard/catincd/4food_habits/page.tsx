@@ -27,14 +27,21 @@ const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
 
-const [nextState, setNextState] = useState(false);
 
 const redirect_logic = useCallback(()=>{
+  
+  const last_section = typeof window !== 'undefined'?localStorage.getItem('last_section'):null;
   
   if(redirect!=null && redirect!=""){
     router.push(redirect)    
     authCtx.redirect = null;
     authCtx.setRedirect(null);
+  }
+
+  if(last_section!=null && last_section!="" && typeof window !== 'undefined'){
+    localStorage.removeItem('last_section')
+    router.push(last_section);
+    
   }
 
 },[authCtx,redirect,router])
@@ -46,7 +53,7 @@ const focus_element_logic = useCallback(()=>{
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
-        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'center'})
         
         authCtx.focusElement = null;
         authCtx.setFocusElement(null);
@@ -55,15 +62,15 @@ const focus_element_logic = useCallback(()=>{
     }
 
     if(focus_element!=null && focus_element!="" && focus_element =="terminate" && typeof window!='undefined'){
-      setNextState(true)
+      
       const fel = '#'+focus_element;
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
         scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
                 
-        authCtx.focusElement = null;
-        authCtx.setFocusElement(null);
+        //authCtx.focusElement = null;
+        //authCtx.setFocusElement(null);
       }
     }
 
@@ -91,7 +98,7 @@ const redirect_or_focus_location = (v:any, name:any, type:any)=>{
       authCtx.setRedirect(redirect_element.redirect)   
     }    
     if(redirect_element.focusElement!=null){
-      setNextState(false)
+      
       authCtx.setFocusElement(redirect_element.focusElement)
     }
   }
@@ -189,13 +196,13 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 
-
+{parseInt(values.food_habits.fruits_consumption.value) >  0  && (
 <div>
 <span id="food_habits_fruits_consumption_quantity"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১.২ আপনি কি পরিমান ফল খান এখন আমি সে সম্পর্কে কিছু প্রশ্ন করবো। <br/>মনে করুন, এক পরিবেশন ফল মানে হল, একটি কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, কুল-বড়ই বা লিচু, অথবা এক কাপ কাটা ফল।<br/>আপনি যে দিনগুলোতে ফল খান, এমন একটি দিনে এধরনের কত পরিবেশন ফল খান?<br/>অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
+      ৪. ১.২ আপনি কি পরিমান ফল খান এখন আমি সে সম্পর্কে কিছু প্রশ্ন করবো। মনে করুন, এক পরিবেশন ফল মানে হল, একটি কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, খেজুর, কুল—বড়ই বা লিচু, অথবা এক কাপ কাটা ফল।<br/>আপনি যে দিনগুলোতে ফল খান, এমন একটি দিনে এধরনের কত পরিবেশন ফল খান?<br/>অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -238,8 +245,8 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 </div>
+)}
 
-{(  parseInt(values.food_habits.fruits_consumption.value) == 0   || values.food_habits.fruits_consumption_quantity.value > 0 ) && (
 <div>
 <span id="food_habits_vegatables_consumption"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
@@ -288,14 +295,14 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 </div>
-)}
+
 
 <div>
 <span id="food_habits_vegatables_consumption_amount"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১.৪ শাক-সব্জির এক পরিবেশন মানে হল প্রায় এক কাপ সবুজ শাক-সব্জি , সালাদ অথবা আধা কাপ রান্না করা শাক-সব্জি ।<br/>আপনি যে দিনগুলোতে শাক-সব্জি খান, এমন একদিনে এধরনের কত পরিবেশন শাক-সব্জি খান? অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
+      ৪. ১.৪ শাক-সবজির এক পরিবেশন মানে হল <br/>প্রায় এক কাপ সবুজ শাক-সবজি, সালাদ অথবা আধা কাপ রান্না করা শাক-সবজি।<br/>আপনি যে দিনগুলোতে শাক-সবজি খান, <br/>এমন একদিনে এধরনের কত পরিবেশন শাক-সবজি খান? অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -627,7 +634,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              nextState && 
+              authCtx.focusElement =="terminate" && 
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -636,9 +643,12 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
               }
             </div>
             <div className="flex flex-col">
+            {
+              authCtx.focusElement !="terminate" &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>
+            }
             </div>
         </div>
 

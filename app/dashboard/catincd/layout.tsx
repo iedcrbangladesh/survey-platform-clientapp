@@ -24,7 +24,7 @@ const FormObserver =() => {
   const { values } = useFormikContext();
 
   useEffect(() => {
-    console.log("FormObserver::values", values);
+    //console.log("FormObserver::values", values);
     if(typeof window !== 'undefined'){
       localStorage.setItem('data',JSON.stringify(values));
     }
@@ -93,10 +93,12 @@ relax:{hour:0, minute:0},
 physical_status:{
 blood_pressure_measured:{value:'',label:''},
 blood_pressure_notify:{value:'',label:''},
-blood_pressure_medicare:[],
+blood_pressure_medicare_location:[],
+blood_pressure_medicare_taken:{value:'',label:''},
 blood_sugar_diabetics_measured:{value:'',label:''},
 blood_sugar_diabetics_notify:{value:'',label:''},
-diabetic_medicine_taken:[],
+diabetic_medicare_location:[],
+diabetic_medicine_taken:{value:'',label:''},
 },
 smoking_related:{
 smoking_habit:{value:'',label:''},
@@ -119,6 +121,12 @@ thirty_days_alchohol_usage:{value:'',label:''},
     const response = await axios.get(`${url}get-question/${contactId}`);
     if(typeof window !== 'undefined' && response.data.data!=null){
       localStorage.setItem('data',JSON.stringify(response.data.data));
+      if(response.data.last_section!=null){
+        localStorage.setItem('last_section',response.data.last_section)
+      }
+      if(response.data.schedule_count!=null){
+        localStorage.setItem('schedule_count',response.data.schedule_count)
+      }
     }
   },[contactId]);
 
@@ -135,12 +143,30 @@ thirty_days_alchohol_usage:{value:'',label:''},
 
   const handleFormSubmit = async(values:any)=>{
     //console.log(values);
+    const done = authCtx.focusElement =="terminate" ? 0:1;
+    let dispose_status:any = null;    
+    //console.log(values);
+    if(done> 0){
+      dispose_status = {"value":1,"label":"সম্পূর্ণ"};
+    }
+    const age_value = values?.eligibility_timeselection?.age?.value;
+    const interviewer_permission = values?.introduction_permission?.interviewer_permission?.value;
+    if(age_value < 18){
+      dispose_status = {"value":12,"label":"বয়স ১৮ এর নিচে"};
+    }
+    if(age_value  > 120){
+      dispose_status = {"value":15,"label":"বয়স নিয়ে তথ্য পাওয়া যাইনি"};
+    }
+    if(interviewer_permission >2){
+      dispose_status = {"value":5,"label":"5 অসম্মত"};
+    }
     await axios.post(`${url}save-question`, 
     {
     userid:authCtx.userId,
     data:values,
     contactnumber:mobileNumber,
-    done:1
+    done:done,
+    dispose_status:dispose_status
     }, 
     {    
       headers: {
@@ -167,8 +193,12 @@ thirty_days_alchohol_usage:{value:'',label:''},
 
             localStorage.removeItem("redirect")
             localStorage.removeItem('focusElement');
+            localStorage.removeItem('last_section');
+            localStorage.removeItem('schedule_count');
+
+            router.push('/dashboard/callinterface')
       }
-      router.push('/dashboard/callinterface')
+      
 
     })
 
@@ -198,7 +228,10 @@ thirty_days_alchohol_usage:{value:'',label:''},
               initialValues={Catincd}              
               validate={async (value) => {
                 try {
-                  await validateYupSchema(value, CatincdSchema, false, {'interviewer_permission':value.introduction_permission.interviewer_permission});
+                  await validateYupSchema(value, CatincdSchema, false, {
+                  'interviewer_permission':value.introduction_permission.interviewer_permission,
+                  'age':value.eligibility_timeselection.age
+                  });
                 } catch (err) {
                   return yupToFormErrors(err); //for rendering validation errors
                 }

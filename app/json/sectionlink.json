@@ -5,7 +5,7 @@
 {"label":"সেকশন ৪: খাদ্যাভ্যাস:","href":"food_habits"},
 {"label":"সেকশন ৫: অবসর বা বিশ্রাম সম্পর্কিত তথ্য:","href":"relax_information"},
 {"label":"সেকশন ৬ঃ শারিরীক অবস্থা (উচ্চ রক্তচাপ, ডায়াবেটিস) ও এর চিকিৎসা:","href":"physical_status"},
-{"label":"সেকশন ৭ ঃ তামাক এবং সংশ্লিষ্ট দ্রব্যের ব্যবহার ঃ","href":"smoking_related"},
+{"label":"সেকশন ৭: তামাক এবং সংশ্লিষ্ট দ্রব্যের ব্যবহারঃ","href":"smoking_related"},
 {"label":"সেকশন ৮ঃ মদপান বিষয়ক প্রশ্নঃ","href":"drinking_related"},
 {"label":"সমাপনী","href":"finish"} 
 ]

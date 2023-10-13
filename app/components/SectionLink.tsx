@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import useAuth from '@/app/hooks/useAuth';
+import { useEffect, useState } from "react";
 
 const SectionLink = ({
     linkdata
@@ -8,7 +10,7 @@ const SectionLink = ({
     linkdata:any
 })=>{
     const pathname = usePathname();
-
+    const authCtx = useAuth();
     /*
     linkdata = [
         {"label":"সেকশন ১: সূচনা এবং সম্মতি","href":"introduction_permission"},
@@ -17,13 +19,30 @@ const SectionLink = ({
 
     */
    //console.log(linkdata)
-
-    
     const linkdata_len = linkdata.length;
+    //const current_url_index:any = pathname.substring(pathname.lastIndexOf('/') + 1).charAt(0)
+    const [terminateIndex, setTerminateIndex] = useState(linkdata_len);
+    const focus_element:any = authCtx.focusElement;
+    useEffect(()=>{
+      if(focus_element == "terminate" && terminateIndex == linkdata_len){
+        //console.log(pathname.substring(pathname.lastIndexOf('/') + 1))
+        const current_url_index:any = pathname.substring(pathname.lastIndexOf('/') + 1).charAt(0)
+        setTerminateIndex(parseInt(current_url_index));
+      }
+      if(focus_element != "terminate"){
+        setTerminateIndex(linkdata_len);
+      }
+    },[focus_element,pathname,terminateIndex,linkdata_len])
+
+    const sLink = terminateIndex == linkdata_len ? linkdata:linkdata.slice(0,terminateIndex);
+    
     //console.log(linkdata_len)
-    const linkRenderTemplate = linkdata.map((item:any,i:number)=>{
+    const linkRenderTemplate = sLink.map((item:any,i:number)=>{
         //console.log(i)
-        let link_href = (i+1)+item?.href
+        let index = (i+1);
+        let link_href = index+item?.href
+        //console.log(terminateIndex, index)
+        //console.log(parseInt(current_url_index),index,parseInt(current_url_index) <= index && authCtx.focusElement == 'terminate')
         return(
             
         <li key={i}>
@@ -34,7 +53,7 @@ const SectionLink = ({
                     >
                 <span className='hover:text-primary'>{item?.label}</span>
                 {
-                i != (linkdata_len-1) && 
+                i != (terminateIndex-1) && 
                 <svg
                 className='fill-current'
                 width='18'

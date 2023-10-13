@@ -67,14 +67,18 @@ const SelectNonCreatableComponent = (props:SelectProps) => {
         
         onChange={(value, action) => {
           //alert(action.action)
-          props.onParentChange(value,action.name)
+          
           setTouched(true)
           if(action.action == 'clear'){
             //alert(props.defaultValueArray.value)
             setValue(props.defaultValueArray)
+            props.onParentChange(props.defaultValueArray,action.name)
           }else{
             setValue(value)
+            props.onParentChange(value,action.name)
           }
+          
+          //console.log(value)
         }}
         options={props.options}
         onBlur={() =>{} }

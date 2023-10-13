@@ -27,14 +27,21 @@ const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
 
-const [nextState, setNextState] = useState(false);
 
 const redirect_logic = useCallback(()=>{
+  
+  const last_section = typeof window !== 'undefined'?localStorage.getItem('last_section'):null;
   
   if(redirect!=null && redirect!=""){
     router.push(redirect)    
     authCtx.redirect = null;
     authCtx.setRedirect(null);
+  }
+
+  if(last_section!=null && last_section!="" && typeof window !== 'undefined'){
+    localStorage.removeItem('last_section')
+    router.push(last_section);
+    
   }
 
 },[authCtx,redirect,router])
@@ -46,7 +53,7 @@ const focus_element_logic = useCallback(()=>{
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
-        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'center'})
         
         authCtx.focusElement = null;
         authCtx.setFocusElement(null);
@@ -55,15 +62,15 @@ const focus_element_logic = useCallback(()=>{
     }
 
     if(focus_element!=null && focus_element!="" && focus_element =="terminate" && typeof window!='undefined'){
-      setNextState(true)
+      
       const fel = '#'+focus_element;
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
         scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
                 
-        authCtx.focusElement = null;
-        authCtx.setFocusElement(null);
+        //authCtx.focusElement = null;
+        //authCtx.setFocusElement(null);
       }
     }
 
@@ -91,7 +98,7 @@ const redirect_or_focus_location = (v:any, name:any, type:any)=>{
       authCtx.setRedirect(redirect_element.redirect)   
     }    
     if(redirect_element.focusElement!=null){
-      setNextState(false)
+      
       authCtx.setFocusElement(redirect_element.focusElement)
     }
   }
@@ -144,7 +151,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৬  . ১.১  কখনো ডাক্তার বা স্বাস্থ্যকর্মী আপনার রক্তচাপ বা ব্লাড প্রেশার মেপেছেন?
+   ৬  . ১.১  ডাক্তার বা স্বাস্থ্যকর্মী কখনো কি আপনার রক্তচাপ বা ব্লাড প্রেশার মেপেছেন?
   </label>
   
 { option_data.physical_status.blood_pressure_measured && option_data.physical_status.blood_pressure_measured.map((v,i)=>(
@@ -211,7 +218,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৬  . ১.২  আপনাকে কখনো কি কোন ডাক্তার বা স্বাস্থ্যকর্মী জানিয়েছেন যে, আপনার উচ্চ রক্তচাপ বা হাই ব্লাড প্রেশার আছে?
+   ৬.১.২  আপনাকে ডাক্তার বা স্বাস্থ্যকর্মী কখনো কি জানিয়েছেন যে,<br/>আপনার উচ্চ রক্তচাপ বা হাই ব্লাড প্রেশার আছে?
   </label>
   
 { option_data.physical_status.blood_pressure_notify && option_data.physical_status.blood_pressure_notify.map((v,i)=>(
@@ -275,16 +282,16 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৬  . ১.৩  গত দুই সপ্তাহে,আপনি কি কখনো উচ্চ রক্তচাপ বা হাই ব্লাড  প্রেশারের জন্য ডাক্তার বা  স্বাস্থ্যকর্মীর দেয়া কোন ঔষধ খেয়েছেন  <br/>কিংবা খাবারের ব্যাপারে কোন উপদেশ মেনে চলছেন?  (একের অধিক উত্তর হতে পারে)
+      ৬. ১.৩ আপনি সাধারনত আপনার উচ্চ রক্তচাপ বা ব্লাড প্রেশারের <br/>চিকিৎসা বা উপদেশ নিতে কোথায় যান?<br/>(একের অধিক উত্তর হতে পারে)
     </label>
-    <span id="physical_status_blood_pressure_medicare"></span>
+    <span id="physical_status_blood_pressure_medicare_location"></span>
     
-    <SelectNonCreatableComponent defaultValueArray={[]}
-                                 placeholder="Select Blood Pressure Medicare"
+    <SelectComponent defaultValueArray={[]}
+                                 placeholder="Select Blood Pressure Medicare Location"
                                  isSearchable
                                  isClearable                                 
                                  isMulti
-                                  name="physical_status.blood_pressure_medicare" options={option_data.physical_status.blood_pressure_medicare}
+                                  name="physical_status.blood_pressure_medicare_location" options={option_data.physical_status.blood_pressure_medicare_location}
 
                                   onParentChange={(v:any, name:any) => {
                 
@@ -303,13 +310,13 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   {
     errors.physical_status
     &&
-    errors.physical_status.blood_pressure_medicare
+    errors.physical_status.blood_pressure_medicare_location
     &&
     touched.physical_status
     &&
-    touched.physical_status.blood_pressure_medicare && ( 
+    touched.physical_status.blood_pressure_medicare_location && ( 
         <span className="mb-3 font-semibold text-[#B45454]">
-            {errors.physical_status.blood_pressure_medicare}
+            {errors.physical_status.blood_pressure_medicare_location}
         </span>   
     )}
   </div>
@@ -330,6 +337,73 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
       </tr>
     </table>
   </div>
+</div>
+
+
+<div>
+
+<span id="physical_status_blood_pressure_medicare_taken"></span>
+<div className="my-1 grid grid-cols-2 gap-4">
+  <div className="flex flex-col">
+  <label className="mb-1 block text-black dark:text-white">
+   ৬.১.৪ গত দুই সপ্তাহে, আপনি কি কখনো উচ্চ রক্তচাপ বা হাই ব্লাড <br/>প্রেশারের জন্য ডাক্তার বা  স্বাস্থ্যকর্মীর দেয়া কোন (এলোপ্যাথিক) <br/>ঔষধ খেয়েছেন  কিংবা খাবারের ব্যাপারে কোন উপদেশ মেনে চলছেন?
+  </label>
+  
+{ option_data.physical_status.blood_pressure_medicare_taken && option_data.physical_status.blood_pressure_medicare_taken.map((v,i)=>(
+  <div key={i}>
+
+    <Field
+            label={v.label}            
+            component={RadioComponent}
+            name="physical_status.blood_pressure_medicare_taken"
+            checked={values.physical_status.blood_pressure_medicare_taken.value === v.value}
+            onChange={(e:any) => {}}
+            onClick={(e:any) => {
+                const {checked, name} = e.target;
+                
+                                
+                if (checked) {
+                  setFieldTouched(name,true);
+
+                  setFieldValue(
+                      name,
+                      {value:v.value, label:v.label}
+                  );
+                }else{
+                    setFieldTouched(name,false);
+                    setFieldValue(
+                        name,
+                        {value:'', label:''}
+                    );
+
+                }
+            
+            }}
+          />
+
+  </div>
+))
+}
+{
+  errors.physical_status
+  &&
+  errors.physical_status.blood_pressure_medicare_taken
+  &&
+  touched.physical_status
+  &&
+  touched.physical_status.blood_pressure_medicare_taken && ( 
+      <span className="mb-3 font-semibold text-[#B45454]">
+          {errors.physical_status.blood_pressure_medicare_taken.label}
+      </span>   
+  )}
+</div>
+<div className="flex flex-col">
+  <div className="py-2">
+  
+  </div>
+</div>
+</div>
+
 </div>
 
 
@@ -470,16 +544,16 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৬.২.৩ গত দুই সপ্তাহে,আপনি কি ডায়াবেটিসের জন্য ডাক্তার বা স্বাস্থ্যকর্মীর দেয়া কোন ঔষধ গ্রহণ করেছেন (এলোপ্যাথিক ট্যাবলেট/ইনসুলিন) অথবা কোন উপদেশ মেনে চলেছেন? (একের অধিক উত্তর হতে পারে)
+      ৬.২.৩ আপনি সাধারনত আপনার ডায়াবেটিসর চিকিৎসা বা উপদেশ নিতে কোথায় যান?<br/>(একের অধিক উত্তর হতে পারে)
     </label>
-    <span id="physical_status_diabetic_medicine_taken"></span>
+    <span id="physical_status_diabetic_medicare_location"></span>
     
-    <SelectNonCreatableComponent defaultValueArray={[]}
-                                 placeholder="Select Diabetics Medicine Taken"
+    <SelectComponent defaultValueArray={[]}
+                                 placeholder="Select Diabetics Medicare Location"
                                  isSearchable
                                  isClearable                                 
                                  isMulti
-                                  name="physical_status.diabetic_medicine_taken" options={option_data.physical_status.diabetic_medicine_taken}
+                                  name="physical_status.diabetic_medicare_location" options={option_data.physical_status.diabetic_medicare_location}
 
                                   onParentChange={(v:any, name:any) => {
                 
@@ -498,13 +572,13 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   {
     errors.physical_status
     &&
-    errors.physical_status.diabetic_medicine_taken
+    errors.physical_status.diabetic_medicare_location
     &&
     touched.physical_status
     &&
-    touched.physical_status.diabetic_medicine_taken && ( 
+    touched.physical_status.diabetic_medicare_location && ( 
         <span className="mb-3 font-semibold text-[#B45454]">
-            {errors.physical_status.diabetic_medicine_taken}
+            {errors.physical_status.diabetic_medicare_location}
         </span>   
     )}
   </div>
@@ -516,6 +590,73 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 
+<div>
+
+<span id="physical_status_diabetic_medicine_taken"></span>
+<div className="my-1 grid grid-cols-2 gap-4">
+  <div className="flex flex-col">
+  <label className="mb-1 block text-black dark:text-white">
+   ৬.২.৪ গত দুই সপ্তাহে,আপনি কি ডায়াবেটিসের জন্য ডাক্তার বা <br/>স্বাস্থ্যকর্মীর দেয়া কোন ঔষধ গ্রহণ করেছেন অথবা কোন উপদেশ <br/>মেনে চলেছেন?
+  </label>
+  
+{ option_data.physical_status.diabetic_medicine_taken && option_data.physical_status.diabetic_medicine_taken.map((v,i)=>(
+  <div key={i}>
+
+    <Field
+            label={v.label}            
+            component={RadioComponent}
+            name="physical_status.diabetic_medicine_taken"
+            checked={values.physical_status.diabetic_medicine_taken.value === v.value}
+            onChange={(e:any) => {}}
+            onClick={(e:any) => {
+                const {checked, name} = e.target;
+                
+                                
+                if (checked) {
+                  setFieldTouched(name,true);
+
+                  setFieldValue(
+                      name,
+                      {value:v.value, label:v.label}
+                  );
+                }else{
+                    setFieldTouched(name,false);
+                    setFieldValue(
+                        name,
+                        {value:'', label:''}
+                    );
+
+                }
+            
+            }}
+          />
+
+  </div>
+))
+}
+{
+  errors.physical_status
+  &&
+  errors.physical_status.diabetic_medicine_taken
+  &&
+  touched.physical_status
+  &&
+  touched.physical_status.diabetic_medicine_taken && ( 
+      <span className="mb-3 font-semibold text-[#B45454]">
+          {errors.physical_status.diabetic_medicine_taken.label}
+      </span>   
+  )}
+</div>
+<div className="flex flex-col">
+  <div className="py-2">
+  
+  </div>
+</div>
+</div>
+
+</div>
+
+
           </div>
 
           
@@ -523,7 +664,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              nextState && 
+              authCtx.focusElement =="terminate" && 
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -532,9 +673,12 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
               }
             </div>
             <div className="flex flex-col">
+            {
+              authCtx.focusElement !="terminate" &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>
+            }
             </div>
         </div>
 

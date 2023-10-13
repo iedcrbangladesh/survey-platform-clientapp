@@ -27,14 +27,21 @@ const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
 
-const [nextState, setNextState] = useState(false);
 
 const redirect_logic = useCallback(()=>{
+  
+  const last_section = typeof window !== 'undefined'?localStorage.getItem('last_section'):null;
   
   if(redirect!=null && redirect!=""){
     router.push(redirect)    
     authCtx.redirect = null;
     authCtx.setRedirect(null);
+  }
+
+  if(last_section!=null && last_section!="" && typeof window !== 'undefined'){
+    localStorage.removeItem('last_section')
+    router.push(last_section);
+    
   }
 
 },[authCtx,redirect,router])
@@ -46,7 +53,7 @@ const focus_element_logic = useCallback(()=>{
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
-        scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
+        scrollElement.scrollIntoView({ behavior: "smooth",block: 'center'})
         
         authCtx.focusElement = null;
         authCtx.setFocusElement(null);
@@ -55,15 +62,15 @@ const focus_element_logic = useCallback(()=>{
     }
 
     if(focus_element!=null && focus_element!="" && focus_element =="terminate" && typeof window!='undefined'){
-      setNextState(true)
+      
       const fel = '#'+focus_element;
       const scrollElement:any = document.querySelector(fel);
       //console.log(scrollElement)
       if(scrollElement!=null){
         scrollElement.scrollIntoView({ behavior: "smooth",block: 'start'})
                 
-        authCtx.focusElement = null;
-        authCtx.setFocusElement(null);
+        //authCtx.focusElement = null;
+        //authCtx.setFocusElement(null);
       }
     }
 
@@ -91,7 +98,7 @@ const redirect_or_focus_location = (v:any, name:any, type:any)=>{
       authCtx.setRedirect(redirect_element.redirect)   
     }    
     if(redirect_element.focusElement!=null){
-      setNextState(false)
+      
       authCtx.setFocusElement(redirect_element.focusElement)
     }
   }
@@ -187,7 +194,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  ১। হ্যাঁ. এখনই” সম্মত হলে, ২.১-এ যান এবং যোগ্য হলে, ৩.১ থেকে প্রশ্ন শুরু করুন।<br/>২। হ্যাঁ, অন্য সময়ে” সম্মত হলে, ২.১-এ যোগ্যতা যাঁচাই সাপেক্ষে সময় নির্ধারণ করুন; এবং নির্ধারিত সময়/দিনে ৩.১ থেকে প্রশ্ন শুরু করুন।<br/>৩। সম্মত না হলে, ১.২-এর উত্তর নিন এবং তারপর সমাপনী বক্তব্য বলুন ও সাক্ষাৎকারটি শেষ করুন।
+  ১। হ্যাঁ. এখনই” সম্মত হলে, ২.১-এ যান এবং যোগ্য হলে, ৩.১ থেকে প্রশ্ন শুরু করুন।<br/>২। হ্যাঁ, অন্য সময়ে” সম্মত হলে, ২.১-এ যোগ্যতা যাঁচাই সাপেক্ষে সময় নির্ধারণ করুন; এবং নির্ধারিত সময়/দিনে ৩.১ থেকে প্রশ্ন শুরু করুন।<br/>৩। সম্মত না হলে, ১.২—এর উত্তর নিন এবং তারপর সমাপনী বক্তব্য বলে সাক্ষাৎকারটি শেষ করুন।
   </div>
 </div>
 </div>
@@ -202,7 +209,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
     </label>
     <span id="introduction_permission_denied_reason"></span>
     
-    <SelectNonCreatableComponent defaultValueArray={[]}
+    <SelectComponent defaultValueArray={[]}
                                  placeholder="Select Denied Reason"
                                  isSearchable
                                  isClearable                                 
@@ -240,7 +247,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      কোন প্রশ্ন করার প্রয়োজন নেই;<br/> তিনি নিজ থেকেই কোন কারণ উল্লেখ করলে, লিপিবদ্ধ করুন।
+      ** যদি উত্তর না হয়,<br/>তিনি কেন সম্মতি দিচ্ছেন না তা কি বলেছেন?<br/>বোঝার চেষ্টা করুন এবং লিপিবদ্ধ করুন।<br/>(একের অধিক উত্তর হতে পারে)
     </div>
 </div>
 </div>
@@ -253,7 +260,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              nextState && 
+              authCtx.focusElement =="terminate" && 
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -262,9 +269,12 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
               }
             </div>
             <div className="flex flex-col">
+            {
+              authCtx.focusElement !="terminate" &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>
+            }
             </div>
         </div>
 

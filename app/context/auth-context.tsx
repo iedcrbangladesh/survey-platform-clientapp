@@ -77,6 +77,8 @@ const removeAllFromStorage=()=>{
         localStorage.removeItem('data');
         localStorage.removeItem('redirect');
         localStorage.removeItem('focusElement');
+        localStorage.removeItem('last_section');
+        localStorage.removeItem('schedule_count');
 
     }
 }
