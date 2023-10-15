@@ -282,7 +282,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৬. ১.৩ আপনি সাধারনত আপনার উচ্চ রক্তচাপ বা ব্লাড প্রেশারের <br/>চিকিৎসা বা উপদেশ নিতে কোথায় যান?<br/>(একের অধিক উত্তর হতে পারে)
+      ৬. ১.৩ সাধারনত আপনার উচ্চ রক্তচাপ বা ব্লাড প্রেশারের <br/>চিকিৎসা বা উপদেশ নিতে আপনি কোথায় যান?
     </label>
     <span id="physical_status_blood_pressure_medicare_location"></span>
     
@@ -325,18 +325,6 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
       
     </div>
 </div>
-</div>
-
-<div className="my-1 grid grid-cols-1 gap-4">
-  <div className="flex flex-col">
-
-    <table className='table-auto border-collapse border border-slate-400'>
-      <tr className='bg-gray-2 text-left dark:bg-meta-4'>
-        <td className="border border-slate-300 w-2/4 p-1">৬.২ ডায়াবেটিস</td>
-        <td className="border border-slate-300 w-2/4 p-1"></td>
-      </tr>
-    </table>
-  </div>
 </div>
 
 
@@ -406,6 +394,18 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 
 </div>
 
+<div className="my-1 grid grid-cols-1 gap-4">
+  <div className="flex flex-col">
+
+    <table className='table-auto border-collapse border border-slate-400'>
+      <tr className='bg-gray-2 text-left dark:bg-meta-4'>
+        <td className="border border-slate-300 w-2/4 p-1">৬.২ ডায়াবেটিস</td>
+        <td className="border border-slate-300 w-2/4 p-1"></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
 
 <div>
 
@@ -413,7 +413,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৬.২.১ কখনো ডাক্তার বা স্বাস্থ্যকর্মী আপনার রক্তের সুগার/ডায়াবেটিস মেপেছেন?
+   ৬.২.১ ডাক্তার বা স্বাস্থ্যকর্মী কখনো কি আপনার রক্তের সুগার/ডায়াবেটিস মেপেছেন?
   </label>
   
 { option_data.physical_status.blood_sugar_diabetics_measured && option_data.physical_status.blood_sugar_diabetics_measured.map((v,i)=>(
@@ -544,7 +544,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৬.২.৩ আপনি সাধারনত আপনার ডায়াবেটিসর চিকিৎসা বা উপদেশ নিতে কোথায় যান?<br/>(একের অধিক উত্তর হতে পারে)
+      ৬.২.৩ সাধারনত আপনার ডায়াবেটিসের চিকিৎসা বা উপদেশ <br/>নিতে আপনি কোথায় যান? 
     </label>
     <span id="physical_status_diabetic_medicare_location"></span>
     

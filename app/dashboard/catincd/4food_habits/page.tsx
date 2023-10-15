@@ -266,7 +266,9 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
                 //alert(name);
 
                 
-                                
+                
+ redirect_or_focus_location(v,name,"age_dropdown"); 
+                
                 
                 
             
@@ -296,7 +298,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 
-
+{parseInt(values.food_habits.vegatables_consumption.value) >  0  && (
 <div>
 <span id="food_habits_vegatables_consumption_amount"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
@@ -345,7 +347,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 </div>
-
+)}
 <div className="my-1 grid grid-cols-1 gap-4">
   <div className="flex flex-col">
 

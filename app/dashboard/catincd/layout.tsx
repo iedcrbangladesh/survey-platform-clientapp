@@ -230,7 +230,10 @@ thirty_days_alchohol_usage:{value:'',label:''},
                 try {
                   await validateYupSchema(value, CatincdSchema, false, {
                   'interviewer_permission':value.introduction_permission.interviewer_permission,
-                  'age':value.eligibility_timeselection.age
+                  'age':value.eligibility_timeselection.age,
+                  'city_or_village':value.eligibility_timeselection.city_or_village,
+                  'district':value.eligibility_timeselection.district,
+                  'education':value.eligibility_timeselection.education
                   });
                 } catch (err) {
                   return yupToFormErrors(err); //for rendering validation errors

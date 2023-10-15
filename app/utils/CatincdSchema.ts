@@ -91,15 +91,30 @@ education:object().shape({
 
         }),
         demographic_information:object().shape({
+religion:object().shape({
+  value: string(),
+  label: string()
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+        return check
+},  then: (schema:any) =>{
+           return schema.shape({
+            value: string().required('Religion is required!'),
+            label: string().required('Religion is required!')
+      });            
+  }
+  
+}),
 
         }),
         food_habits:object().shape({
 fruits_consumption:object().shape({
   value: string(),
   label: string()
-}).when(['$interviewer_permission','$age'],{
-  is: (i_p:any,age:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101));
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
         return check
 },  then: (schema:any) =>{
            return schema.shape({
@@ -126,17 +141,16 @@ fruits_consumption_quantity:object().shape({
         }),
         relax_information:object().shape({
 relax:object().shape({
-  hour: number(),
-  minute: number()
-}).when(['$interviewer_permission','$age'],{
-  is: (i_p:any,age:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101));
+  hour: string(),
+  minute: string()
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
         return check
-},
-  then: (schema:any) =>{
+},  then: (schema:any) =>{
            return schema.shape({
-            hour: number().min(1,'Hour value be must greater then 0').required('Hour is required!'),
-            minute: number().min(1,'Minute value be must be greater then 0').required('Minute is required!')
+            hour: string().required('Hour is required!'),
+            minute: string().required('Minute is required!')
       });            
   }
   
@@ -147,9 +161,9 @@ relax:object().shape({
 blood_pressure_measured:object().shape({
   value: string(),
   label: string()
-}).when(['$interviewer_permission','$age'],{
-  is: (i_p:any,age:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101));
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
         return check
 },  then: (schema:any) =>{
            return schema.shape({
@@ -188,9 +202,39 @@ blood_sugar_diabetics_notify:object().shape({
 
         }),
         smoking_related:object().shape({
+smoking_habit:object().shape({
+  value: string(),
+  label: string()
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+        return check
+},  then: (schema:any) =>{
+           return schema.shape({
+            value: string().required('Smoking Habit is required!'),
+            label: string().required('Smoking Habit is required!')
+      });            
+  }
+  
+}),
 
         }),
         drinking_related:object().shape({
+alchohol_usage:object().shape({
+  value: string(),
+  label: string()
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+        return check
+},  then: (schema:any) =>{
+           return schema.shape({
+            value: string().required('Alchohol Usage is required!'),
+            label: string().required('Alchohol Usage is required!')
+      });            
+  }
+  
+}),
 
         }),
         

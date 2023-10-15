@@ -538,7 +538,9 @@ parseInt(values.eligibility_timeselection.district.value) > 0) && (
                 //alert(name);
 
                 
-                                
+                
+ redirect_or_focus_location(v,name,"dropdown"); 
+                
                 
                 
             
@@ -567,7 +569,7 @@ parseInt(values.eligibility_timeselection.district.value) > 0) && (
 </div>
 </div>
 )}
-{( ( values.eligibility_timeselection.age.value >=18 && values.eligibility_timeselection.age.value<=150  ) && (values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 88) ) && (
+{( ( values.eligibility_timeselection.age.value >=18 && values.eligibility_timeselection.age.value<=150  ) && (values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 88)  ) && values.eligibility_timeselection.education.value < 90 && (
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">

@@ -82,6 +82,7 @@ const Login=()=> {
     setCookie('AUTH_DATA', {'token':response.data.idToken,'role':response.data.role});
     
     if(response.data.role == 2){
+      authContext.cleanPreviousOnloggedIn()
       router.push('/dashboard');
     }
     

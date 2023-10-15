@@ -1,6 +1,5 @@
 "use client";
 import React , {useCallback, useEffect, useState, createContext } from "react";
-import useLocalStorage from "@/app/hooks/useLocalStorage";
 import { deleteCookie, hasCookie } from 'cookies-next';
 
 
@@ -27,6 +26,8 @@ interface AuthContextType{
     setRedirect:(route:string|undefined|null)=>void,
     setFocusElement:(focus_element:string|undefined|null)=>void
 
+    cleanPreviousOnloggedIn:()=>void
+
     
 
 
@@ -51,7 +52,8 @@ const AuthContext = createContext<AuthContextType>({
     selectedContactId:(activeContactId:string|undefined|null)=>{},   
     
     setRedirect:(route:string|undefined|null)=>{},
-    setFocusElement:(focus_element:string|undefined|null)=>{}
+    setFocusElement:(focus_element:string|undefined|null)=>{},
+    cleanPreviousOnloggedIn:()=>{}
 
 });
 /*
@@ -80,6 +82,18 @@ const removeAllFromStorage=()=>{
         localStorage.removeItem('last_section');
         localStorage.removeItem('schedule_count');
 
+    }
+}
+const  cleanPreviousOnloggedInHandler =()=>{
+    if(typeof window !== 'undefined'){
+        localStorage.removeItem('MobileNumber');
+        localStorage.removeItem('ContactID')        
+        //data previous
+        localStorage.removeItem('data');
+        localStorage.removeItem('redirect');
+        localStorage.removeItem('focusElement');
+        localStorage.removeItem('last_section');
+        localStorage.removeItem('schedule_count');
     }
 }
 
@@ -315,7 +329,8 @@ export const AuthContextProvider = (props:any)=>{
         selectedContactId:selectedContactIdhandler,
         
         setRedirect:setRedirectHandler,
-        setFocusElement:setFocusElementHandler
+        setFocusElement:setFocusElementHandler,
+        cleanPreviousOnloggedIn:cleanPreviousOnloggedInHandler
     };
     return <AuthContext.Provider value={contextValue}>
     {props.children}
