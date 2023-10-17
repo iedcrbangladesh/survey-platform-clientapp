@@ -265,7 +265,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      যদি তথ্য প্রদানকারী গত ১২ মাসে একাধকি পেশায় নিযুক্ত থাকেন তা হলে তিনি যে পেশাটিতে বেশি সময় ব্যায় করেছেন এবং প্রধান হিসেবে বিবেচনা করেন তা লিপিবদ্ধ করুন।<br/>সঠিক উত্তরটি নির্বাচন করুন।<br/>এই প্রশ্নরে মূল উদ্দশ্যে হচ্ছে তথ্য প্রদাণকারীর পেশার ও অন্য প্রশ্নের উত্তরের সাথে সম্পর্ক দেখা। যেমনঃ তার  পেশার সাথে অসংক্রামক রোগের ঝুঁকির সম্পৃক্ততা।
+      যদি তথ্য প্রদানকারী গত ১২ মাসে একাধকি পেশায় নিযুক্ত থাকেন তা হলে <br/>তিনি যে পেশাটিতে বেশি সময় ব্যায় করেছেন এবং প্রধান হিসেবে বিবেচনা করেন তা লিপিবদ্ধ করুন।<br/>সঠিক উত্তরটি নির্বাচন করুন।<br/>এই প্রশ্নরে মূল উদ্দশ্যে হচ্ছে তথ্য প্রদাণকারীর পেশার ও অন্য প্রশ্নের উত্তরের সাথে সম্পর্ক দেখা। যেমনঃ তার  পেশার সাথে অসংক্রামক রোগের ঝুঁকির সম্পৃক্ততা।
     </div>
 </div>
 </div>
@@ -353,7 +353,20 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   পুরুষ
 <Field 
     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-name="demographic_information.man_women_count.man" placeholder="পুরুষ" type="number" min={0} max={100} />
+name="demographic_information.man_women_count.man" placeholder="পুরুষ" type="number" />
+
+{
+    errors.demographic_information
+    &&
+    errors.demographic_information.man_women_count
+    &&
+    touched.demographic_information
+    &&
+    touched.demographic_information.man_women_count && ( 
+        <span className="mb-3 font-semibold text-[#B45454]">
+            {errors.demographic_information.man_women_count.man}
+        </span>   
+    )}
 
 </div>
 
@@ -365,13 +378,26 @@ name="demographic_information.man_women_count.man" placeholder="পুরুষ"
   মহিলা
 <Field 
     className="ml-0 w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-name="demographic_information.man_women_count.women" placeholder="মহিলা" type="number" min={0} max={100} />
+name="demographic_information.man_women_count.women" placeholder="মহিলা" type="number" />
+
+{
+    errors.demographic_information
+    &&
+    errors.demographic_information.man_women_count
+    &&
+    touched.demographic_information
+    &&
+    touched.demographic_information.man_women_count && ( 
+        <span className="mb-3 font-semibold text-[#B45454]">
+            {errors.demographic_information.man_women_count.women}
+        </span>   
+    )}
 
 </div>
 
 
 <div className="flex flex-col p-2">
-  <span className="font-medium mt-5 mx-10">{values.demographic_information.man_women_count && values.demographic_information.man_women_count.man && values.demographic_information.man_women_count.women && (values.demographic_information.man_women_count.man+values.demographic_information.man_women_count.women)}</span>
+  <span className="font-medium mt-5 mx-10">{values.demographic_information.man_women_count && (values.demographic_information.man_women_count.man + values.demographic_information.man_women_count.women)}</span>
 </div>
 
 </div>

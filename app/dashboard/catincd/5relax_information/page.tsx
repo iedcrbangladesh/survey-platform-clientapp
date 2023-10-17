@@ -148,7 +148,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 ঘন্টা                    
 <Field 
     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-name="relax_information.relax.hour" placeholder="Hour" type="number" min={0} max={24} />
+name="relax_information.relax.hour" placeholder="Hour" type="number" />
 
 {
     errors.relax_information
@@ -175,7 +175,7 @@ name="relax_information.relax.hour" placeholder="Hour" type="number" min={0} max
 মিনিট
 <Field 
     className="ml-0 w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-name="relax_information.relax.minute" placeholder="Minute" type="number" min={0} max={60} />
+name="relax_information.relax.minute" placeholder="Minute" type="number" />
 
 {
     errors.relax_information

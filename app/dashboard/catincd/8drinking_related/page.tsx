@@ -154,9 +154,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             onClick={(e:any) => {
                 const {checked, name} = e.target;
                 
-                
- redirect_or_focus_location(v,name,"radio"); 
-                
+                                
                 if (checked) {
                   setFieldTouched(name,true);
 

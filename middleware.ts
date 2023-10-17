@@ -13,6 +13,12 @@ export const config = {
 export function middleware(request: NextRequest) {
     // Call our authentication function to check the request
     const { pathname } = request.nextUrl
+
+    if (pathname.slice(-9)=='callstart') {
+      //console.log('here')
+        //return NextResponse.rewrite(new URL('catincd/1introduction_permission', request.url))
+        return NextResponse.redirect(new URL('catincd/1introduction_permission', request.url));
+    }
     //console.log(pathname)
     /*
     console.log(request.cookies.get('AUTH_DATA')?.value
@@ -33,11 +39,7 @@ export function middleware(request: NextRequest) {
     }
     */
     
-    if (pathname.slice(-9)=='callstart') {
-      //console.log('here')
-        //return NextResponse.rewrite(new URL('catincd/1introduction_permission', request.url))
-        return NextResponse.redirect(new URL('catincd/1introduction_permission', request.url));
-    }
+    
     
 
     //console.log(pathname)
@@ -46,6 +48,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next).*)(.+)'
+    /*'/((?!_next).*)(.+)'*/
+    '/((?!api|_next/static|favicon.ico|assets).*)'
   ],
 }

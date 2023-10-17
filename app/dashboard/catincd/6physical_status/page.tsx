@@ -151,7 +151,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৬  . ১.১  ডাক্তার বা স্বাস্থ্যকর্মী কখনো কি আপনার রক্তচাপ বা ব্লাড প্রেশার মেপেছেন?
+   ৬.১.১  ডাক্তার বা স্বাস্থ্যকর্মী কখনো কি আপনার রক্তচাপ বা ব্লাড প্রেশার মেপেছেন?
   </label>
   
 { option_data.physical_status.blood_pressure_measured && option_data.physical_status.blood_pressure_measured.map((v,i)=>(
@@ -212,13 +212,62 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 
+<div className="my-1 grid grid-cols-2 gap-4">
+  <div className="flex flex-col">
+    <label className="mb-1 block text-black dark:text-white">
+      ৬.১.২ সাধারনত আপনার উচ্চ রক্তচাপ বা ব্লাড প্রেশারের <br/>চিকিৎসা বা উপদেশ নিতে আপনি কোথায় যান?
+    </label>
+    <span id="physical_status_blood_pressure_medicare_location"></span>
+    
+    <SelectComponent defaultValueArray={[]}
+                                 placeholder="Select Blood Pressure Medicare Location"
+                                 isSearchable
+                                 isClearable                                 
+                                 isMulti
+                                  name="physical_status.blood_pressure_medicare_location" options={option_data.physical_status.blood_pressure_medicare_location}
+
+                                  onParentChange={(v:any, name:any) => {
+                
+                //alert(name);
+
+                
+                                
+                
+                
+            
+            }} 
+                                  
+                      />
+  
+  
+  {
+    errors.physical_status
+    &&
+    errors.physical_status.blood_pressure_medicare_location
+    &&
+    touched.physical_status
+    &&
+    touched.physical_status.blood_pressure_medicare_location && ( 
+        <span className="mb-3 font-semibold text-[#B45454]">
+            {errors.physical_status.blood_pressure_medicare_location}
+        </span>   
+    )}
+  </div>
+  <div className="flex flex-col">
+    <div className="py-2">
+      
+    </div>
+</div>
+</div>
+
+
 <div>
 
 <span id="physical_status_blood_pressure_notify"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৬.১.২  আপনাকে ডাক্তার বা স্বাস্থ্যকর্মী কখনো কি জানিয়েছেন যে,<br/>আপনার উচ্চ রক্তচাপ বা হাই ব্লাড প্রেশার আছে?
+   ৬. ১.৩ আপনাকে ডাক্তার বা স্বাস্থ্যকর্মী কখনো কি জানিয়েছেন যে,<br/>আপনার উচ্চ রক্তচাপ বা হাই ব্লাড প্রেশার আছে?
   </label>
   
 { option_data.physical_status.blood_pressure_notify && option_data.physical_status.blood_pressure_notify.map((v,i)=>(
@@ -271,63 +320,14 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  
+  উত্তর না হলে প্রশ্ন ৬.২-এ যান।
   </div>
 </div>
 </div>
 
 </div>
 
-
-<div className="my-1 grid grid-cols-2 gap-4">
-  <div className="flex flex-col">
-    <label className="mb-1 block text-black dark:text-white">
-      ৬. ১.৩ সাধারনত আপনার উচ্চ রক্তচাপ বা ব্লাড প্রেশারের <br/>চিকিৎসা বা উপদেশ নিতে আপনি কোথায় যান?
-    </label>
-    <span id="physical_status_blood_pressure_medicare_location"></span>
-    
-    <SelectComponent defaultValueArray={[]}
-                                 placeholder="Select Blood Pressure Medicare Location"
-                                 isSearchable
-                                 isClearable                                 
-                                 isMulti
-                                  name="physical_status.blood_pressure_medicare_location" options={option_data.physical_status.blood_pressure_medicare_location}
-
-                                  onParentChange={(v:any, name:any) => {
-                
-                //alert(name);
-
-                
-                                
-                
-                
-            
-            }} 
-                                  
-                      />
-  
-  
-  {
-    errors.physical_status
-    &&
-    errors.physical_status.blood_pressure_medicare_location
-    &&
-    touched.physical_status
-    &&
-    touched.physical_status.blood_pressure_medicare_location && ( 
-        <span className="mb-3 font-semibold text-[#B45454]">
-            {errors.physical_status.blood_pressure_medicare_location}
-        </span>   
-    )}
-  </div>
-  <div className="flex flex-col">
-    <div className="py-2">
-      
-    </div>
-</div>
-</div>
-
-
+{(parseInt(values.physical_status.blood_pressure_notify.value) < 2 ) && (
 <div>
 
 <span id="physical_status_blood_pressure_medicare_taken"></span>
@@ -393,7 +393,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 </div>
-
+)}
 <div className="my-1 grid grid-cols-1 gap-4">
   <div className="flex flex-col">
 
@@ -474,77 +474,10 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 
-<div>
-
-<span id="physical_status_blood_sugar_diabetics_notify"></span>
-<div className="my-1 grid grid-cols-2 gap-4">
-  <div className="flex flex-col">
-  <label className="mb-1 block text-black dark:text-white">
-   ৬.২.২ আপনাকে ডাক্তার অথবা কোন স্বাস্থ্যকর্মী কি জানিয়েছেন যে, আপনার রক্তে সুগার বেশী আছে অথবা আপনার ডায়াবেটিস আছে?
-  </label>
-  
-{ option_data.physical_status.blood_sugar_diabetics_notify && option_data.physical_status.blood_sugar_diabetics_notify.map((v,i)=>(
-  <div key={i}>
-
-    <Field
-            label={v.label}            
-            component={RadioComponent}
-            name="physical_status.blood_sugar_diabetics_notify"
-            checked={values.physical_status.blood_sugar_diabetics_notify.value === v.value}
-            onChange={(e:any) => {}}
-            onClick={(e:any) => {
-                const {checked, name} = e.target;
-                
-                                
-                if (checked) {
-                  setFieldTouched(name,true);
-
-                  setFieldValue(
-                      name,
-                      {value:v.value, label:v.label}
-                  );
-                }else{
-                    setFieldTouched(name,false);
-                    setFieldValue(
-                        name,
-                        {value:'', label:''}
-                    );
-
-                }
-            
-            }}
-          />
-
-  </div>
-))
-}
-{
-  errors.physical_status
-  &&
-  errors.physical_status.blood_sugar_diabetics_notify
-  &&
-  touched.physical_status
-  &&
-  touched.physical_status.blood_sugar_diabetics_notify && ( 
-      <span className="mb-3 font-semibold text-[#B45454]">
-          {errors.physical_status.blood_sugar_diabetics_notify.label}
-      </span>   
-  )}
-</div>
-<div className="flex flex-col">
-  <div className="py-2">
-  
-  </div>
-</div>
-</div>
-
-</div>
-
-
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৬.২.৩ সাধারনত আপনার ডায়াবেটিসের চিকিৎসা বা উপদেশ <br/>নিতে আপনি কোথায় যান? 
+      ৬.২.২ আপনি সাধারনত আপনার ডায়াবেটিসর চিকিৎসা বা উপদেশ <br/>নিতে কোথায় যান?<br/>(একের অধিক উত্তর হতে পারে)
     </label>
     <span id="physical_status_diabetic_medicare_location"></span>
     
@@ -590,6 +523,75 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 
+<div>
+
+<span id="physical_status_blood_sugar_diabetics_notify"></span>
+<div className="my-1 grid grid-cols-2 gap-4">
+  <div className="flex flex-col">
+  <label className="mb-1 block text-black dark:text-white">
+    ৬.২.৩ আপনাকে ডাক্তার অথবা কোন স্বাস্থ্যকর্মী কি জানিয়েছেন যে, <br/>আপনার রক্তে সুগার বেশী আছে অথবা আপনার ডায়াবেটিস আছে?
+  </label>
+  
+{ option_data.physical_status.blood_sugar_diabetics_notify && option_data.physical_status.blood_sugar_diabetics_notify.map((v,i)=>(
+  <div key={i}>
+
+    <Field
+            label={v.label}            
+            component={RadioComponent}
+            name="physical_status.blood_sugar_diabetics_notify"
+            checked={values.physical_status.blood_sugar_diabetics_notify.value === v.value}
+            onChange={(e:any) => {}}
+            onClick={(e:any) => {
+                const {checked, name} = e.target;
+                
+                
+ redirect_or_focus_location(v,name,"radio"); 
+                
+                if (checked) {
+                  setFieldTouched(name,true);
+
+                  setFieldValue(
+                      name,
+                      {value:v.value, label:v.label}
+                  );
+                }else{
+                    setFieldTouched(name,false);
+                    setFieldValue(
+                        name,
+                        {value:'', label:''}
+                    );
+
+                }
+            
+            }}
+          />
+
+  </div>
+))
+}
+{
+  errors.physical_status
+  &&
+  errors.physical_status.blood_sugar_diabetics_notify
+  &&
+  touched.physical_status
+  &&
+  touched.physical_status.blood_sugar_diabetics_notify && ( 
+      <span className="mb-3 font-semibold text-[#B45454]">
+          {errors.physical_status.blood_sugar_diabetics_notify.label}
+      </span>   
+  )}
+</div>
+<div className="flex flex-col">
+  <div className="py-2">
+  উত্তর না হলে সেকশন ৭-এ যান।
+  </div>
+</div>
+</div>
+
+</div>
+
+{( parseInt(values.physical_status.blood_sugar_diabetics_notify.value) < 2 ) && (
 <div>
 
 <span id="physical_status_diabetic_medicine_taken"></span>
@@ -655,7 +657,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 </div>
-
+)}
 
           </div>
 

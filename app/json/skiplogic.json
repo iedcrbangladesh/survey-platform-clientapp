@@ -101,6 +101,18 @@
             }
         ]
     },
+    "physical_status.blood_sugar_diabetics_notify": {
+        "radio": [
+            {
+                "condition": "is",
+                "value": [
+                    2
+                ],
+                "route": "7smoking_related",
+                "node": "smoking_related.smoking_habit"
+            }
+        ]
+    },
     "smoking_related.smoking_habit": {
         "radio": [
             {
@@ -124,19 +136,6 @@
                 ],
                 "route": null,
                 "node": "smoking_related.non_smoking_habit"
-            }
-        ]
-    },
-    "drinking_related.alchohol_usage": {
-        "radio": [
-            {
-                "condition": "is",
-                "value": [
-                    2,
-                    99
-                ],
-                "route": null,
-                "node": "terminate"
             }
         ]
     }

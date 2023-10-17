@@ -1,5 +1,6 @@
 import DIS_LOGIC from '@/app/json/disablelogic.json';
 import SKIP_LOGIC from '@/app/json/skiplogic.json';
+import disablekey from '@/app/json/disablekey.json';
 
 const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):any=>{
 
@@ -30,7 +31,7 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
                     //console.log(found)
                     //console.log(found); 
                     if(typeof found =='undefined') continue;
-                    found_disabled(found,fields,setFieldValue);
+                    found_disabled(found,fields,setFieldValue, name);
                     break;
                 }
 
@@ -40,7 +41,7 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
                     var found:any = value >= gt_lt[0] && value <=gt_lt[1] ? undefined:true; 
                     //if(){
                         //console.log(fields);
-                    found_disabled(found, fields,setFieldValue);
+                    found_disabled(found, fields,setFieldValue, name);
                         //console.log(value,gt_lt);
                     break;
                     //}                    
@@ -52,7 +53,7 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
                     var fields = element["fields"];
                     var found:any = value < lt?undefined:true;
                     //if(){
-                    found_disabled(undefined, fields,setFieldValue);
+                    found_disabled(undefined, fields,setFieldValue, name);
                     //}
                     break;
                 }
@@ -62,7 +63,7 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
                     var fields = element["fields"];
                     var found:any = value > gt ? undefined:true;
                     //if(value > gt){
-                    found_disabled(found, fields,setFieldValue);
+                    found_disabled(found, fields,setFieldValue, name);
                     //}
                     break;
                 }
@@ -75,12 +76,24 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
         }
 }
 
-function found_disabled(found:any, fields:any, setFieldValue:any){
-    if( typeof found != 'undefined'){                
+function found_disabled(found:any, fields:any, setFieldValue:any, name:any){
+    if( typeof found != 'undefined'){
+        
+        if(fields == '*'){
+            var index = Object.keys(disablekey).indexOf(name);            
+            var length = Object.keys(disablekey).length;
+            var arr = Object.entries(disablekey).slice(index+1,length)
+            //console.log(arr)
+            for(const [key, value] of arr){
+                setFieldValue(key,value);
+            }
+
+        }else{
             
-        for(const [key, value] of Object.entries(fields)){
-            //console.log(key, value);
-            setFieldValue(key,value);
+            for(const [key, value] of Object.entries(fields)){
+                //console.log(key, value);
+                setFieldValue(key,value);
+            }
         }
     }
 }

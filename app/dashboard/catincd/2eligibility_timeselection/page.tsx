@@ -377,7 +377,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 )}
 {(values.eligibility_timeselection.city_or_village && parseInt(values.eligibility_timeselection.city_or_village.value) < 2)  && (values.eligibility_timeselection.district && 
-parseInt(values.eligibility_timeselection.district.value) > 0)  && (
+parseInt(values.eligibility_timeselection.district.value) > 0)  && (values.eligibility_timeselection.municipal.value == '') && (
 <div>
 <span id="eligibility_timeselection_city_corporation"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
@@ -428,7 +428,7 @@ parseInt(values.eligibility_timeselection.district.value) > 0)  && (
 </div>
 )}
 {(values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 2)  && (values.eligibility_timeselection.district && 
-parseInt(values.eligibility_timeselection.district.value) > 0) &&  (
+parseInt(values.eligibility_timeselection.district.value) > 0) && (values.eligibility_timeselection.city_corporation.value=='') &&  (
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
@@ -569,7 +569,7 @@ parseInt(values.eligibility_timeselection.district.value) > 0) && (
 </div>
 </div>
 )}
-{( ( values.eligibility_timeselection.age.value >=18 && values.eligibility_timeselection.age.value<=150  ) && (values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 88)  ) && values.eligibility_timeselection.education.value < 90 && (
+{( ( values.eligibility_timeselection.age.value >=18 && values.eligibility_timeselection.age.value<=150  ) && (values.eligibility_timeselection.city_or_village && values.eligibility_timeselection.city_or_village.value < 88) && values.eligibility_timeselection.education.value < 99 ) && (
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">

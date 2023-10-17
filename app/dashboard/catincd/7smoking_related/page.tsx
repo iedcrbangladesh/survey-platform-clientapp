@@ -213,7 +213,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 
 </div>
 
-{values.smoking_related.smoking_habit.value == 1 && (
+{parseInt(values.smoking_related.smoking_habit.value) < 2 && (
 <div>
 
 <span id="smoking_related_smoking_habit_reguler"></span>
@@ -342,7 +342,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  উত্তর না হলে বা অস্বীকৃতি জানালে প্রশ্ন ৭.২.১ - এ যান।
+  উত্তর যাইহোক প্রশ্ন ৭.২-এ যাবে।
   </div>
 </div>
 </div>
@@ -368,7 +368,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৭ .২.১ বর্তমানে আপনি কি পানের সাথে অথবা শুধু জর্দ্দা, সাদাপাতা, খৈনি, নস্যি বা গুল ইত্যাদি ব্যবহার করেন?
+   ৭ .২.১ বর্তমানে আপনি কি পানের সাথে অথবা <br/>শুধু জর্দ্দা, সাদাপাতা, খৈনি, নস্যি বা গুল ইত্যাদি ব্যবহার করেন?
   </label>
   
 { option_data.smoking_related.non_smoking_habit && option_data.smoking_related.non_smoking_habit.map((v,i)=>(
@@ -428,7 +428,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 
 </div>
 
-{values.smoking_related.non_smoking_habit.value == 1 && (
+{parseInt(values.smoking_related.non_smoking_habit.value)  < 2 && (
 <div>
 
 <span id="smoking_related_non_smoking_habit_reguler"></span>
@@ -502,7 +502,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ৭ .২.৩ আপনি কি পূর্বে কখনও পানের সাথে অথবা শুধু জর্দ্দা, সাদাপাতা, খৈনি, নস্যি বা গুল ইত্যাদি ব্যবহার করেছেন?
+   ৭ .২.৩ আপনি কি পূর্বে কখনও পানের সাথে অথবা<br/> শুধু জর্দ্দা, সাদাপাতা, খৈনি, নস্যি বা গুল ইত্যাদি ব্যবহার করেছেন?
   </label>
   
 { option_data.smoking_related.non_smoking_habit_previous && option_data.smoking_related.non_smoking_habit_previous.map((v,i)=>(
@@ -555,7 +555,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  
+  উত্তর যাইহোক সেকশন ৮-এ যাবে।
   </div>
 </div>
 </div>
