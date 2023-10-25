@@ -113,29 +113,31 @@
             }
         ]
     },
-    "smoking_related.smoking_habit": {
+    "smoking_related.smoking_habit_reguler": {
         "radio": [
             {
                 "condition": "is",
                 "value": [
-                    2,
-                    99
-                ],
-                "route": null,
-                "node": "smoking_related.smoking_habit_previous"
-            }
-        ]
-    },
-    "smoking_related.smoking_habit_previous": {
-        "radio": [
-            {
-                "condition": "is",
-                "value": [
+                    1,
                     2,
                     99
                 ],
                 "route": null,
                 "node": "smoking_related.non_smoking_habit"
+            }
+        ]
+    },
+    "smoking_related.non_smoking_habit_reguler": {
+        "radio": [
+            {
+                "condition": "is",
+                "value": [
+                    1,
+                    2,
+                    99
+                ],
+                "route": "8drinking_related",
+                "node": "drinking_related.alchohol_usage"
             }
         ]
     }

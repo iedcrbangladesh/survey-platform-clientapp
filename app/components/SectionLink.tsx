@@ -23,20 +23,29 @@ const SectionLink = ({
     //const current_url_index:any = pathname.substring(pathname.lastIndexOf('/') + 1).charAt(0)
     const [terminateIndex, setTerminateIndex] = useState(linkdata_len);
     const focus_element:any = authCtx.focusElement;
+    const boundary_reached:any = authCtx.boundaryReached;
     useEffect(()=>{
       if(focus_element == "terminate" && terminateIndex == linkdata_len){
         //console.log(pathname.substring(pathname.lastIndexOf('/') + 1))
         const current_url_index:any = pathname.substring(pathname.lastIndexOf('/') + 1).charAt(0)
         setTerminateIndex(parseInt(current_url_index));
       }
-      if(focus_element != "terminate"){
+      if(boundary_reached!=null && terminateIndex == linkdata_len){
+        const current_url_index:any = pathname.substring(pathname.lastIndexOf('/') + 1).charAt(0)
+        //alert(current_url_index)
+        setTerminateIndex(parseInt(current_url_index));
+      }
+      //if(boundary_reached!=null){
+
+      //}
+      if(focus_element != "terminate" && boundary_reached==null){
         setTerminateIndex(linkdata_len);
       }
-    },[focus_element,pathname,terminateIndex,linkdata_len])
+    },[focus_element,pathname,terminateIndex,linkdata_len,boundary_reached])
 
     const sLink = terminateIndex == linkdata_len ? linkdata:linkdata.slice(0,terminateIndex);
     
-    //console.log(linkdata_len)
+    //console.log(terminateIndex)
     const linkRenderTemplate = sLink.map((item:any,i:number)=>{
         //console.log(i)
         let index = (i+1);

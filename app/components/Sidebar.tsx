@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 import useAuth from '@/app/hooks/useAuth';
 import ContactScheduleComponent from './form/ContactScheduleComponent';
 import TimeScheduleComponent from './form/TimeScheduleComponent';
+import SnowballListComponent from './form/SnowballListComponent';
 const url = process.env.api_url;
 
 
@@ -183,7 +184,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     width={15}
     height={15}
     className="text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 20">
-    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h6m-6 4h6m-6 4h6M1 1v18l2-2 2 2 2-2 2 2 2-2 2 2V1l-2 2-2-2-2 2-2-2-2 2-2-2Z"/>
+    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h6m-6 4h6m-6 4h6M1 1v18l2-2 2 2 2-2 2 2 2-2 2 2V1l-2 2-2-2-2 2-2-2-2 2-2-2Z"/>
   </svg>
     
               Status
@@ -199,7 +200,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           
 {authCtx.activeContactId && callStatus && <ContactScheduleComponent/>
 }
- { authCtx.activeContactId && <div className='my-20'><TimeScheduleComponent/></div>}         
+ { authCtx.activeContactId && <div className='my-5'><TimeScheduleComponent/></div>}
+
+ <SnowballListComponent/>         
           </div>
 
           

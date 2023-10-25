@@ -14,7 +14,44 @@ import './time-schedule-style.css'
 const url = process.env.api_url;
 const max_schedule_count:any = process.env.max_schedule_count;
 
+function responseOperation(response:any, authCtx:any, router:any){
 
+    if(typeof window !== 'undefined' 
+    && 
+    response.data.user_contact_status > 0 
+    && 
+    response.data.contact_question_status > 0
+    &&
+    response.data.contact_schedule_id != null
+    ){
+      authCtx.activeMobileNumber = null;
+      authCtx.selectedMobile(null);
+      localStorage.removeItem("MobileNumber")
+      authCtx.activeContactId = null;
+      authCtx.selectedContactId(null);
+      localStorage.removeItem("ContactID")
+      localStorage.removeItem('data');
+      //remove skip rules
+      authCtx.redirect =null;
+      authCtx.setRedirect(null);
+      authCtx.focusElement = null;
+      authCtx.setFocusElement(null);
+      localStorage.removeItem("redirect")
+      localStorage.removeItem('focusElement');
+      localStorage.removeItem('last_section');
+      localStorage.removeItem('schedule_count');
+      localStorage.removeItem('boundaryReached');
+      localStorage.removeItem('snowball');
+      localStorage.removeItem('snowball_count');
+
+
+      authCtx.boundaryReached = null;
+      authCtx.setBoundaryReached(null)
+
+      router.push('/dashboard/callinterface')  
+    }
+
+}
 
 const TimeScheduleComponent = ()=>{
     const router = useRouter();
@@ -22,9 +59,12 @@ const TimeScheduleComponent = ()=>{
     const authCtx = useAuth();
     const userid = authCtx.userId;
     const mobile_no = authCtx.activeMobileNumber;
+    let boundary_reached = authCtx.boundaryReached;
+    let dispose_status:any = null;
 
     
     const [scheduleCount, setScheduleCount] = useState(0)
+    const [maxscheduleCount, setMaxScheduleCount] = useState(max_schedule_count)
 
     const ContactStatus = {
         schedule_time:''       
@@ -36,8 +76,12 @@ const TimeScheduleComponent = ()=>{
     useEffect(()=>{
       if(typeof window!='undefined'){
         const sc_count = localStorage.getItem("schedule_count")
+        const snowball = localStorage.getItem("snowball_count")
         if(sc_count!=null){
           setScheduleCount(parseInt(sc_count));
+        }
+        if(snowball!=null){
+          setMaxScheduleCount(max_schedule_count+1)
         }
       }
     },[])
@@ -45,7 +89,7 @@ const TimeScheduleComponent = ()=>{
     const handleFormSubmit =async(values:any)=>{
         //console.log(values);
         const last_section = pathname.substring(pathname.lastIndexOf('/') + 1)
-        console.log(last_section)
+        //console.log(last_section)
 
         
         const schedule_time = moment(values.schedule_time).format('YYYY-MM-DD HH:mm');
@@ -57,6 +101,12 @@ const TimeScheduleComponent = ()=>{
         if(data !=null){
             data = JSON.parse(data);
         }
+
+        if(boundary_reached != null){
+          dispose_status = {"value":14,"label":"14 কোটা পূর্ণ হয়ে গেছে"};
+          boundary_reached = JSON.parse(boundary_reached)
+        }
+
         
         await axios.post(`${url}contact-schedule-time`, 
         {
@@ -65,57 +115,39 @@ const TimeScheduleComponent = ()=>{
         mobile_no:mobile_no,
         questionid:authCtx.activeContactId,
         data:data,
-        last_section:last_section
+        last_section:last_section,
+        dispose_status:dispose_status,
+        boundary_reached:boundary_reached        
         }, 
         {    
           headers: {
             'Content-Type': 'application/json'
           }
         }
-        ) .then(function (response) {
-    
-          if(typeof window !== 'undefined' 
-          && 
-          response.data.user_contact_status > 0 
-          && 
-          response.data.contact_question_status > 0
-          &&
-          response.data.contact_schedule_id != null
-          ){
-            authCtx.activeMobileNumber = null;
-            authCtx.selectedMobile(null);
-            localStorage.removeItem("MobileNumber")
-            authCtx.activeContactId = null;
-            authCtx.selectedContactId(null);
-            localStorage.removeItem("ContactID")
-            localStorage.removeItem('data');
-            //remove skip rules
-            authCtx.redirect =null;
-            authCtx.setRedirect(null);
-            authCtx.focusElement = null;
-            authCtx.setFocusElement(null);
-            localStorage.removeItem("redirect")
-            localStorage.removeItem('focusElement');
-            localStorage.removeItem('last_section');
-            localStorage.removeItem('schedule_count');
-
-            router.push('/dashboard/callinterface')  
-          }
-          
-    
+        ) .then(function (response) {            
+            responseOperation(response,authCtx,router);            
         })
+
+        
+        
         
     }
 
+    function onKeyDown(keyEvent:any) {
+      if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+        keyEvent.preventDefault();
+      }
+    }
+
     return(
-      scheduleCount < parseInt(max_schedule_count) ?
+      scheduleCount < parseInt(maxscheduleCount) ?
       <Formik 
               initialValues={ContactStatus}
               validationSchema={ContactStatusSchema} 
               onSubmit={handleFormSubmit}
               render={({isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched})=>(
               
-                <Form >
+                <Form onKeyDown={onKeyDown} >
 <div className="w-full">
 <label className="mb-3 block text-black dark:text-white">
                   Select Date and Time

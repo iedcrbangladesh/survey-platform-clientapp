@@ -55,12 +55,18 @@ const ContactStatusComponent = ()=>{
               localStorage.removeItem('data');
               localStorage.removeItem('last_section');
               localStorage.removeItem('schedule_count');
+              localStorage.removeItem('boundaryReached');
+              localStorage.removeItem('snowball');
+              localStorage.removeItem('snowball_count');
+
             }
             //remove skip rules
             authCtx.redirect =null;
             authCtx.setRedirect(null);
             authCtx.focusElement = null;
             authCtx.setFocusElement(null);
+            authCtx.boundaryReached = null;
+            authCtx.setBoundaryReached(null);
 
             
 
@@ -78,6 +84,12 @@ const ContactStatusComponent = ()=>{
         })
     }
 
+    function onKeyDown(keyEvent:any) {
+      if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+        keyEvent.preventDefault();
+      }
+    }
+
     return(
         <Formik 
               initialValues={ContactStatus}
@@ -85,7 +97,7 @@ const ContactStatusComponent = ()=>{
               onSubmit={handleFormSubmit}
               render={({isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched})=>(
               
-                <Form >
+                <Form onKeyDown={onKeyDown}>
 <div className="w-full">
 <label className="mb-3 block text-black dark:text-white">
                   Select Call status

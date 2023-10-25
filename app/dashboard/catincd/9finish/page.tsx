@@ -6,13 +6,14 @@ import CheckComponent from "@/app/components/CheckComponent";
 import SelectComponent from '@/app/components/SelectComponent';
 import SelectNonCreatableComponent from '@/app/components/SelectNonCreatableComponent';
 import useAuth from '@/app/hooks/useAuth';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import axios from 'axios';
 import sectionLink from "@/app/json/sectionlink.json";
 const sections:any = sectionLink;
 
 
 import {Field, FieldArray ,useFormikContext} from 'formik';
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useCallback, useEffect, useMemo} from 'react';
 
 //Data
 import option_data from "@/app/json/catincd_data.json";
@@ -24,9 +25,15 @@ import { disable_logic, skip_logic } from "@/app/api/logic-checker";
 const Finish = ()=>{
 
 const router = useRouter();
+const pathname = usePathname();
 const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
+const boundary_reached:any = authCtx.boundaryReached;
+
+const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
+
 
 
 const redirect_logic = useCallback(()=>{
@@ -79,15 +86,16 @@ const focus_element_logic = useCallback(()=>{
 
 useEffect(()=>{
   
-  redirect_logic()
+    redirect_logic()
 
 },[redirect,router,authCtx,redirect_logic])
 
-useEffect(()=>{
 
-  focus_element_logic()  
+useEffect(()=>{  
+    
+    focus_element_logic()
 
-},[focus_element, authCtx,focus_element_logic])
+},[redirect,router,authCtx,focus_element_logic])
 
 const redirect_or_focus_location = (v:any, name:any, type:any)=>{
   if(v!=null){
@@ -109,7 +117,7 @@ const next_url = "";
 
 
 
-const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
     return(
         <>
         <div className='grid grid-cols-1 gap-9 sm:grid-cols-1'>
@@ -158,7 +166,8 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 </div>
 
-          </div>
+          
+          </div>          
 
                     
           

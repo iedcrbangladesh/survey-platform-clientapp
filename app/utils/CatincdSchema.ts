@@ -94,9 +94,9 @@ education:object().shape({
 religion:object().shape({
   value: string(),
   label: string()
-}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
-  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education','$boundary_reached' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any, boundary_reached:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) && (boundary_reached == null) );
         return check
 },  then: (schema:any) =>{
            return schema.shape({
@@ -320,9 +320,9 @@ have_moped_scooter_bike_autorickhshaw:object().shape({
 fruits_consumption:object().shape({
   value: string(),
   label: string()
-}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
-  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education','$boundary_reached' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any, boundary_reached:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) && (boundary_reached == null) );
         return check
 },  then: (schema:any) =>{
            return schema.shape({
@@ -429,9 +429,9 @@ salt_consumption_frequency:object().shape({
 relax:object().shape({
   hour: number(),
   minute: number()
-}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
-  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ,'$boundary_reached'],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any, boundary_reached:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) && (boundary_reached == null) );
         return check
 },  then: (schema:any) =>{
            return schema.shape({
@@ -447,9 +447,9 @@ relax:object().shape({
 blood_pressure_measured:object().shape({
   value: string(),
   label: string()
-}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
-  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ,'$boundary_reached'],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any, boundary_reached:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) && (boundary_reached == null) );
         return check
 },  then: (schema:any) =>{
            return schema.shape({
@@ -562,9 +562,9 @@ diabetic_medicine_taken:object().shape({
 smoking_habit:object().shape({
   value: string(),
   label: string()
-}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
-  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education', '$boundary_reached' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any, boundary_reached:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) && (boundary_reached == null) );
         return check
 },  then: (schema:any) =>{
            return schema.shape({
@@ -583,19 +583,6 @@ smoking_habit_reguler:object().shape({
            return schema.shape({
             value: string().required('Smoking Habit Reguler is required!'),
             label: string().required('Smoking Habit Reguler is required!')
-      });            
-  }
-  
-}),
-smoking_habit_previous:object().shape({
-  value: string(),
-  label: string()
-}).when('smoking_habit',{
-  is: (val:any)=>val && (parseInt(val.value) > 0 ),
-  then: (schema:any) =>{
-           return schema.shape({
-            value: string().required('Smoking Habit Previous is required!'),
-            label: string().required('Smoking Habit Previous is required!')
       });            
   }
   
@@ -626,28 +613,15 @@ non_smoking_habit_reguler:object().shape({
   }
   
 }),
-non_smoking_habit_previous:object().shape({
-  value: string(),
-  label: string()
-}).when('non_smoking_habit',{
-  is: (val:any)=>val && (parseInt(val.value) > 0 ),
-  then: (schema:any) =>{
-           return schema.shape({
-            value: string().required('Non Smoking Habit Previous is required!'),
-            label: string().required('Non Smoking Habit Previous is required!')
-      });            
-  }
-  
-}),
 
         }),
         drinking_related:object().shape({
 alchohol_usage:object().shape({
   value: string(),
   label: string()
-}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education' ],{
-  is: (i_p:any,age:any, c_o_v:any, d:any, e:any)=>{
-        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) );
+}).when([ '$interviewer_permission', '$age', '$city_or_village', '$district', '$education','$boundary_reached' ],{
+  is: (i_p:any,age:any, c_o_v:any, d:any, e:any, boundary_reached:any)=>{
+        const check = (i_p && (parseInt(i_p.value) < 3 )) && (age && (age.value > 17 && age.value < 101) && (c_o_v.value < 88 ) && (d.value !='') && (e.value < 99) && (boundary_reached == null) );
         return check
 },  then: (schema:any) =>{
            return schema.shape({

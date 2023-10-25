@@ -6,12 +6,13 @@ import CheckComponent from "@/app/components/CheckComponent";
 import SelectComponent from '@/app/components/SelectComponent';
 import SelectNonCreatableComponent from '@/app/components/SelectNonCreatableComponent';
 import useAuth from '@/app/hooks/useAuth';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import axios from 'axios';
 
 
 
 import {Field, FieldArray ,useFormikContext} from 'formik';
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useCallback, useEffect, useMemo} from 'react';
 
 //Data
 import option_data from "@/app/json/catincd_data.json";
@@ -27,9 +28,96 @@ import { disable_logic, skip_logic } from "@/app/api/logic-checker";
 const Eligibilitytimeselection = ()=>{
 
 const router = useRouter();
+const pathname = usePathname();
 const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
+const boundary_reached:any = authCtx.boundaryReached;
+
+const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
+
+      
+  const url = process.env.api_url;
+  const current_question_url:any = process.env.current_question_url;
+ 
+
+    const freeBounaryArray:any[]=useMemo(()=>[],[]);
+    const [freeboundary, setFreeboundary] = useState(freeBounaryArray)
+    const loadBoundary = ()=>{
+      if(typeof window != 'undefined'){
+        let boundary = localStorage.getItem('boundary')
+      }
+    }
+
+    const QuotaInterviewNow=async()=>{
+        
+      const dispose_status = {"value":14,"label":"14 কোটা পূর্ণ হয়ে গেছে"};
+      const interviewNowData = {
+          userid:authCtx.userId,
+          contactnumber:authCtx.activeMobileNumber,
+          questionid:authCtx.activeContactId,
+          boundary_reached:authCtx.boundaryReached,
+          done:0,
+          dispose_status:dispose_status,
+          data:values
+      }
+
+      await axios.post(`${url}interview-now`, 
+        interviewNowData, 
+        {    
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+        ) .then(function (response:any) {
+          
+          const {data} = response
+          if(data.user_contact_id 
+            && data.contact_question_id
+            && data.mobile_no!=null            
+          ){
+
+            localStorage.removeItem('data');
+            
+
+            //remove skip rules
+            authCtx.redirect =null;
+            authCtx.setRedirect(null);
+            authCtx.focusElement = null;
+            authCtx.setFocusElement(null);
+            authCtx.boundaryReached = null;
+            authCtx.setBoundaryReached(null)
+
+            localStorage.removeItem("redirect")
+            localStorage.removeItem('focusElement');
+            localStorage.removeItem('last_section');
+            localStorage.removeItem('schedule_count');            
+            localStorage.removeItem('boundaryReached');
+            localStorage.removeItem('snowball');
+            localStorage.removeItem('snowball_count');
+
+
+            authCtx.activeContactId = data.contact_question_id;
+            authCtx.selectedContactId(data.contact_question_id);
+            authCtx.activeMobileNumber = data.mobile_no;
+            authCtx.selectedMobile(data.mobile_no);
+            
+
+
+
+
+            router.push(current_question_url)
+          }
+
+          router.push(current_question_url)
+          
+          
+        })
+        
+        
+    }
+      
 
 
 const redirect_logic = useCallback(()=>{
@@ -82,15 +170,16 @@ const focus_element_logic = useCallback(()=>{
 
 useEffect(()=>{
   
-  redirect_logic()
+    redirect_logic()
 
 },[redirect,router,authCtx,redirect_logic])
 
-useEffect(()=>{
 
-  focus_element_logic()  
+useEffect(()=>{  
+    
+    focus_element_logic()
 
-},[focus_element, authCtx,focus_element_logic])
+},[redirect,router,authCtx,focus_element_logic])
 
 const redirect_or_focus_location = (v:any, name:any, type:any)=>{
   if(v!=null){
@@ -119,7 +208,7 @@ const next_url = "3demographic_information";
         focus_element_logic()
       }
 
-const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
     return(
         <>
         <div className='grid grid-cols-1 gap-9 sm:grid-cols-1'>
@@ -317,7 +406,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  শহর বলতে বুঝানো হচ্ছে বিভাগ, জেলা বা উপজেলাা সদরের এলাকা (অর্থাৎ, সিটি করপোরেশন, পৌরসভা এবং ক্যান্টনমেন্ট এলাকা)।<br/>গ্রাম এলাকা হচ্ছে উপজেলাা সদরের বাইরের ইউনিয়ন সমূহের এলাকা।<br/>জানি না বা অস্বীকৃিতর ক্ষেত্রে ধন্যবাদ জানিয়ে শেষ করুন।
+  শহর বলতে বুঝানো হচ্ছে বিভাগ, জেলা বা উপজেলা সদরের এলাকা (অর্থাৎ, সিটি করপোরেশন, পৌরসভা এবং ক্যান্টনমেন্ট এলাকা)।<br/>গ্রাম এলাকা হচ্ছে উপজেলা সদরের বাইরের ইউনিয়ন সমূহের এলাকা।<br/>জানি না বা অস্বীকৃিতর ক্ষেত্রে ধন্যবাদ জানিয়ে শেষ করুন।
   </div>
 </div>
 </div>
@@ -655,14 +744,71 @@ touched.eligibility_timeselection.name_of_person && (
 </div>
 )}
 
-          </div>
+          
+      {
+                authCtx.boundaryReached!=null && <>
+                <div className="my-1 grid grid-cols-2 gap-1">
+                <div className="flex flex-col">
+  <div className="py-2">
+    
+                <button type="button" onClick={QuotaInterviewNow} className="w-1/2 justify-center rounded bg-[#993300] p-3 font-medium text-white">
+                বাসায়/খানায় পূর্ণ হয়নি এমন অন্য কোটার কেউ
+                এখনই কথা বলতে পারবেন                
+                </button>
+
+                
+                </div>
+                
+                </div>
+
+                <div className="flex flex-col">
+
+                </div>
+
+                </div>
+                <div className="my-1 grid grid-cols-2 gap-1">
+                <div className="flex flex-col">
+  <div className="py-2">
+    
+                <button type="submit" className="w-1/2 justify-center rounded bg-[#FF0033] p-3 font-medium text-white">
+                কোটা পূর্ণ হয়ে গেছে                
+                </button>
+
+                
+                </div>
+                
+                </div>
+                <div className="flex flex-col">
+                  <table className="table-auto border-collapse border border-slate-400">
+                    <tr>
+                      <th>Division</th>
+                      <th>Age Group</th>
+                      <th>Gender</th>
+                      <th>Urban or Rural</th>
+                      <th>Education Group</th>
+                    </tr>
+                    <tr className="bg-[#FF0033] text-white">
+                      <th>{authCtx.boundaryReached.name}</th>
+                      <th>{authCtx.boundaryReached.age_start} to {authCtx.boundaryReached.age_end}</th>
+                      <th>{authCtx.boundaryReached.gender}</th>
+                      <th>{authCtx.boundaryReached.urban_rural}</th>
+                      <th>{authCtx.boundaryReached.education_group}</th>
+                      </tr>
+                  </table>
+                </div>
+                </div>
+                </>
+              }
+
+      
+          </div>          
 
           
 
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              authCtx.focusElement =="terminate" && 
+              authCtx.focusElement =="terminate" && authCtx.boundaryReached == null &&
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -672,7 +818,7 @@ touched.eligibility_timeselection.name_of_person && (
             </div>
             <div className="flex flex-col">
             {
-              authCtx.focusElement !="terminate" &&
+              authCtx.focusElement !="terminate" && authCtx.boundaryReached == null &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>

@@ -6,12 +6,13 @@ import CheckComponent from "@/app/components/CheckComponent";
 import SelectComponent from '@/app/components/SelectComponent';
 import SelectNonCreatableComponent from '@/app/components/SelectNonCreatableComponent';
 import useAuth from '@/app/hooks/useAuth';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import axios from 'axios';
 
 
 
 import {Field, FieldArray ,useFormikContext} from 'formik';
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useCallback, useEffect, useMemo} from 'react';
 
 //Data
 import option_data from "@/app/json/catincd_data.json";
@@ -23,9 +24,15 @@ import { disable_logic, skip_logic } from "@/app/api/logic-checker";
 const Demographicinformation = ()=>{
 
 const router = useRouter();
+const pathname = usePathname();
 const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
+const boundary_reached:any = authCtx.boundaryReached;
+
+const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
+
 
 
 const redirect_logic = useCallback(()=>{
@@ -78,15 +85,16 @@ const focus_element_logic = useCallback(()=>{
 
 useEffect(()=>{
   
-  redirect_logic()
+    redirect_logic()
 
 },[redirect,router,authCtx,redirect_logic])
 
-useEffect(()=>{
 
-  focus_element_logic()  
+useEffect(()=>{  
+    
+    focus_element_logic()
 
-},[focus_element, authCtx,focus_element_logic])
+},[redirect,router,authCtx,focus_element_logic])
 
 const redirect_or_focus_location = (v:any, name:any, type:any)=>{
   if(v!=null){
@@ -115,7 +123,7 @@ const next_url = "4food_habits";
         focus_element_logic()
       }
 
-const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
     return(
         <>
         <div className='grid grid-cols-1 gap-9 sm:grid-cols-1'>
@@ -265,7 +273,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      যদি তথ্য প্রদানকারী গত ১২ মাসে একাধকি পেশায় নিযুক্ত থাকেন তা হলে <br/>তিনি যে পেশাটিতে বেশি সময় ব্যায় করেছেন এবং প্রধান হিসেবে বিবেচনা করেন তা লিপিবদ্ধ করুন।<br/>সঠিক উত্তরটি নির্বাচন করুন।<br/>এই প্রশ্নরে মূল উদ্দশ্যে হচ্ছে তথ্য প্রদাণকারীর পেশার ও অন্য প্রশ্নের উত্তরের সাথে সম্পর্ক দেখা। যেমনঃ তার  পেশার সাথে অসংক্রামক রোগের ঝুঁকির সম্পৃক্ততা।
+      যদি তথ্য প্রদানকারী গত ১২ মাসে একাধিক পেশায় নিযুক্ত থাকেন তা হলে <br/>তিনি যে পেশাটিতে বেশি সময় ব্যয় করেছেন এবং প্রধান হিসেবে বিবেচনা করেন তা লিপিবদ্ধ করুন।<br/>সঠিক উত্তরটি নির্বাচন করুন।<br/>এই প্রশ্নরে মূল উদ্দশ্যে হচ্ছে তথ্য প্রদানকারীর পেশার ও অন্য প্রশ্নের উত্তরের সাথে সম্পর্ক দেখা। <br/>যেমনঃ তার  পেশার সাথে অসংক্রামক রোগের ঝুঁকির সম্পৃক্ততা।
     </div>
 </div>
 </div>
@@ -1230,14 +1238,15 @@ name="demographic_information.man_women_count.women" placeholder="মহিল�
 </div>
 
 
-          </div>
+          
+          </div>          
 
           
 
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              authCtx.focusElement =="terminate" && 
+              authCtx.focusElement =="terminate" && authCtx.boundaryReached == null &&
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -1247,7 +1256,7 @@ name="demographic_information.man_women_count.women" placeholder="মহিল�
             </div>
             <div className="flex flex-col">
             {
-              authCtx.focusElement !="terminate" &&
+              authCtx.focusElement !="terminate" && authCtx.boundaryReached == null &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>

@@ -18,12 +18,17 @@ const ContactScheduleComponent = ()=>{
     const mobile_no = authCtx.activeMobileNumber;
 
     const [scheduleCount, setScheduleCount] = useState(0)
+    const [maxscheduleCount, setMaxScheduleCount] = useState(max_schedule_count)
 
     useEffect(()=>{
       if(typeof window!='undefined'){
         const sc_count = localStorage.getItem("schedule_count")
+        const snowball = localStorage.getItem("snowball_count")
         if(sc_count!=null){
           setScheduleCount(parseInt(sc_count));
+        }
+        if(snowball!=null){
+          setMaxScheduleCount(max_schedule_count+1)
         }
       }
     },[])
@@ -84,15 +89,28 @@ const ContactScheduleComponent = ()=>{
             authCtx.focusElement = null;
             authCtx.setFocusElement(null);
 
+            authCtx.boundaryReached = null;
+            authCtx.setBoundaryReached(null);
+
             localStorage.removeItem("redirect")
             localStorage.removeItem('focusElement');
             localStorage.removeItem('last_section');
             localStorage.removeItem('schedule_count');
+            localStorage.removeItem('boundaryReached');
+            localStorage.removeItem('snowball');
+            localStorage.removeItem('snowball_count');
+
             
           }
           router.push('/dashboard/callinterface')
     
         })
+    }
+
+    function onKeyDown(keyEvent:any) {
+      if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+        keyEvent.preventDefault();
+      }
     }
 
     return(
@@ -102,7 +120,7 @@ const ContactScheduleComponent = ()=>{
               onSubmit={handleFormSubmit}
               render={({isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched})=>(
               
-                <Form >
+                <Form onKeyDown={onKeyDown}>
 <div className="w-full">
 <label className="mb-3 block text-black dark:text-white">
                   Select Call status
@@ -112,7 +130,7 @@ const ContactScheduleComponent = ()=>{
                                  placeholder="Select Call status"
                                  isSearchable
                                  isClearable                                 
-                                  name="dispose_status" options={ scheduleCount < parseInt(max_schedule_count) ? contact_status.schedule_status:contact_status.forece_status} 
+                                  name="dispose_status" options={ scheduleCount < parseInt(maxscheduleCount) ? contact_status.schedule_status:contact_status.forece_status} 
                            onParentChange={(value:any,name:any)=>{
 
                            }}       

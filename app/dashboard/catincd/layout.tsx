@@ -1,7 +1,7 @@
 "use client";
 import { ReactNode, useEffect, useState, useCallback } from 'react';
 import {Formik, Form, yupToFormErrors, validateYupSchema, useFormikContext} from 'formik';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import axios from 'axios';
 
 import Header from '@/app/components/Header';
@@ -21,14 +21,82 @@ interface CatincdLayoutProps {
 }
 
 const FormObserver =() => {
-  const { values } = useFormikContext();
-
+  const { values }:any = useFormikContext();
+  const pathname = usePathname();
+  const authCtx = useAuth();
   useEffect(() => {
     //console.log("FormObserver::values", values);
     if(typeof window !== 'undefined'){
-      localStorage.setItem('data',JSON.stringify(values));
+      
+      if(authCtx.activeContactId!=null){
+        localStorage.setItem('data',JSON.stringify(values));
+      }
+
+
+      const eligibility_timeselection_url = '2eligibility_timeselection';
+      
+      if(pathname.slice(-eligibility_timeselection_url.length) == eligibility_timeselection_url){
+
+        let boundary:any = localStorage.getItem('boundary');
+        
+        
+        const gender = values.eligibility_timeselection.gender?.value;
+        const age = values.eligibility_timeselection.age?.value;
+        const city_or_village = values.eligibility_timeselection.city_or_village?.value;
+        const area_code = values.eligibility_timeselection.district.parent;
+        const education = values.eligibility_timeselection.education?.value;
+        //gender
+        let gender_string = 'male';
+        if(gender > 1){
+          gender_string = 'female';
+        }
+        //education
+        let education_string = 'no_education'
+        if(education > 1){
+        
+          if([2,3].includes(education)){
+            education_string = 'primary'
+          }
+          if([4,5,6,7].includes(education)){
+            education_string = 'primary_up'
+          }
+        }
+        //city or village
+        let city_or_village_string = 'urban';
+        if(city_or_village > 1){
+          city_or_village_string = 'rural'
+        }
+        if(boundary != null){
+          
+          boundary = JSON.parse(boundary);
+          
+          const selected_boundary:any =  boundary.filter((el:any)=>{
+             return( 
+            (el.area_code == area_code) 
+              && ( age>=el.age_start && age<=el.age_end )
+              && (el.urban_rural == city_or_village_string) 
+              && (el.education_group == education_string)
+              && (el.gender == gender_string)) && (el.target <(el.done+1)) && el;
+          })
+          
+          if(selected_boundary.length > 0){
+            authCtx.boundaryReached = selected_boundary[0]
+            authCtx.setBoundaryReached(JSON.stringify(selected_boundary[0]))
+            
+          }else{
+            authCtx.boundaryReached = null;
+            authCtx.setBoundaryReached(null);
+            localStorage.removeItem('boundaryReached');            
+            
+          }
+        }
+
+      }
+      
+
+      
     }
-  }, [values]);
+  }, [values,pathname,authCtx]);
 
   return null;
 };
@@ -39,8 +107,23 @@ const CatincdLayout = ({ children }: CatincdLayoutProps) => {
   const userid = authCtx.userId;
   const mobileNumber = authCtx.activeMobileNumber;
   const contactId = authCtx.activeContactId;
+  let boundary_reached = authCtx.boundaryReached;
+
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+
+  const fetchBounday = useCallback(async()=>{
+    const {data} = await axios.get(`${url}boundary`);
+    if(typeof window !== 'undefined'){
+      localStorage.setItem('boundary',JSON.stringify(data.boundary))
+    }
+  },[])
+
+  useEffect(()=>{
+        fetchBounday() 
+          
+  },[fetchBounday])
 
   let Catincd ={
     introduction_permission:{
@@ -119,15 +202,29 @@ thirty_days_alchohol_usage:{value:'',label:''},
   
   const fetchCatincdData = useCallback(async()=>{
     const response = await axios.get(`${url}get-question/${contactId}`);
-    if(typeof window !== 'undefined' && response.data.data!=null){
-      localStorage.setItem('data',JSON.stringify(response.data.data));
+      
+    if(typeof window !== 'undefined'){
+      if(response.data.data!=null){
+        localStorage.setItem('data',JSON.stringify(response.data.data));
+      }
       if(response.data.last_section!=null){
         localStorage.setItem('last_section',response.data.last_section)
       }
       if(response.data.schedule_count!=null){
         localStorage.setItem('schedule_count',response.data.schedule_count)
       }
+      
+      if(response.data.snowball!=null){        
+        localStorage.setItem('snowball',JSON.stringify(response.data.snowball))
+      }
+
+      if(response.data.snowball_count!=null){        
+        localStorage.setItem('snowball_count',response.data.snowball_count)
+      }
+      
     }
+
+
   },[contactId]);
 
   useEffect(()=>{
@@ -135,38 +232,44 @@ thirty_days_alchohol_usage:{value:'',label:''},
   },[fetchCatincdData]);
 
   let previous_data = typeof window !== 'undefined'?localStorage.getItem('data'):null;
+  let snowball_data = typeof window !== 'undefined'?localStorage.getItem('snowball'):null;
 
-  if(previous_data!=null && typeof window !== 'undefined'){
+  if(previous_data!=null && snowball_data == null && typeof window !== 'undefined'){
     //console.log(JSON.parse(previous_data))
     Catincd = JSON.parse(previous_data)
   }
 
   const handleFormSubmit = async(values:any)=>{
     //console.log(values);
-    const done = authCtx.focusElement =="terminate" ? 0:1;
+    const done = authCtx.focusElement =="terminate" || boundary_reached !=null ? 0:1;
     let dispose_status:any = null;    
     //console.log(values);
     if(done> 0){
-      dispose_status = {"value":1,"label":"সম্পূর্ণ"};
+      dispose_status = {"value":1,"label":"1 সম্পূর্ণ"};
     }
     const age_value = values?.eligibility_timeselection?.age?.value;
     const interviewer_permission = values?.introduction_permission?.interviewer_permission?.value;
     if(age_value < 18){
-      dispose_status = {"value":12,"label":"বয়স ১৮ এর নিচে"};
+      dispose_status = {"value":12,"label":"12 বয়স ১৮ এর নিচে"};
     }
     if(age_value  > 120){
-      dispose_status = {"value":15,"label":"বয়স নিয়ে তথ্য পাওয়া যাইনি"};
+      dispose_status = {"value":15,"label":"15 বয়স নিয়ে তথ্য পাওয়া যাইনি"};
     }
     if(interviewer_permission >2){
       dispose_status = {"value":5,"label":"5 অসম্মত"};
     }
+    if(boundary_reached != null){
+      dispose_status = {"value":14,"label":"14 কোটা পূর্ণ হয়ে গেছে"};
+      boundary_reached = JSON.parse(boundary_reached)
+    }
     await axios.post(`${url}save-question`, 
     {
-    userid:authCtx.userId,
+    userid:userid,
     data:values,
     contactnumber:mobileNumber,
     done:done,
-    dispose_status:dispose_status
+    dispose_status:dispose_status,
+    boundary_reached:boundary_reached
     }, 
     {    
       headers: {
@@ -194,7 +297,17 @@ thirty_days_alchohol_usage:{value:'',label:''},
             localStorage.removeItem("redirect")
             localStorage.removeItem('focusElement');
             localStorage.removeItem('last_section');
-            localStorage.removeItem('schedule_count');
+            localStorage.removeItem('schedule_count');            
+            localStorage.removeItem('boundaryReached');
+            
+            localStorage.removeItem('snowball');
+            localStorage.removeItem('snowball_count');
+
+
+            authCtx.boundaryReached = null;
+            authCtx.setBoundaryReached(null)
+            
+            
 
             router.push('/dashboard/callinterface')
       }
@@ -204,6 +317,12 @@ thirty_days_alchohol_usage:{value:'',label:''},
 
     
 
+  }
+
+  function onKeyDown(keyEvent:any) {
+    if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+      keyEvent.preventDefault();
+    }
   }
 
   return (
@@ -233,7 +352,8 @@ thirty_days_alchohol_usage:{value:'',label:''},
                   'age':value.eligibility_timeselection.age,
                   'city_or_village':value.eligibility_timeselection.city_or_village,
                   'district':value.eligibility_timeselection.district,
-                  'education':value.eligibility_timeselection.education
+                  'education':value.eligibility_timeselection.education,
+                  'boundary_reached':boundary_reached
                   });
                 } catch (err) {
                   return yupToFormErrors(err); //for rendering validation errors
@@ -242,7 +362,7 @@ thirty_days_alchohol_usage:{value:'',label:''},
                 return {};
               }} 
               onSubmit={handleFormSubmit}>              
-                <Form className='mt-2 rounded-md border border-stroke p-2 py-1 dark:border-strokedark sm:py-2.5 sm:px-2 xl:px-2.5'>
+                <Form onKeyDown={onKeyDown} className='mt-2 rounded-md border border-stroke p-2 py-1 dark:border-strokedark sm:py-2.5 sm:px-2 xl:px-2.5'>
                     <FormObserver />
                     {children}
                 </Form>

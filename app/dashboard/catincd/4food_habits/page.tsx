@@ -6,12 +6,13 @@ import CheckComponent from "@/app/components/CheckComponent";
 import SelectComponent from '@/app/components/SelectComponent';
 import SelectNonCreatableComponent from '@/app/components/SelectNonCreatableComponent';
 import useAuth from '@/app/hooks/useAuth';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import axios from 'axios';
 
 
 
 import {Field, FieldArray ,useFormikContext} from 'formik';
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useCallback, useEffect, useMemo} from 'react';
 
 //Data
 import option_data from "@/app/json/catincd_data.json";
@@ -23,9 +24,15 @@ import { disable_logic, skip_logic } from "@/app/api/logic-checker";
 const Foodhabits = ()=>{
 
 const router = useRouter();
+const pathname = usePathname();
 const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
+const boundary_reached:any = authCtx.boundaryReached;
+
+const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
+
 
 
 const redirect_logic = useCallback(()=>{
@@ -78,15 +85,16 @@ const focus_element_logic = useCallback(()=>{
 
 useEffect(()=>{
   
-  redirect_logic()
+    redirect_logic()
 
 },[redirect,router,authCtx,redirect_logic])
 
-useEffect(()=>{
 
-  focus_element_logic()  
+useEffect(()=>{  
+    
+    focus_element_logic()
 
-},[focus_element, authCtx,focus_element_logic])
+},[redirect,router,authCtx,focus_element_logic])
 
 const redirect_or_focus_location = (v:any, name:any, type:any)=>{
   if(v!=null){
@@ -115,7 +123,7 @@ const next_url = "5relax_information";
         focus_element_logic()
       }
 
-const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
     return(
         <>
         <div className='grid grid-cols-1 gap-9 sm:grid-cols-1'>
@@ -150,7 +158,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১.১ সপ্তাহের কত দিন আপনি ফল (যেমন, কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, কুল—বড়ই বা লিচু, অথবা এক কাপ কাটা ফল) খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
+      ৪. ১.১ সপ্তাহের কত দিন আপনি ফল (যেমন, কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, <br/>খেজুর, কুল—বড়ই বা লিচু, অথবা এক কাপ কাটা ফল) খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -292,7 +300,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ ০ দিন হয়, <br/>তাহলে প্রশ্ন ৪.২.১ - এ যান।
+      যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ ০ দিন হয়, <br/>তাহলে প্রশ্ন ৪.২ - এ যান।
     </div>
 </div>
 </div>
@@ -629,14 +637,15 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 
 
-          </div>
+          
+          </div>          
 
           
 
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              authCtx.focusElement =="terminate" && 
+              authCtx.focusElement =="terminate" && authCtx.boundaryReached == null &&
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -646,7 +655,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             </div>
             <div className="flex flex-col">
             {
-              authCtx.focusElement !="terminate" &&
+              authCtx.focusElement !="terminate" && authCtx.boundaryReached == null &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>

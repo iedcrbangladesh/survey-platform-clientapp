@@ -14,6 +14,8 @@ interface AuthContextType{
     
     redirect:string|undefined|null,
     focusElement:string|undefined|null,
+    boundaryReached:any,
+    
     
     login:(token:string, expirationTime:Date, role:string,displayName:string, userId:string)=>void,
     logout:()=>void,
@@ -25,6 +27,10 @@ interface AuthContextType{
 
     setRedirect:(route:string|undefined|null)=>void,
     setFocusElement:(focus_element:string|undefined|null)=>void
+
+    setBoundaryReached:(boundaryReached:any)=>void
+
+    
 
     cleanPreviousOnloggedIn:()=>void
 
@@ -45,6 +51,8 @@ const AuthContext = createContext<AuthContextType>({
     activeContactId:null,
     redirect:null,
     focusElement:null,
+    boundaryReached:null,
+    
     login:(token:string, expirationTime:Date, role:string,displayName:string, userId:string)=>{},
     logout:()=>{},
     selectedName:(displayName:string|undefined|null) =>{},
@@ -53,6 +61,8 @@ const AuthContext = createContext<AuthContextType>({
     
     setRedirect:(route:string|undefined|null)=>{},
     setFocusElement:(focus_element:string|undefined|null)=>{},
+    setBoundaryReached:(boundaryReached:any)=>{},
+    
     cleanPreviousOnloggedIn:()=>{}
 
 });
@@ -81,21 +91,14 @@ const removeAllFromStorage=()=>{
         localStorage.removeItem('focusElement');
         localStorage.removeItem('last_section');
         localStorage.removeItem('schedule_count');
+        localStorage.removeItem('boundaryReached');
+        
+        localStorage.removeItem('snowball');
+        localStorage.removeItem('snowball_count');
 
     }
 }
-const  cleanPreviousOnloggedInHandler =()=>{
-    if(typeof window !== 'undefined'){
-        localStorage.removeItem('MobileNumber');
-        localStorage.removeItem('ContactID')        
-        //data previous
-        localStorage.removeItem('data');
-        localStorage.removeItem('redirect');
-        localStorage.removeItem('focusElement');
-        localStorage.removeItem('last_section');
-        localStorage.removeItem('schedule_count');
-    }
-}
+
 
 const retriveStoredToken = ()=>{
 
@@ -111,6 +114,8 @@ const retriveStoredToken = ()=>{
 
         const redirect = typeof window !== 'undefined'?localStorage.getItem('redirect'):null;
         const focusElement = typeof window !== 'undefined'?localStorage.getItem('focusElement'):null;
+
+        const boundaryReached = typeof window !== 'undefined'?localStorage.getItem('boundaryReached'):null;
         
         //console.log(storedExpirationDate)
         //const remaintingTime = calculateRemainingTime(storedExpirationDate);
@@ -133,7 +138,9 @@ const retriveStoredToken = ()=>{
         mobileNumber:activeMobileNumber,
         contactID:activeContactId,
         redirect:redirect,
-        focusElement:focusElement
+        focusElement:focusElement,
+        boundaryReached:boundaryReached
+        
     }
 };
 
@@ -159,6 +166,7 @@ export const AuthContextProvider = (props:any)=>{
 
     let initFocusElement;
     let initRedirect;
+    let initBoundaryReached;
     
     if(tokenData){
         initialToken = tokenData.token;
@@ -169,6 +177,8 @@ export const AuthContextProvider = (props:any)=>{
 
         initRedirect = tokenData.redirect;
         initFocusElement = tokenData.focusElement;
+        initBoundaryReached = tokenData.boundaryReached;
+        
         
     }
     const [token , setToken] = useState(initialToken);
@@ -182,6 +192,10 @@ export const AuthContextProvider = (props:any)=>{
 
     const [redirect, setRedirect] = useState(initRedirect);
     const [focusElement, setFocusElement] = useState(initFocusElement);
+
+    const [boundaryReached, setBoundaryReached] = useState(initBoundaryReached);
+
+    
     
     const userIsLoggedIn = !!token;
     const role = tokenData?.role;
@@ -201,6 +215,8 @@ export const AuthContextProvider = (props:any)=>{
             setContactID(null);
             setRedirect(null);
             setFocusElement(null);
+            setBoundaryReached(null);
+            
 
             if(hasCookie('AUTH_DATA')){
                 deleteCookie('AUTH_DATA')
@@ -298,6 +314,42 @@ export const AuthContextProvider = (props:any)=>{
         }
     }
 
+    const setBoundaryReachedHandler = (boundaryReached:any)=>{
+        if(typeof window !== 'undefined' 
+        && typeof boundaryReached != 'undefined' 
+        ){
+            setBoundaryReached(boundaryReached);
+            if(boundaryReached!==null){
+                localStorage.setItem('boundaryReached',boundaryReached);
+            }
+        }
+    }
+
+    
+
+    const  cleanPreviousOnloggedInHandler =()=>{
+        if(typeof window !== 'undefined'){
+            setMobileNumber(null);
+            setContactID(null);
+            setRedirect(null);
+            setFocusElement(null);
+            setBoundaryReached(null);
+                        
+            localStorage.removeItem('MobileNumber');
+            localStorage.removeItem('ContactID')        
+            //data previous
+            localStorage.removeItem('data');
+            localStorage.removeItem('redirect');
+            localStorage.removeItem('focusElement');
+            localStorage.removeItem('last_section');
+            localStorage.removeItem('schedule_count');
+            localStorage.removeItem('boundaryReached');
+            
+            localStorage.removeItem('snowball');
+            localStorage.removeItem('snowball_count');
+        }
+    }
+
     
     
     /*
@@ -320,7 +372,8 @@ export const AuthContextProvider = (props:any)=>{
 
         redirect:redirect,
         focusElement:focusElement,
-
+        boundaryReached:boundaryReached,
+        
         login:loginHandler,
         logout :logoutHandler,
         
@@ -330,6 +383,9 @@ export const AuthContextProvider = (props:any)=>{
         
         setRedirect:setRedirectHandler,
         setFocusElement:setFocusElementHandler,
+        setBoundaryReached:setBoundaryReachedHandler,
+        
+
         cleanPreviousOnloggedIn:cleanPreviousOnloggedInHandler
     };
     return <AuthContext.Provider value={contextValue}>

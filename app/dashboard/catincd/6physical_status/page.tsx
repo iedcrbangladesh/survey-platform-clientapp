@@ -6,12 +6,13 @@ import CheckComponent from "@/app/components/CheckComponent";
 import SelectComponent from '@/app/components/SelectComponent';
 import SelectNonCreatableComponent from '@/app/components/SelectNonCreatableComponent';
 import useAuth from '@/app/hooks/useAuth';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import axios from 'axios';
 
 
 
 import {Field, FieldArray ,useFormikContext} from 'formik';
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useCallback, useEffect, useMemo} from 'react';
 
 //Data
 import option_data from "@/app/json/catincd_data.json";
@@ -23,9 +24,15 @@ import { disable_logic, skip_logic } from "@/app/api/logic-checker";
 const Physicalstatus = ()=>{
 
 const router = useRouter();
+const pathname = usePathname();
 const authCtx = useAuth();
 const focus_element:any = authCtx.focusElement;
 const redirect:any = authCtx.redirect;
+const boundary_reached:any = authCtx.boundaryReached;
+
+const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
+
 
 
 const redirect_logic = useCallback(()=>{
@@ -78,15 +85,16 @@ const focus_element_logic = useCallback(()=>{
 
 useEffect(()=>{
   
-  redirect_logic()
+    redirect_logic()
 
 },[redirect,router,authCtx,redirect_logic])
 
-useEffect(()=>{
 
-  focus_element_logic()  
+useEffect(()=>{  
+    
+    focus_element_logic()
 
-},[focus_element, authCtx,focus_element_logic])
+},[redirect,router,authCtx,focus_element_logic])
 
 const redirect_or_focus_location = (v:any, name:any, type:any)=>{
   if(v!=null){
@@ -115,7 +123,7 @@ const next_url = "7smoking_related";
         focus_element_logic()
       }
 
-const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTouched }:any = useFormikContext();
+
     return(
         <>
         <div className='grid grid-cols-1 gap-9 sm:grid-cols-1'>
@@ -215,7 +223,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৬.১.২ সাধারনত আপনার উচ্চ রক্তচাপ বা ব্লাড প্রেশারের <br/>চিকিৎসা বা উপদেশ নিতে আপনি কোথায় যান?
+      ৬.১.২ আপনি সাধারনত আপনার উচ্চ রক্তচাপ বা <br/>ব্লাড প্রেশারের চিকিৎসা বা উপদেশ নিতে কোথায় যান/যাবেন?<br/>(একের অধিক উত্তর হতে পারে)
     </label>
     <span id="physical_status_blood_pressure_medicare_location"></span>
     
@@ -477,7 +485,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৬.২.২ আপনি সাধারনত আপনার ডায়াবেটিসর চিকিৎসা বা উপদেশ <br/>নিতে কোথায় যান?<br/>(একের অধিক উত্তর হতে পারে)
+      ৬.২.২ আপনি সাধারনত আপনার ডায়াবেটিসর চিকিৎসা বা উপদেশ <br/>নিতে কোথায় যান/যাবেন?<br/>(একের অধিক উত্তর হতে পারে)
     </label>
     <span id="physical_status_diabetic_medicare_location"></span>
     
@@ -659,14 +667,15 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
 </div>
 )}
 
-          </div>
+          
+          </div>          
 
           
 
       <div className="my-1 grid grid-cols-2 gap-4">
             <div className="flex flex-col">                
               {
-              authCtx.focusElement =="terminate" && 
+              authCtx.focusElement =="terminate" && authCtx.boundaryReached == null &&
               
               <button type="submit" className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black">
               Submit
@@ -676,7 +685,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
             </div>
             <div className="flex flex-col">
             {
-              authCtx.focusElement !="terminate" &&
+              authCtx.focusElement !="terminate" && authCtx.boundaryReached == null &&
               <button id="terminate" type='button' className="w-1/2 justify-center rounded bg-[#f1e56c] p-3 font-medium text-black" onClick={GoNext}>
               Next
               </button>
