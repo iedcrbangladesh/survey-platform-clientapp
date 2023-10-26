@@ -485,7 +485,7 @@ const next_url = "7smoking_related";
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৬.২.২ আপনি সাধারনত আপনার ডায়াবেটিসর চিকিৎসা বা উপদেশ <br/>নিতে কোথায় যান/যাবেন?<br/>(একের অধিক উত্তর হতে পারে)
+      ৬.২.২ আপনি সাধারনত আপনার ডায়াবেটিসের চিকিৎসা বা উপদেশ <br/>নিতে কোথায় যান/যাবেন?<br/>(একের অধিক উত্তর হতে পারে)
     </label>
     <span id="physical_status_diabetic_medicare_location"></span>
     

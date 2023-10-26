@@ -113,8 +113,8 @@ const Login=()=> {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
-              <a className="mb-5.5 inline-block justify-center" href="/">
-              <Image src={Logo} alt={app_name} className="mx-20"  />
+              <a className="mb-5.5 inline-block justify-center bg-white p-5" href="/">
+              <Image src={Logo} alt={app_name} className="mx-20" height={150}  />
               <span className='text-[#f1e56c]'>{app_name}</span>
               </a>
 

@@ -41,7 +41,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
   const url = process.env.api_url;
   const current_question_url:any = process.env.current_question_url;
  
-
+  /*
     const freeBounaryArray:any[]=useMemo(()=>[],[]);
     const [freeboundary, setFreeboundary] = useState(freeBounaryArray)
     const loadBoundary = ()=>{
@@ -49,6 +49,7 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
         let boundary = localStorage.getItem('boundary')
       }
     }
+    */
 
     const QuotaInterviewNow=async()=>{
         
@@ -351,7 +352,7 @@ const next_url = "3demographic_information";
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
   <label className="mb-1 block text-black dark:text-white">
-   ২.৩ আপনি শহরে না গ্রামে বাস করেন?
+   ২.৩ বর্তমানে আপনি শহরে না গ্রামে বাস করেন?
   </label>
   
 { option_data.eligibility_timeselection.city_or_village && option_data.eligibility_timeselection.city_or_village.map((v,i)=>(
@@ -406,7 +407,7 @@ const next_url = "3demographic_information";
 </div>
 <div className="flex flex-col">
   <div className="py-2">
-  শহর বলতে বুঝানো হচ্ছে বিভাগ, জেলা বা উপজেলা সদরের এলাকা (অর্থাৎ, সিটি করপোরেশন, পৌরসভা এবং ক্যান্টনমেন্ট এলাকা)।<br/>গ্রাম এলাকা হচ্ছে উপজেলা সদরের বাইরের ইউনিয়ন সমূহের এলাকা।<br/>জানি না বা অস্বীকৃিতর ক্ষেত্রে ধন্যবাদ জানিয়ে শেষ করুন।
+  শহর বলতে বুঝানো হচ্ছে বিভাগ, জেলা বা উপজেলা সদরের এলাকা (অর্থাৎ, সিটি করপোরেশন, পৌরসভা এবং ক্যান্টনমেন্ট এলাকা)।<br/>গ্রাম এলাকা হচ্ছে উপজেলা সদরের বাইরের ইউনিয়ন সমূহের এলাকা।<br/>জানি না বা অস্বীকৃতির ক্ষেত্রে ধন্যবাদ জানিয়ে শেষ করুন।
   </div>
 </div>
 </div>
@@ -653,7 +654,7 @@ parseInt(values.eligibility_timeselection.district.value) > 0) && (
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      <table className='table-auto border-collapse border border-slate-400'><br/><tr className='bg-gray-2 text-left dark:bg-meta-4'><br/><th colSpan={3}>সাধারণ শিক্ষা, ইংরেজী মাধ্যম ও মাদ্রাসা শিক্ষার সমমান নিচে দেয়া হলোঃ<br/></th><br/></tr><br/><tr><td className="border border-slate-300">প্রাথমিক</td><td className="border border-slate-300">এবতেদায়ী</td><td className="border border-slate-300">৫ বছর</td></tr><br/><tr><td className="border border-slate-300">মাধ্যমিক / ও লেভেল</td><td className="border border-slate-300">দাখিল</td><td className="border border-slate-300">১০ বছর</td></tr><br/><tr><td className="border border-slate-300">উচ্চ মাধ্যমিক / এ লেভেল</td><td className="border border-slate-300">আলিম</td><td className="border border-slate-300">১২  বছর</td></tr><br/><tr><td className="border border-slate-300">স্নাতক</td><td className="border border-slate-300">ফাজিল</td><td className="border border-slate-300">১৬  বছর</td></tr><br/><tr><td className="border border-slate-300">স্নাতকোত্তর</td><td className="border border-slate-300">কামিল</td><td className="border border-slate-300">১৮  বছর</td></tr><br/><tr><td className="border border-slate-300">প্রাথমিক</td><td className="border border-slate-300">এবতেদায়ী</td><td className="border border-slate-300">৫ বছর</td></tr><br/></table><br/>যদি উত্তরদাতা প্রাথমিক শিক্ষার কিছু বছর পড়াশোনা করে থাকনে তাহলে  2 প্রাথমিক/ সমতুল্য শিক্ষা শেষ করেননি  নির্বাচন করুন।<br/>আর যদি প্রাথমিকের পরে মাধ্যমিক র্পযায়ে ক্লাস করেছেন কিন্তু মাধ্যমিক পর্যায় অতিক্রম করতে পারেননি, তাহলে 3 প্রাথমিক/ সমতুল্য শিক্ষা শেষ করেছেন নির্বাচন করুন।<br/>প্রয়োজনে প্রাসঙ্গিক প্রশ্ন করতে হলে করুন।<br/>99 অস্বীকৃিতর ক্ষেত্রে ধন্যবাদ জানিয়ে শেষ করুন।
+      <table className='table-auto border-collapse border border-slate-400'><br/><tr className='bg-gray-2 text-left dark:bg-meta-4'><br/><th colSpan={3}>সাধারণ শিক্ষা, ইংরেজী মাধ্যম ও মাদ্রাসা শিক্ষার সমমান নিচে দেয়া হলোঃ<br/></th><br/></tr><br/><tr><td className="border border-slate-300">প্রাথমিক</td><td className="border border-slate-300">এবতেদায়ী</td><td className="border border-slate-300">৫ বছর</td></tr><br/><tr><td className="border border-slate-300">মাধ্যমিক / ও লেভেল</td><td className="border border-slate-300">দাখিল</td><td className="border border-slate-300">১০ বছর</td></tr><br/><tr><td className="border border-slate-300">উচ্চ মাধ্যমিক / এ লেভেল</td><td className="border border-slate-300">আলিম</td><td className="border border-slate-300">১২  বছর</td></tr><br/><tr><td className="border border-slate-300">স্নাতক</td><td className="border border-slate-300">ফাজিল</td><td className="border border-slate-300">১৬  বছর</td></tr><br/><tr><td className="border border-slate-300">স্নাতকোত্তর</td><td className="border border-slate-300">কামিল</td><td className="border border-slate-300">১৮  বছর</td></tr><br/><tr><td className="border border-slate-300">প্রাথমিক</td><td className="border border-slate-300">এবতেদায়ী</td><td className="border border-slate-300">৫ বছর</td></tr><br/></table><br/>যদি উত্তরদাতা প্রাথমিক শিক্ষার কিছু বছর পড়াশোনা করে থাকেন তাহলে  2 প্রাথমিক/ সমতুল্য শিক্ষা শেষ করেননি  নির্বাচন করুন।<br/>আর যদি প্রাথমিকের পরে মাধ্যমিক র্পযায়ে ক্লাস করেছেন কিন্তু মাধ্যমিক পর্যায় অতিক্রম করতে পারেননি, তাহলে 3 প্রাথমিক/ সমতুল্য শিক্ষা শেষ করেছেন নির্বাচন করুন।<br/>প্রয়োজনে প্রাসঙ্গিক প্রশ্ন করতে হলে করুন।<br/>অস্বীকৃতির ক্ষেত্রে ধন্যবাদ জানিয়ে শেষ করুন।
     </div>
 </div>
 </div>

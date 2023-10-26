@@ -112,10 +112,10 @@ const Header = (props: {
         </div>
 
         <div className="hidden sm:block">
-        <Link className='flex justify-center w-full items-center text-white' href={'/dashboard'}>
+        <Link className='flex justify-center w-full items-center bg-white px-[5px] py-[1px]' href={'/dashboard'}>
         <span className='flex-col text-[#f1e56c]'>{app_name}</span>  
         <Image className="h-10 flex-col"
- src={Logo} alt={app_name} height={60} /> 
+ src={LogoIcon} alt={app_name} height={60} /> 
         {/*<Image className="h-8 lg:mx-65 md:mx-65"
  src={Logo} alt="EdCoach AI" height={40} /> */}
 {/* <span className="text-xs absolute top-4 left-100">BETA</span> */}
