@@ -18,6 +18,7 @@ const Header = (props: {
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
 
+  /* we will use socket io
   const pusher = new Pusher(APP_KEY, {
     cluster: APP_CLUSTER,
   });
@@ -29,6 +30,7 @@ const Header = (props: {
       localStorage.setItem('boundary',JSON.stringify(data.boundary))
     }
   });
+  */
 
   const location = useRouter();
   const pathname  = usePathname();

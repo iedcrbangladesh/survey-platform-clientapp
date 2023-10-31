@@ -13,6 +13,7 @@ import loginSchema from "@/app/login/loginSchema";
 //import { Metadata, ResolvingMetadata } from 'next';
 import useAuth from "@/app/hooks/useAuth";
 import { setCookie } from 'cookies-next';
+import Link from "next/link";
 
 /*
 export const metadata = {
@@ -39,6 +40,7 @@ const Login=()=> {
 
   const [userFound, setUserFound]=useState(true);
   const [userFoundPass, setUserFoundPass]=useState(true);
+  const [alreadyLog, setAlreadyLog] = useState(false)
   const user={
     isEmail: '0',    
     email:'',
@@ -48,6 +50,7 @@ const Login=()=> {
   const handleFormSubmit = async(values:any)=>{
 
   //console.log(url);
+    setAlreadyLog(false);
 
     await axios.post(`${url}login-user`, 
     values.user, {
@@ -58,10 +61,14 @@ const Login=()=> {
   }
 ) .then(function (response) {
   //console.log(response);
+  if(response.data.already_logged_in!=null){
+    setAlreadyLog(true);
+  }
   if(response.data.user !== null){
     
     setUserFound(true);
     setUserFoundPass(true);
+    setAlreadyLog(false);
 
     const expirationTime = new Date((new Date().getTime() + (+response.data.expiresIn * 1000)));
     /*
@@ -137,7 +144,7 @@ const Login=()=> {
                 Sign In 
               </h2>
               {
-                !userFound && 
+                !userFound && !alreadyLog &&
 
                 <span className="mb-3 font-semibold text-[#B45454]">
                 !!! User Not Found !!!
@@ -145,10 +152,18 @@ const Login=()=> {
               }
 
 {
-                !userFoundPass && 
+                !userFoundPass && !alreadyLog &&
 
                 <span className="mb-3 font-semibold text-[#B45454]">
                 !!! Invalid Username OR Password !!!
+            </span>
+              }
+
+{
+                alreadyLog && 
+
+                <span className="mb-3 font-semibold text-[#B45454]">
+                !!! Already Logged in (Go to <Link href='/dashboard'>Dashboard</Link> or Logout from other device )  !!!
             </span>
               }
 

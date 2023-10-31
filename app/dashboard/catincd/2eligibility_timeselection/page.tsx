@@ -339,7 +339,7 @@ const next_url = "3demographic_information";
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      - বয়স ১৮ বছরের নিচে হলে, বলুন যে আমরা এই জরিপে ১৮ বছরের উপরের মানুষের সাথে কথা বলতে চাচ্ছি; তাই ধন্যবাদ জানিয়ে শেষ করুন।<br/>- জানি না বা অস্বীকৃিতর ক্ষেত্রেও ধন্যবাদ জানিয়ে শেষ করুন।<br/>- যদি বয়স ১৮ বছরের কম বলে তাহলে প্রশ্নটি আবার করে উত্তর যাঁচাই করুন।<br/>- বয়স পূর্ণ বছরে লিখতে হবে, যেমন বয়স যদি ২৫ বছর ১১ মাস হয় তবে ২৫ বছর ধরতে হবে।<br/>- প্রয়োজনে প্রাসঙ্গিক প্রশ্ন করতে হলে করুন।
+      - বয়স ১৮ বছরের নিচে হলে, বলুন যে আমরা এই জরিপে ১৮ বছরের উপরের মানুষের সাথে কথা বলতে চাচ্ছি; তাই ধন্যবাদ জানিয়ে শেষ করুন।<br/>- জানি না বা অস্বীকৃতির ক্ষেত্রেও ধন্যবাদ জানিয়ে শেষ করুন।<br/>- যদি বয়স ১৮ বছরের কম বলে তাহলে প্রশ্নটি আবার করে উত্তর যাঁচাই করুন।<br/>- বয়স পূর্ণ বছরে লিখতে হবে, যেমন বয়স যদি ২৫ বছর ১১ মাস হয় তবে ২৫ বছর ধরতে হবে।<br/>- প্রয়োজনে প্রাসঙ্গিক প্রশ্ন করতে হলে করুন।
     </div>
 </div>
 </div>
@@ -467,7 +467,7 @@ const next_url = "3demographic_information";
 </div>
 )}
 {(values.eligibility_timeselection.city_or_village && parseInt(values.eligibility_timeselection.city_or_village.value) < 2)  && (values.eligibility_timeselection.district && 
-parseInt(values.eligibility_timeselection.district.value) > 0)  && (values.eligibility_timeselection.municipal.value == '') && (
+parseInt(values.eligibility_timeselection.district.value) > 0)  && (values.eligibility_timeselection.municipal.value == '') && (citycorporation_data.filter(a=>a.parent == values.eligibility_timeselection.district.value).length > 0) && (
 <div>
 <span id="eligibility_timeselection_city_corporation"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
