@@ -85,28 +85,38 @@ const FormObserver =() => {
             
           }else{
 
-            axios.post(`${url}boundary_check`, 
-            
-              values, 
-            {    
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-            ) .then(function (response:any) {
+            const gender = values.eligibility_timeselection.gender?.value;
+            const age = values.eligibility_timeselection.age?.value;
+            const city_or_village = values.eligibility_timeselection.city_or_village?.value;
+            const area_code = values.eligibility_timeselection.district.parent;
+            const education = values.eligibility_timeselection.education?.value;
 
-                if(response.data.boundary!=null){
-                  authCtx.boundaryReached = response.data.boundary
-                  authCtx.setBoundaryReached(JSON.stringify(response.data.boundary))
+            if(gender!='' && age!='' && city_or_village!='' && area_code!='' && education!=''){
 
-                }else{
 
-                  authCtx.boundaryReached = null;
-                  authCtx.setBoundaryReached(null);
-                  localStorage.removeItem('boundaryReached');
-
+              axios.post(`${url}boundary_check`, 
+              
+                values, 
+              {    
+                headers: {
+                  'Content-Type': 'application/json'
                 }
-            });
+              }
+              ) .then(function (response:any) {
+
+                  if(response.data.boundary!=null){
+                    authCtx.boundaryReached = response.data.boundary
+                    authCtx.setBoundaryReached(JSON.stringify(response.data.boundary))
+
+                  }else{
+
+                    authCtx.boundaryReached = null;
+                    authCtx.setBoundaryReached(null);
+                    localStorage.removeItem('boundaryReached');
+
+                  }
+              });
+          }
                         
             
           }
