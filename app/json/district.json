@@ -1,5 +1,4 @@
 [
-{"label":"Comilla", "value":28,"parent":36},
 {"label":"Jessore", "value":61,"parent":65},
 {"label":"Shatkhira", "value":70,"parent":65},
 {"label":"Narsingdi", "value":71,"parent":68},
@@ -62,5 +61,6 @@
 {"label":"Bagerhat", "value":3240,"parent":65},
 {"label":"Bandarban", "value":3245,"parent":36},
 {"label":"Kurigram", "value":3323,"parent":69},
-{"label":"Jhenaidah", "value":3247,"parent":65} 
+{"label":"Jhenaidah", "value":3247,"parent":65},
+{"label":"Cumilla", "value":28,"parent":36} 
 ]

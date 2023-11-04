@@ -84,9 +84,30 @@ const FormObserver =() => {
             authCtx.setBoundaryReached(JSON.stringify(selected_boundary[0]))
             
           }else{
-            authCtx.boundaryReached = null;
-            authCtx.setBoundaryReached(null);
-            localStorage.removeItem('boundaryReached');            
+
+            axios.post(`${url}boundary_check`, 
+            
+              values, 
+            {    
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+            ) .then(function (response:any) {
+
+                if(response.data.boundary!=null){
+                  authCtx.boundaryReached = response.data.boundary
+                  authCtx.setBoundaryReached(JSON.stringify(response.data.boundary))
+
+                }else{
+
+                  authCtx.boundaryReached = null;
+                  authCtx.setBoundaryReached(null);
+                  localStorage.removeItem('boundaryReached');
+
+                }
+            });
+                        
             
           }
         }
@@ -164,7 +185,7 @@ food_habits:{
 fruits_consumption:{value:'',label:''},
 fruits_consumption_quantity:{value:'',label:''},
 vegatables_consumption:{value:'',label:''},
-vegatables_consumption_amount:{value:'',label:''},
+vegatables_consumption_amount:{salad:'',cooked_vegatables:'',total:''},
 salt_consumption:{value:'',label:''},
 salt_consumption_extra:{value:'',label:''},
 salt_consumption_mixed:{value:'',label:''},

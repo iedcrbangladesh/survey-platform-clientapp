@@ -339,9 +339,9 @@ fruits_consumption_quantity:object().shape({
   is: (val:any)=>val && (parseInt(val.value) > 0 ),
   then: (schema:any) =>{
            return schema.shape({
-            value: string().required('Fruit Consumption Quantity is required!'),
-            label: string().required('Fruit Consumption Quantity is required!')
-      });            
+            value: string().required('কাপ is required!'),
+            label: string().required('কাপ is required!')
+      });          
   }
   
 }),
@@ -349,7 +349,7 @@ vegatables_consumption:object().shape({
   value: string(),
   label: string()
 }).when('fruits_consumption',{
-  is: (val:any)=>val && (parseInt(val.value) >=0 ),
+  is: (val:any)=>val && (parseInt(val.value) >0 ),
   then: (schema:any) =>{
            return schema.shape({
             value: string().required('Vegatables Consumption is required!'),
@@ -359,14 +359,15 @@ vegatables_consumption:object().shape({
   
 }),
 vegatables_consumption_amount:object().shape({
-  value: string(),
-  label: string()
+  salad: number(),
+  cooked_vegatables: number(),
+  total:number(),
 }).when('vegatables_consumption',{
   is: (val:any)=>val && (parseInt(val.value) >0 ),
   then: (schema:any) =>{
            return schema.shape({
-            value: string().required('Vegatables Consumption Amount is required!'),
-            label: string().required('Vegatables Consumption Amount is required!')
+            salad: number().min(0,'at least input 0').max(50,'max 50 allowed').required('সালাদ is required!'),
+            cooked_vegatables: number().min(0,'at least input 0').max(50,'max 50 allowed').required('রান্না করা শাঁক-সব্জি is required!')
       });            
   }
   

@@ -66,7 +66,7 @@ const ScheduleListComponent = ()=>{
 
         <div>
             <table className='table-auto border-collapse border border-slate-400'>
-                <tr className='p-2'>
+                <tr className='px-1'>
                     <th className="border border-slate-300 p-2">Contact Number</th>
                     <th className="border border-slate-300 p-2">Schedule Time</th>
                     <th className="border border-slate-300 p-2">Scheduled By</th>
@@ -74,11 +74,11 @@ const ScheduleListComponent = ()=>{
                 </tr>
                 {data.map((d:any,i:number)=>{
                     return(
-                        <tr key={i}>
-                            <td className="border border-slate-300 p-2">{d.contact_number}</td>
-                            <td className="border border-slate-300 p-2">{d.schedule_time}</td>
-                            <td className="border border-slate-300 p-2">{d.operator.name} ( {d.operator.username} )</td>
-                            <td><button className={`inline-flex items-center justify-center ${d?.snowball> 0 ?'bg-[#FF9933]':'bg-primary'}  py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 w-full`} onClick={PickHandler.bind(null,d)}>{ d?.snowball > 0 ?'SnowBall Pick':'Pick'}</button></td>
+                        <tr key={i} className='py-0'>
+                            <td className="border border-slate-300 px-1 py-0">{d.contact_number}</td>
+                            <td className="border border-slate-300 px-1 py-0">{d.schedule_time}</td>
+                            <td className="border border-slate-300 px-1 py-0">{d.operator.name} ( {d.operator.username} )</td>
+                            <td className='py-1'><button className={`inline-flex items-center justify-center ${d?.snowball> 0 ?'bg-[#FF9933]':'bg-primary'}  py-1 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 w-full`} onClick={PickHandler.bind(null,d)}>{ d?.snowball > 0 ?'SnowBall Pick':'Pick'}</button></td>
                         </tr>
                     )
                 })

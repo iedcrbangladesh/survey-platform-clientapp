@@ -63,6 +63,7 @@ const Login=()=> {
   //console.log(response);
   if(response.data.already_logged_in!=null){
     setAlreadyLog(true);
+    router.push('/dashboard');
   }
   if(response.data.user !== null){
     

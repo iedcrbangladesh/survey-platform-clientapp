@@ -158,7 +158,7 @@ const next_url = "5relax_information";
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১.১ সপ্তাহের কত দিন আপনি ফল (যেমন, কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, <br/>খেজুর, কুল—বড়ই বা লিচু, অথবা এক কাপ কাটা ফল) খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
+      ৪. ১.১ সপ্তাহের কত দিন আপনি ফল খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -198,7 +198,7 @@ const next_url = "5relax_information";
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      প্রয়োজন হলে উদাহরণ দিন। যেমন - সাধারণ এক সপ্তাহে আপনি যদি চার দিন ফল খেয়ে থাকেন তাহলে, ৪ বলুন।<br/>যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ  ০ দিন হয়, তাহলে প্রশ্ন ৪.১.৩ এ যান।
+      প্রয়োজন হলে উদাহরণ দিন। <br/>যেমন — সাধারণ এক সপ্তাহে আপনি যদি চার দিন ফল (যেমন, কলা, পেয়ারা, আম, কমলা, <br/>আপেল বা কয়েকটি কাঁঠালের কোয়া, খেজুর, কুল—বড়ই বা লিচু, অথবা এক কাপ কাটা ফল) খেয়ে থাকেন তাহলে, ৪ লিখুন।<br/>যদি কোনো দিন না খেয়ে থাকে, অর্থাৎ  ০ দিন হয়, তাহলে প্রশ্ন ৪.১.৩ এ যান।
     </div>
 </div>
 </div>
@@ -210,11 +210,11 @@ const next_url = "5relax_information";
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১.২ আপনি কি পরিমান ফল খান এখন আমি সে সম্পর্কে কিছু প্রশ্ন করবো। মনে করুন, এক পরিবেশন ফল মানে হল, একটি কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, খেজুর, কুল—বড়ই বা লিচু, অথবা এক কাপ কাটা ফল।<br/>আপনি যে দিনগুলোতে ফল খান, এমন একটি দিনে এধরনের কত পরিবেশন ফল খান?<br/>অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
+      ৪. ১.২ আপনি কি পরিমান ফল খান এখন আমি সে সম্পর্কে কিছু প্রশ্ন করবো।<br/>আপনি যে দিনগুলোতে ফল খেয়েছেন, এমন একটি দিনে আপনি কি কি ফল খেয়েছেন তার নামগুলো দয়া করে বলুন?<br/>ঐ ফলগুলো কেটে চায়ের কাপে রাখলে কত কাপ হবে বলে মনে করেন?
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
-                                 placeholder="Select Fruit Consumption Quantity"
+                                 placeholder="Select কাপ"
                                  isSearchable
                                  isClearable                                 
                                   name="food_habits.fruits_consumption_quantity" options={option_data.food_habits.fruits_consumption_quantity}
@@ -248,7 +248,7 @@ const next_url = "5relax_information";
   </div>
   <div className="flex flex-col">
     <div className="py-2">
-      
+      মনে করুন, এক পরিবেশন ফল মানে হল, <br/>একটি কলা, পেয়ারা, আম, কমলা, আপেল বা কয়েকটি কাঁঠালের কোয়া, খেজুর, কুল—বড়ই বা লিচু, অথবা এক কাপ কাটা ফল।
     </div>
 </div>
 </div>
@@ -260,7 +260,7 @@ const next_url = "5relax_information";
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
     <label className="mb-1 block text-black dark:text-white">
-      ৪. ১.৩ একটি সাধারণ সপ্তাহে আপনি কত দিন শাক-সব্জি খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
+      ৪. ১.৩ একটি সাধারণ সপ্তাহে আপনি কত দিন রান্না করা শাক-সবজি খান এবং সালাদ খান?<br/>অনুগ্রহ করে দিনের সংখ্যাটি বলুন।
     </label>
     
     <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
@@ -307,35 +307,32 @@ const next_url = "5relax_information";
 </div>
 
 {parseInt(values.food_habits.vegatables_consumption.value) >  0  && (
-<div>
-<span id="food_habits_vegatables_consumption_amount"></span>
+
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
-    <label className="mb-1 block text-black dark:text-white">
-      ৪. ১.৪ শাক-সবজির এক পরিবেশন মানে হল <br/>প্রায় এক কাপ সবুজ শাক-সবজি, সালাদ অথবা আধা কাপ রান্না করা শাক-সবজি।<br/>আপনি যে দিনগুলোতে শাক-সবজি খান, <br/>এমন একদিনে এধরনের কত পরিবেশন শাক-সবজি খান? অনুগ্রহ করে পরিবেশনের সংখ্যাটি বলুন।
-    </label>
-    
-    <SelectNonCreatableComponent defaultValueArray={{ "label":"","value":"" }}
-                                 placeholder="Select Vegatables Consumption Amount"
-                                 isSearchable
-                                 isClearable                                 
-                                  name="food_habits.vegatables_consumption_amount" options={option_data.food_habits.vegatables_consumption_amount}
+	
+	<label className="mb-1 block text-black dark:text-white">
+    	৪. ১.৪ আপনি যে দিনগুলোতে আপনি সালাদ বা রান্না করা শাক-সবজি খান, <br/>এমন একদিন (সারাদিনে) এধরনের কত কাপ সালাদ বা রান্না করা শাক-সবজি খান? <br/>অনুগ্রহ করে কাপের সংখ্যাটি বলুন।
+  	</label>
+  	<span id="food_habits_vegatables_consumption_amount"></span>
 
-                                  onParentChange={(v:any, name:any) => {
-                
-                //alert(name);
 
-                
-                                
-                
-                
-            
-            }} 
-                                  
-                      />
-  
-  
-  {
+<div className="grid grid-cols-4">
+<div className="flex flex-col">
+  সালাদ
+<Field 
+    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+name="food_habits.vegatables_consumption_amount.salad" placeholder="কাপ" type="number" 
+onChange={(e:any)=>{   
+  const {value, name} = e.target;  
+  setFieldValue(name,parseInt(value))
+  const total = parseInt(value) + parseInt(values.food_habits.vegatables_consumption_amount.cooked_vegatables) * 2;
+  setFieldValue("food_habits.vegatables_consumption_amount.total",total)
+   
+}}
+/>
+
+{
     errors.food_habits
     &&
     errors.food_habits.vegatables_consumption_amount
@@ -344,17 +341,70 @@ const next_url = "5relax_information";
     &&
     touched.food_habits.vegatables_consumption_amount && ( 
         <span className="mb-3 font-semibold text-[#B45454]">
-            {errors.food_habits.vegatables_consumption_amount.label}
+            {errors.food_habits.vegatables_consumption_amount.salad}
         </span>   
     )}
+
+</div>
+
+<div className="flex flex-col p-2">
+	<span className="font-medium mt-5 mx-10">+</span>
+</div>
+
+<div className="flex flex-col">
+  রান্না করা শাঁক-সব্জি
+<Field 
+    className="ml-0 w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+name="food_habits.vegatables_consumption_amount.cooked_vegatables" placeholder="কাপ" type="number" 
+onChange={(e:any)=>{ 
+  
+  const {value, name} = e.target;  
+  setFieldValue(name,parseInt(value))
+  const total = parseInt(values.food_habits.vegatables_consumption_amount.salad) + parseInt(value) * 2;
+  setFieldValue("food_habits.vegatables_consumption_amount.total",total)   
+
+}}
+/>
+
+{
+    errors.food_habits
+    &&
+    errors.food_habits.vegatables_consumption_amount
+    &&
+    touched.food_habits
+    &&
+    touched.food_habits.vegatables_consumption_amount && ( 
+        <span className="mb-3 font-semibold text-[#B45454]">
+            {errors.food_habits.vegatables_consumption_amount.cooked_vegatables}
+        </span>   
+    )}
+
+</div>
+
+
+<div className="flex flex-col p-2">
+  মোট
+  
+<Field 
+    className="ml-0 w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+name="food_habits.vegatables_consumption_amount.total" placeholder="কাপ" type="number" disabled 
+ />
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<div className="flex flex-col">
+  <div className="py-2">
+  এখানে এক চায়ের কাপ শাঁক-সব্জি, সালাদ অথবা আধা কাপ রান্না করা শাঁক-সব্জি মানে হল এক পরিবেশন।<br/>(সারা দিনের শাঁক-সব্জি খাওয়ার কথা জিজ্ঞেস করুন)<br/>(০-৫০ কাপের সংখ্যা লিখুন)
   </div>
-  <div className="flex flex-col">
-    <div className="py-2">
-      
-    </div>
 </div>
 </div>
-</div>
+
 )}
 <div className="my-1 grid grid-cols-1 gap-4">
   <div className="flex flex-col">

@@ -19,21 +19,19 @@ const SnowballListComponent = ()=>{
             {Object.keys(snowballInfo).length > 1 &&
             <table className="table-auto border-collapse border border-slate-400">
                 <tr>
-                    <th colSpan={4}>
+                    <th colSpan={3}>
                     আগে  নেয়া তথ্য সমূহ
                     </th>
                 </tr>
             <tr>
                       <th>Name</th>
                       <th>District</th>
-                      <th>Gender</th>
-                      <th>Age</th>                      
+                      <th>Urban or Rural</th>                                           
                     </tr>
             <tr className="bg-[#FF0033] text-white">
                 <td>{snowballInfo?.name_of_person?.text}</td>
                 <td>{snowballInfo?.district?.label}</td>
-                <td>{snowballInfo?.gender?.label}</td>
-                <td>{snowballInfo?.age?.value}</td>
+                <td>{snowballInfo?.city_or_village?.label}</td>
             </tr>
             </table>
 }

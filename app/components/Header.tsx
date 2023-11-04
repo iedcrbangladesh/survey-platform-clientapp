@@ -6,32 +6,23 @@ import Image from 'next/image';
 import useAuth from '@/app/hooks/useAuth';
 import axios from 'axios';
 import { useRouter,usePathname } from 'next/navigation';
-import Pusher from 'pusher-js';
-const APP_KEY:any = process.env.pusher_app_key;
-const APP_CLUSTER:any = process.env.pusher_app_cluster;
+
+//const APP_KEY:any = process.env.pusher_app_key;
+//const APP_CLUSTER:any = process.env.pusher_app_cluster;
+
 
 const app_name:any = process.env.app_name;
 const url = process.env.api_url;
+
+
+
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
 
-  /* we will use socket io
-  const pusher = new Pusher(APP_KEY, {
-    cluster: APP_CLUSTER,
-  });
-
-  var channel = pusher.subscribe('boundary-channel');
-  channel.bind('boundary-list-event', function(data:any) {
-    //alert(JSON.stringify(data));
-    if(typeof window!='undefined'){
-      localStorage.setItem('boundary',JSON.stringify(data.boundary))
-    }
-  });
-  */
-
+  
   const location = useRouter();
   const pathname  = usePathname();
 

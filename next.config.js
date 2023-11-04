@@ -4,8 +4,13 @@ const nextConfig = {
     basePath: '',
       env: {
           app_name:'STEPS Mimicking Mobile NCD Survey',
+          
           api_url: 'https://champs.iedcr.gov.bd:5002/api/',
           number_api_url:'https://champs.iedcr.gov.bd:5003/numapi/',
+          
+          /*api_url: 'http://localhost:5002/api/',
+          number_api_url:'https://champs.iedcr.gov.bd:5003/numapi/',          
+          */
           current_question_url:'/dashboard/callstart/',
           max_schedule_count:2,
           per_page:10/*,
