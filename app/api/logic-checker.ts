@@ -37,13 +37,15 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
 
                 if(found_key == "range"){
                     var gt_lt = element[found_key];
-                    var fields = element["fields"];       
-                    var found:any = value >= gt_lt[0] && value <=gt_lt[1] ? undefined:true; 
-                    //if(){
-                        //console.log(fields);
-                    found_disabled(found, fields,setFieldValue, name);
-                        //console.log(value,gt_lt);
-                    break;
+                    var fields = element["fields"];
+                    if(typeof value!='undefined'){       
+                        var found:any = value >= gt_lt[0] && value <=gt_lt[1] ? undefined:true; 
+                        //if(){
+                            //console.log(fields);
+                        found_disabled(found, fields,setFieldValue, name);
+                            //console.log(value,gt_lt);
+                        break;
+                    }
                     //}                    
                                         
                 }

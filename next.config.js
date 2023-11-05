@@ -13,7 +13,9 @@ const nextConfig = {
           */
           current_question_url:'/dashboard/callstart/',
           max_schedule_count:2,
-          per_page:10/*,
+          per_page:10,
+          interval_for_boundary:5
+          /*,
           
           per_page_list:[10,20,50,100],
           pusher_app_key:'ca252525011e4a700208',

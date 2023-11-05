@@ -6,6 +6,7 @@ import Image from 'next/image';
 import useAuth from '@/app/hooks/useAuth';
 import axios from 'axios';
 import { useRouter,usePathname } from 'next/navigation';
+import { useEffect,useCallback } from 'react';
 
 //const APP_KEY:any = process.env.pusher_app_key;
 //const APP_CLUSTER:any = process.env.pusher_app_cluster;
@@ -13,7 +14,7 @@ import { useRouter,usePathname } from 'next/navigation';
 
 const app_name:any = process.env.app_name;
 const url = process.env.api_url;
-
+const interval_for_boundary:any = process.env.interval_for_boundary;
 
 
 
@@ -27,6 +28,21 @@ const Header = (props: {
   const pathname  = usePathname();
 
   const authCtx = useAuth();
+
+  useEffect(()=>{
+    const boundary_interval = interval_for_boundary * (1000 * 60); // 5 SECond
+
+    const fetchBounday = async()=>{
+      const {data} = await axios.get(`${url}boundary`);
+      if(typeof window !== 'undefined'){
+        localStorage.setItem('boundary',JSON.stringify(data.boundary))
+      }
+    }
+    const interval = setInterval(fetchBounday,boundary_interval)
+    return () => {
+      clearInterval(interval);
+    }; 
+  },[])
 
   const logoutHandler = async()=>{
     

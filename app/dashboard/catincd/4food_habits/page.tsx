@@ -312,7 +312,7 @@ const next_url = "5relax_information";
   <div className="flex flex-col">
 	
 	<label className="mb-1 block text-black dark:text-white">
-    	৪. ১.৪ আপনি যে দিনগুলোতে আপনি সালাদ বা রান্না করা শাক-সবজি খান, <br/>এমন একদিন (সারাদিনে) এধরনের কত কাপ সালাদ বা রান্না করা শাক-সবজি খান? <br/>অনুগ্রহ করে কাপের সংখ্যাটি বলুন।
+    	৪. ১.৪ আপনি যে দিনগুলোতে সালাদ বা রান্না করা শাক-সবজি খান, <br/>এমন একদিন (সারাদিনে) এধরনের কত কাপ সালাদ বা রান্না করা শাক-সবজি খান? <br/>অনুগ্রহ করে কাপের সংখ্যাটি বলুন।
   	</label>
   	<span id="food_habits_vegatables_consumption_amount"></span>
 

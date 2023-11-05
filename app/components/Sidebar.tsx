@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import useAuth from '@/app/hooks/useAuth';
 import ContactScheduleComponent from './form/ContactScheduleComponent';
@@ -21,16 +21,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   
   const pathname  = usePathname();
   const authCtx = useAuth();
+  const router = useRouter();
 
-  const [openChatForm, setOpenChatForm] = useState(false);
-
+  
   const [callStatus, setCallStatus] =  useState(false);
   let Loguser:any = null;
 
-  const openChatFormHandler=(e:any)=>{
-      e.preventDefault();
-      setOpenChatForm(true);
-  }
+  
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
@@ -177,7 +174,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     onClick={()=>{
       setCallStatus(true);
     }}   
-    className={`text-xs group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
+    className={`text-xs group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 cursor-pointer`}
   >
     
     <svg 
@@ -187,7 +184,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h6m-6 4h6m-6 4h6M1 1v18l2-2 2 2 2-2 2 2 2-2 2 2V1l-2 2-2-2-2 2-2-2-2 2-2-2Z"/>
   </svg>
     
-              Status
+              Status 
   </a>
 </li>
 
@@ -198,14 +195,38 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
 }
           
-{authCtx.activeContactId && callStatus && <ContactScheduleComponent/>
+{authCtx.activeContactId && callStatus && 
+<>
+<ContactScheduleComponent/>
+<span 
+className={`text-xs group relative top-[5px] flex justify-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 cursor-pointer`}
+onClick={()=>{ setCallStatus(false) }}>Close</span>
+</>
 }
  { authCtx.activeContactId && <div className='my-5'><TimeScheduleComponent/></div>}
 
  <SnowballListComponent/>         
           </div>
 
-          
+          <a
+    onClick={()=>{
+                          
+      authCtx.boundaryReached = null;
+      authCtx.setBoundaryReached(null)
+      if(typeof window!='undefined'){
+        localStorage.removeItem('boundaryReached');
+      }
+
+      router.push('/dashboard/callinterface')
+      
+    }}   
+    className={`text-xs group absolute flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 cursor-pointer  bottom-5 bg-[#ff3300]`}
+  >
+    
+    
+    
+              Clear Boundary Cache
+  </a>          
         </nav>
         {/* <!-- Sidebar Menu --> */}
       </div>
