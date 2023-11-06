@@ -46,25 +46,32 @@ const FormObserver =() => {
         const area_code = values.eligibility_timeselection.district.parent;
         const education = values.eligibility_timeselection.education?.value;
         //gender
-        let gender_string = 'male';
-        if(gender > 1){
+        let gender_string = '';
+        if(gender == 2){
           gender_string = 'female';
+        }else if(gender == 1){
+          gender_string = 'male';
         }
         //education
-        let education_string = 'no_education'
-        if(education > 1){
+        let education_string = ''
+        const education_number = parseInt(education)
+        if(education_number > 1){
         
-          if([2,3].includes(education)){
+          if([2,3].includes(education_number)){
             education_string = 'primary'
           }
-          if([4,5,6,7].includes(education)){
+          if([4,5,6,7].includes(education_number)){
             education_string = 'primary_up'
           }
+        }else{
+          education_string = 'no_education'
         }
         //city or village
-        let city_or_village_string = 'urban';
-        if(city_or_village > 1){
+        let city_or_village_string = '';
+        if(city_or_village == 2){
           city_or_village_string = 'rural'
+        }else if(city_or_village == 1){
+          city_or_village_string = 'urban';
         }
         if(boundary != null){
           
@@ -85,18 +92,23 @@ const FormObserver =() => {
             
           }else{
 
-            const gender = values.eligibility_timeselection.gender?.value;
-            const age = values.eligibility_timeselection.age?.value;
-            const city_or_village = values.eligibility_timeselection.city_or_village?.value;
-            const area_code = values.eligibility_timeselection.district.parent;
-            const education = values.eligibility_timeselection.education?.value;
+            
 
             if(gender!='' && age!='' && city_or_village!='' && area_code!='' && education!=''){
+
+              const choosen_eligibilty = {
+                area_code:area_code,
+                urban_rural:city_or_village_string,
+                gender:gender_string,
+                education_group:education_string,
+                age:age,
+                userid:authCtx.userId
+              }
 
 
               axios.post(`${url}boundary_check`, 
               
-                values, 
+                choosen_eligibilty, 
               {    
                 headers: {
                   'Content-Type': 'application/json'
@@ -106,7 +118,7 @@ const FormObserver =() => {
 
                   if(response.data.boundary!=null){
                     authCtx.boundaryReached = response.data.boundary
-                    authCtx.setBoundaryReached(JSON.stringify(response.data.boundary))
+                    authCtx.setBoundaryReached(response.data.boundary)
 
                   }else{
 

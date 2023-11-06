@@ -30,7 +30,7 @@
 "food_habits.fruits_consumption":{"value":"","label":""},
 "food_habits.fruits_consumption_quantity":{"value":"","label":""},
 "food_habits.vegatables_consumption":{"value":"","label":""},
-"food_habits.vegatables_consumption_amount":{"value":"","label":""},
+"food_habits.vegatables_consumption_amount":{"salad":"","cooked_vegatables":"","total":""},
 "food_habits.salt_consumption":{"value":"","label":""},
 "food_habits.salt_consumption_extra":{"value":"","label":""},
 "food_habits.salt_consumption_mixed":{"value":"","label":""},

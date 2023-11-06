@@ -53,21 +53,34 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
                 if(found_key == "lt"){
                     var lt = element[found_key];
                     var fields = element["fields"];
-                    var found:any = value < lt?undefined:true;
-                    //if(){
-                    found_disabled(undefined, fields,setFieldValue, name);
-                    //}
+                    if(typeof lt == 'string'){
+                        lt = parseInt(lt)
+                    }
+                    //console.log(lt,value)
+                    //if(typeof value!='undefined'){
+                    var found:any = value < lt?true:undefined;
+                    //console.log(found)
+                        //if(){
+                    found_disabled(found, fields,setFieldValue, name);
+                        //}
                     break;
+                    //}
                 }
 
                 if(found_key == "gt"){
                     var gt = element[found_key];
                     var fields = element["fields"];
+                    if(typeof gt == 'string'){
+                        gt = parseInt(gt)
+                    }
+                    
+                    //if(typeof value!='undefined'){
                     var found:any = value > gt ? undefined:true;
-                    //if(value > gt){
+                        //if(value > gt){
                     found_disabled(found, fields,setFieldValue, name);
-                    //}
+                        //}
                     break;
+                    //}
                 }
 
             }

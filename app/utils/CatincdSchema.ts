@@ -366,8 +366,8 @@ vegatables_consumption_amount:object().shape({
   is: (val:any)=>val && (parseInt(val.value) >0 ),
   then: (schema:any) =>{
            return schema.shape({
-            salad: number().min(0,'at least input 0').max(50,'max 50 allowed').required('সালাদ is required!'),
-            cooked_vegatables: number().min(0,'at least input 0').max(50,'max 50 allowed').required('রান্না করা শাঁক-সব্জি is required!')
+            salad: number().typeError('Amount must be a number').min(0,'at least input 0').max(50,'max 50 allowed').required('সালাদ is required!'),
+            cooked_vegatables: number().typeError('Amount must be a number').min(0,'at least input 0').max(50,'max 50 allowed').required('রান্না করা শাঁক-সব্জি is required!')
       });            
   }
   

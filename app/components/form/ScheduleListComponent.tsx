@@ -76,7 +76,7 @@ const ScheduleListComponent = ()=>{
                     return(
                         <tr key={i} className='py-0'>
                             <td className="border border-slate-300 px-1 py-0">{d.contact_number}</td>
-                            <td className="border border-slate-300 px-1 py-0">{d.schedule_time}</td>
+                            <td className={`border border-slate-300 px-1 py-0 ${d.nearest > 0 ? ' bg-[#ff0099] text-white ':''} `}>{d.schedule_time} {d.time_distance < 16 && <span>({d.time_distance})</span>}</td>
                             <td className="border border-slate-300 px-1 py-0">{d.operator.name} ( {d.operator.username} )</td>
                             <td className='py-1'><button className={`inline-flex items-center justify-center ${d?.snowball> 0 ?'bg-[#FF9933]':'bg-primary'}  py-1 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 w-full`} onClick={PickHandler.bind(null,d)}>{ d?.snowball > 0 ?'SnowBall Pick':'Pick'}</button></td>
                         </tr>

@@ -31,5 +31,38 @@
             ],
             "fields": "*"
         }
+    ],
+    "food_habits.fruits_consumption": [
+        {
+            "lt": 1,
+            "fields": {
+                "food_habits.fruits_consumption_quantity": {
+                    "value": "",
+                    "label": ""
+                }
+            }
+        }
+    ],
+    "food_habits.vegatables_consumption": [
+        {
+            "lt": 1,
+            "fields": {
+                "food_habits.vegatables_consumption_amount": {
+                    "salad": "",
+                    "cooked_vegatables": "",
+                    "total": ""
+                }
+            }
+        },
+        {
+            "gt": 10,
+            "fields": {
+                "food_habits.vegatables_consumption_amount": {
+                    "salad": "",
+                    "cooked_vegatables": "",
+                    "total": ""
+                }
+            }
+        }
     ]
 }
