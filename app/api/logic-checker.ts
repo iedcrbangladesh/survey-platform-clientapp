@@ -23,12 +23,13 @@ const disable_logic=(name:string,value:any, setFieldValue:any,logic_option:any):
 
                 if(found_key == "is"){
                     var not = element[found_key];
+                    //console.log(value)
                          
                     var fields = element["fields"];       
                     var found = not.find((search:string)=>{
-                        return search == value? search:null;
+                        return search == value;
                     });
-                    //console.log(found)
+                    //console.log('found',found)
                     //console.log(found); 
                     if(typeof found =='undefined') continue;
                     found_disabled(found,fields,setFieldValue, name);
