@@ -173,7 +173,7 @@ const next_url = "8drinking_related";
             onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
-                
+                disable_logic(name,v.value, setFieldValue,["is","is" ]);
                                 
                 if (checked) {
                   setFieldTouched(name,true);
@@ -388,7 +388,7 @@ const next_url = "8drinking_related";
             onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
-                
+                disable_logic(name,v.value, setFieldValue,["is","is" ]);
                                 
                 if (checked) {
                   setFieldTouched(name,true);

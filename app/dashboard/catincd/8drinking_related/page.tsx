@@ -161,7 +161,7 @@ const next_url = "9finish";
             onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
-                
+                disable_logic(name,v.value, setFieldValue,["is" ]);
                                 
                 if (checked) {
                   setFieldTouched(name,true);

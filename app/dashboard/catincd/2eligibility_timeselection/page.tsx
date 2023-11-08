@@ -50,6 +50,16 @@ const { isValid, isSubmitting,values,errors, touched, setFieldValue, setFieldTou
       }
     }
     */
+    const bs:any = null;
+    const [boundaryShow, setBoundaryShow] = useState(bs);
+
+    useEffect(()=>{
+
+      if( boundary_reached != null && typeof boundary_reached =='string' ){
+        setBoundaryShow(JSON.parse(boundary_reached))
+      }
+
+    },[boundary_reached])
 
     const QuotaInterviewNow=async()=>{
         
@@ -789,11 +799,11 @@ touched.eligibility_timeselection.name_of_person && (
                       <th>Education Group</th>
                     </tr>
                     <tr className="bg-[#FF0033] text-white">
-                      <th>{authCtx.boundaryReached.name}</th>
-                      <th>{authCtx.boundaryReached.age_start} to {authCtx.boundaryReached.age_end}</th>
-                      <th>{authCtx.boundaryReached.gender}</th>
-                      <th>{authCtx.boundaryReached.urban_rural}</th>
-                      <th>{authCtx.boundaryReached.education_group}</th>
+                      <th>{boundaryShow?.name}</th>
+                      <th>{boundaryShow?.age_start} to {boundaryShow?.age_end}</th>
+                      <th>{boundaryShow?.gender}</th>
+                      <th>{boundaryShow?.urban_rural}</th>
+                      <th>{boundaryShow?.education_group}</th>
                       </tr>
                   </table>
                 </div>

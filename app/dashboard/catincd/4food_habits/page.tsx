@@ -171,7 +171,7 @@ const next_url = "5relax_information";
                 
                 //alert(name);
 
-                disable_logic(name,v.value, setFieldValue,["lt" ]);
+                disable_logic(name,v.value, setFieldValue,["is" ]);
                 
  redirect_or_focus_location(v,name,"age_dropdown"); 
                 
@@ -273,7 +273,7 @@ const next_url = "5relax_information";
                 
                 //alert(name);
 
-                disable_logic(name,v.value, setFieldValue,["lt","gt" ]);
+                disable_logic(name,v.value, setFieldValue,["is" ]);
                 
  redirect_or_focus_location(v,name,"age_dropdown"); 
                 

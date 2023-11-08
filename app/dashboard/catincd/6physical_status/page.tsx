@@ -289,7 +289,7 @@ const next_url = "7smoking_related";
             onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
-                
+                disable_logic(name,v.value, setFieldValue,["is" ]);
                                 
                 if (checked) {
                   setFieldTouched(name,true);
@@ -551,7 +551,7 @@ const next_url = "7smoking_related";
             onChange={(e:any) => {}}
             onClick={(e:any) => {
                 const {checked, name} = e.target;
-                
+                disable_logic(name,v.value, setFieldValue,["is" ]);
                 
  redirect_or_focus_location(v,name,"radio"); 
                 

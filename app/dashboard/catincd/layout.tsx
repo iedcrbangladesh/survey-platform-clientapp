@@ -118,7 +118,7 @@ const FormObserver =() => {
 
                   if(response.data.boundary!=null){
                     authCtx.boundaryReached = response.data.boundary
-                    authCtx.setBoundaryReached(response.data.boundary)
+                    authCtx.setBoundaryReached(JSON.stringify(response.data.boundary))
 
                   }else{
 
@@ -341,7 +341,7 @@ thirty_days_alchohol_usage:{value:'',label:''},
             localStorage.removeItem('focusElement');
             localStorage.removeItem('last_section');
             localStorage.removeItem('schedule_count');            
-            localStorage.removeItem('boundaryReached');
+            
             
             localStorage.removeItem('snowball');
             localStorage.removeItem('snowball_count');
@@ -349,6 +349,7 @@ thirty_days_alchohol_usage:{value:'',label:''},
 
             authCtx.boundaryReached = null;
             authCtx.setBoundaryReached(null)
+            localStorage.removeItem('boundaryReached');
             
             
 
