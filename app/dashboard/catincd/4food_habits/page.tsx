@@ -204,7 +204,7 @@ const next_url = "5relax_information";
 </div>
 </div>
 
-{parseInt(values.food_habits.fruits_consumption.value) >  0  && (
+{( parseInt(values.food_habits.fruits_consumption.value) >  0 && parseInt(values.food_habits.fruits_consumption.value) < 99 )  && (
 <div>
 <span id="food_habits_fruits_consumption_quantity"></span>
 <div className="my-1 grid grid-cols-2 gap-4">
@@ -306,7 +306,7 @@ const next_url = "5relax_information";
 </div>
 </div>
 
-{parseInt(values.food_habits.vegatables_consumption.value) >  0  && (
+{( parseInt(values.food_habits.vegatables_consumption.value) >  0  && parseInt(values.food_habits.vegatables_consumption.value) < 99  ) && (
 
 <div className="my-1 grid grid-cols-2 gap-4">
   <div className="flex flex-col">
