@@ -34,7 +34,8 @@ const ContactScheduleComponent = ()=>{
     },[])
 
     const ContactStatus = {
-        dispose_status:{value:'',label:''}        
+        dispose_status:{value:'',label:''},
+        denied_reason:[]       
     }
     const ContactStatusSchema = object().shape({
         dispose_status:object().shape({
@@ -42,6 +43,24 @@ const ContactScheduleComponent = ()=>{
             label: string().required("!..you must select a call status..!")
           })
           .nullable(),
+
+        denied_reason:array().when('dispose_status',{
+          is: (val:any)=>val && parseInt(val.value) == 6 ,
+          then: (schema:any) =>{
+                   
+        
+                return schema.min(1, "Need at least 1 of Denied Reason Required!!").of( 
+                
+                      object().shape({
+                        value: string().required("[this] is required"),
+                        label: string().required("[this] is required")
+                      })
+            
+                    )
+        
+          }
+        })
+        
     });
 
     const handleFormSubmit =async(values:any)=>{
@@ -51,13 +70,17 @@ const ContactScheduleComponent = ()=>{
         if(data !=null){
             data = JSON.parse(data);
         }
+        
+
+        
         await axios.post(`${url}contact-running-status`, 
         {
         userid:userid,
         dispose_status:values.dispose_status,
         mobile_no:mobile_no,
         questionid:authCtx.activeContactId,
-        data:data
+        data:data,
+        denied_reason:values.denied_reason
         }, 
         {    
           headers: {
@@ -145,6 +168,36 @@ const ContactScheduleComponent = ()=>{
         </span>   
     )}     
     </div>
+      { values.dispose_status.value !='' && parseInt(values.dispose_status.value) == 6 &&
+    <div className="w-full">
+    <label className="mb-3 block text-black dark:text-white">
+            অসম্মতির কারণ
+                </label>
+            <SelectComponent defaultValueArray={[]}
+              placeholder="Select Denied Reason"
+              isSearchable
+              isClearable                                 
+              isMulti
+              name="denied_reason" options={contact_status.denied_reason}
+
+              onParentChange={(v:any, name:any) => {
+                            
+            
+        
+        }} 
+                              
+                  />
+    {
+    errors.denied_reason
+    &&
+    touched.denied_reason && ( 
+        <span className="mb-3 font-semibold text-[#B45454]">
+            {errors.denied_reason}
+        </span>   
+    )}
+
+    </div>
+              }
 
     <div className="w-full mt-5">
 <button 
